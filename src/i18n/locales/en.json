@@ -52,7 +52,16 @@
     "withdraw": "Withdraw Now",
     "history": "Transaction History",
     "nextSalary": "Next Salary Date",
-    "payrollDate": "Payroll Date"
+    "payrollDate": "Payroll Date",
+    "complete": "Complete",
+    "advanceLimit": "Advance Salary Limit",
+    "withdrawSuccessTitle": "Withdrawal Successful",
+    "withdrawSuccessDescription": "Your withdrawal request for {{amount}} has been processed.",
+    "status": {
+      "completed": "Completed",
+      "pending": "Pending",
+      "failed": "Failed"
+    }
   },
   "workplace": {
     "title": "Workplace Information",
@@ -99,5 +108,6 @@
     "theme": "Theme",
     "security": "Security",
     "help": "Help & Support"
-  }
+  },
+  "locale": "en-US"
 }

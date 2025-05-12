@@ -42,11 +42,13 @@ const NavItem: React.FC<NavItemProps> = ({ icon: Icon, label, href, active }) =>
 };
 
 const AppLayout: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const pathname = location.pathname;
+  
+  const isBangla = i18n.language === 'bn';
 
   const handleLogout = () => {
     logout();
@@ -71,7 +73,7 @@ const AppLayout: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className={cn("min-h-screen flex flex-col bg-background", isBangla && "font-siliguri")}>
       {/* Mobile header */}
       <header className="sticky top-0 z-30 bg-white border-b h-16 flex items-center justify-between px-4 md:hidden">
         <div className="flex items-center gap-2">

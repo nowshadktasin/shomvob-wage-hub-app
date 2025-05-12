@@ -11,6 +11,8 @@ export interface UserData {
   joinDate: string;
   avatar: string;
   isProfileComplete: boolean;
+  monthlySalary: number;
+  availableAdvancePercentage: number;
 }
 
 interface AuthContextType {
@@ -40,6 +42,8 @@ const mockUser: UserData = {
   joinDate: "2022-01-15",
   avatar: "",
   isProfileComplete: false,
+  monthlySalary: 50000, // Monthly salary in BDT
+  availableAdvancePercentage: 60, // 60% of salary available for advance
 };
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {

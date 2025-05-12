@@ -1,11 +1,12 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Slider } from "@/components/ui/slider";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/components/ui/sonner";
+import { useAuth } from "@/contexts/AuthContext";
 
 // Mock transaction data
 const transactions = [
@@ -16,21 +17,35 @@ const transactions = [
 
 const Earnings: React.FC = () => {
   const { t } = useTranslation();
-  const { toast } = useToast();
+  const { user } = useAuth();
   const [withdrawAmount, setWithdrawAmount] = useState<number>(5000);
   
-  const totalEarned = 30000;
-  const availableToWithdraw = 25000;
-  const maxWithdraw = availableToWithdraw;
-  const periodProgress = 65; // 65% of the pay period complete
+  // Calculate the maximum available withdrawal based on 60% of the monthly salary
+  const monthlySalary = user?.monthlySalary || 50000;
+  const advancePercentage = user?.availableAdvancePercentage || 60;
+  const maxAdvanceAmount = (monthlySalary * advancePercentage) / 100;
+  
+  // Progress through the current month (for demo purposes)
+  const today = new Date();
+  const dayOfMonth = today.getDate();
+  const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+  const periodProgress = Math.round((dayOfMonth / daysInMonth) * 100);
+  
+  // For this demo, we'll set the available to withdraw as the maxAdvanceAmount
+  const availableToWithdraw = maxAdvanceAmount;
+  const totalEarned = monthlySalary * (periodProgress / 100);
+  
+  // Set initial withdraw amount when component mounts
+  useEffect(() => {
+    setWithdrawAmount(Math.min(5000, maxAdvanceAmount));
+  }, [maxAdvanceAmount]);
   
   // Calculate service fee (2% of withdrawal amount)
   const serviceFee = withdrawAmount * 0.02;
   const totalAmount = withdrawAmount - serviceFee;
   
   const handleWithdraw = () => {
-    toast({
-      title: t("earnings.withdrawSuccessTitle"),
+    toast.success(t("earnings.withdrawSuccessTitle"), {
       description: t("earnings.withdrawSuccessDescription", { amount: withdrawAmount }),
     });
   };
@@ -40,11 +55,11 @@ const Earnings: React.FC = () => {
   };
 
   const formatDate = (date: Date) => {
-    return new Intl.DateTimeFormat("bn-BD").format(date);
+    return new Intl.DateTimeFormat(t("locale", { defaultValue: "bn-BD" })).format(date);
   };
 
   return (
-    <div className="container max-w-md mx-auto px-4 py-6">
+    <div className="container max-w-md mx-auto px-4 py-6 font-siliguri">
       <h1 className="text-2xl font-bold mb-6">{t("earnings.title")}</h1>
       
       <Card className="mb-6">
@@ -67,6 +82,18 @@ const Earnings: React.FC = () => {
               <p className="text-2xl font-semibold">{formatCurrency(totalEarned)}</p>
             </div>
           </div>
+
+          <div className="mt-4">
+            <p className="text-sm text-muted-foreground">{t("earnings.advanceLimit")}</p>
+            <div className="flex items-center gap-2">
+              <Progress 
+                value={advancePercentage} 
+                max={100}
+                className="h-2 bg-gray-200"
+              />
+              <span className="text-sm font-medium">{advancePercentage}%</span>
+            </div>
+          </div>
         </CardContent>
       </Card>
       
@@ -79,14 +106,14 @@ const Earnings: React.FC = () => {
             <Slider
               value={[withdrawAmount]}
               min={1000}
-              max={maxWithdraw}
+              max={maxAdvanceAmount}
               step={500}
               onValueChange={(value) => setWithdrawAmount(value[0])}
               className="mb-6"
             />
             <div className="flex justify-between text-sm">
               <span>৳1,000</span>
-              <span>৳{maxWithdraw.toLocaleString()}</span>
+              <span>৳{maxAdvanceAmount.toLocaleString()}</span>
             </div>
           </div>
           

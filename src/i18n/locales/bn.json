@@ -52,7 +52,16 @@
     "withdraw": "এখনই উত্তোলন করুন",
     "history": "লেনদেনের ইতিহাস",
     "nextSalary": "পরবর্তী বেতন তারিখ",
-    "payrollDate": "বেতন তারিখ"
+    "payrollDate": "বেতন তারিখ",
+    "complete": "সম্পূর্ণ",
+    "advanceLimit": "অগ্রীম বেতন সীমা",
+    "withdrawSuccessTitle": "উত্তোলন সফল",
+    "withdrawSuccessDescription": "আপনার {{amount}} টাকার উত্তোলন অনুরোধ প্রক্রিয়া করা হয়েছে।",
+    "status": {
+      "completed": "সম্পন্ন",
+      "pending": "অপেক্ষমান",
+      "failed": "ব্যর্থ"
+    }
   },
   "workplace": {
     "title": "কর্মসংস্থান তথ্য",
@@ -99,5 +108,6 @@
     "theme": "থিম",
     "security": "নিরাপত্তা",
     "help": "সাহায্য এবং সমর্থন"
-  }
+  },
+  "locale": "bn-BD"
 }
