@@ -1,0 +1,103 @@
+
+{
+  "app": {
+    "name": "শমভব",
+    "tagline": "কর্মচারী ওয়েজ অ্যাপ"
+  },
+  "auth": {
+    "login": "লগইন",
+    "register": "নিবন্ধন",
+    "email": "ইমেইল",
+    "password": "পাসওয়ার্ড",
+    "phone": "ফোন নম্বর",
+    "forgotPassword": "পাসওয়ার্ড ভুলে গেছেন?",
+    "dontHaveAccount": "অ্যাকাউন্ট নেই?",
+    "alreadyHaveAccount": "ইতিমধ্যে অ্যাকাউন্ট আছে?",
+    "signUp": "নিবন্ধন করুন",
+    "signIn": "লগইন করুন",
+    "orContinueWith": "অথবা চালিয়ে যান",
+    "biometric": "বায়োমেট্রিক লগইন",
+    "rememberMe": "আমাকে মনে রাখুন"
+  },
+  "profile": {
+    "title": "প্রোফাইল",
+    "personalInfo": "ব্যক্তিগত তথ্য",
+    "professionalInfo": "পেশাগত তথ্য",
+    "fullName": "পূর্ণ নাম",
+    "email": "ইমেইল",
+    "phone": "ফোন",
+    "gender": "লিঙ্গ",
+    "male": "পুরুষ",
+    "female": "মহিলা",
+    "other": "অন্যান্য",
+    "address": {
+      "present": "বর্তমান ঠিকানা",
+      "permanent": "স্থায়ী ঠিকানা",
+      "street": "রাস্তা",
+      "city": "শহর",
+      "state": "রাজ্য",
+      "zip": "পোস্টাল কোড"
+    },
+    "experience": "অভিজ্ঞতা",
+    "updateProfile": "প্রোফাইল আপডেট করুন"
+  },
+  "earnings": {
+    "title": "আমার উপার্জন",
+    "currentPeriod": "বর্তমান বেতন সময়কাল",
+    "available": "উত্তোলনযোগ্য",
+    "totalEarned": "মোট উপার্জন",
+    "requestAmount": "অনুরোধ পরিমাণ",
+    "serviceFee": "সেবা ফি",
+    "totalAmount": "মোট পরিমাণ",
+    "withdraw": "এখনই উত্তোলন করুন",
+    "history": "লেনদেনের ইতিহাস",
+    "nextSalary": "পরবর্তী বেতন তারিখ",
+    "payrollDate": "বেতন তারিখ"
+  },
+  "workplace": {
+    "title": "কর্মসংস্থান তথ্য",
+    "company": "কোম্পানি/প্রতিষ্ঠান",
+    "position": "পদ",
+    "department": "বিভাগ",
+    "joinDate": "যোগদানের তারিখ",
+    "monthlySalary": "মাসিক বেতন",
+    "workSchedule": "কাজের সময়সূচী"
+  },
+  "accounts": {
+    "title": "অর্থপ্রদান অ্যাকাউন্ট",
+    "addAccount": "নতুন অ্যাকাউন্ট যোগ করুন",
+    "bankName": "ব্যাংক নাম",
+    "accountNumber": "অ্যাকাউন্ট নম্বর",
+    "accountHolder": "অ্যাকাউন্ট হোল্ডার",
+    "setAsDefault": "ডিফল্ট হিসাবে সেট করুন",
+    "mobileWallet": "মোবাইল ওয়ালেট",
+    "bankAccount": "ব্যাংক অ্যাকাউন্ট"
+  },
+  "common": {
+    "save": "সংরক্ষণ করুন",
+    "cancel": "বাতিল করুন",
+    "edit": "সম্পাদনা করুন",
+    "delete": "মুছুন",
+    "back": "পিছনে",
+    "next": "পরবর্তী",
+    "loading": "লোড হচ্ছে...",
+    "currency": "৳",
+    "submit": "জমা দিন"
+  },
+  "dashboard": {
+    "title": "ড্যাশবোর্ড",
+    "welcome": "স্বাগতম",
+    "quickActions": "দ্রুত কার্যক্রম",
+    "viewEarnings": "উপার্জন দেখুন",
+    "updateProfile": "প্রোফাইল আপডেট করুন",
+    "manageAccounts": "অ্যাকাউন্ট পরিচালনা করুন"
+  },
+  "settings": {
+    "title": "সেটিংস",
+    "language": "ভাষা",
+    "notifications": "বিজ্ঞপ্তি",
+    "theme": "থিম",
+    "security": "নিরাপত্তা",
+    "help": "সাহায্য এবং সমর্থন"
+  }
+}

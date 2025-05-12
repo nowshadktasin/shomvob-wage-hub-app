@@ -1,0 +1,103 @@
+
+{
+  "app": {
+    "name": "Shomvob",
+    "tagline": "Employee Wages App"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "email": "Email",
+    "password": "Password",
+    "phone": "Phone Number",
+    "forgotPassword": "Forgot Password?",
+    "dontHaveAccount": "Don't have an account?",
+    "alreadyHaveAccount": "Already have an account?",
+    "signUp": "Sign Up",
+    "signIn": "Sign In",
+    "orContinueWith": "Or continue with",
+    "biometric": "Biometric Login",
+    "rememberMe": "Remember Me"
+  },
+  "profile": {
+    "title": "Profile",
+    "personalInfo": "Personal Information",
+    "professionalInfo": "Professional Information",
+    "fullName": "Full Name",
+    "email": "Email",
+    "phone": "Phone",
+    "gender": "Gender",
+    "male": "Male",
+    "female": "Female",
+    "other": "Other",
+    "address": {
+      "present": "Present Address",
+      "permanent": "Permanent Address",
+      "street": "Street",
+      "city": "City",
+      "state": "State",
+      "zip": "Postal Code"
+    },
+    "experience": "Experience",
+    "updateProfile": "Update Profile"
+  },
+  "earnings": {
+    "title": "My Earnings",
+    "currentPeriod": "Current Pay Period",
+    "available": "Available to Withdraw",
+    "totalEarned": "Total Earned",
+    "requestAmount": "Request Amount",
+    "serviceFee": "Service Fee",
+    "totalAmount": "Total Amount",
+    "withdraw": "Withdraw Now",
+    "history": "Transaction History",
+    "nextSalary": "Next Salary Date",
+    "payrollDate": "Payroll Date"
+  },
+  "workplace": {
+    "title": "Workplace Information",
+    "company": "Company/Organization",
+    "position": "Position",
+    "department": "Department",
+    "joinDate": "Join Date",
+    "monthlySalary": "Monthly Salary",
+    "workSchedule": "Work Schedule"
+  },
+  "accounts": {
+    "title": "Disbursement Accounts",
+    "addAccount": "Add New Account",
+    "bankName": "Bank Name",
+    "accountNumber": "Account Number",
+    "accountHolder": "Account Holder",
+    "setAsDefault": "Set as Default",
+    "mobileWallet": "Mobile Wallet",
+    "bankAccount": "Bank Account"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "back": "Back",
+    "next": "Next",
+    "loading": "Loading...",
+    "currency": "BDT",
+    "submit": "Submit"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome",
+    "quickActions": "Quick Actions",
+    "viewEarnings": "View Earnings",
+    "updateProfile": "Update Profile",
+    "manageAccounts": "Manage Accounts"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "notifications": "Notifications",
+    "theme": "Theme",
+    "security": "Security",
+    "help": "Help & Support"
+  }
+}
