@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -19,7 +18,6 @@ const Dashboard: React.FC = () => {
   // Calculate available to withdraw based on earnings logic
   const monthlySalary = user?.monthlySalary || 50000;
   const advancePercentage = user?.availableAdvancePercentage || 60;
-  const maxAdvanceAmount = (monthlySalary * advancePercentage) / 100;
   
   // Calculate period progress for consistency with Earnings page
   const today = new Date();
@@ -30,8 +28,8 @@ const Dashboard: React.FC = () => {
   // Calculate total earned so far this month
   const totalEarned = monthlySalary * (periodProgress / 100);
   
-  // Available to withdraw should be the lesser of maxAdvanceAmount or totalEarned
-  const availableToWithdraw = Math.min(maxAdvanceAmount, totalEarned);
+  // Available to withdraw should be the advancePercentage of what has been earned
+  const availableToWithdraw = (totalEarned * advancePercentage) / 100;
   
   const formatCurrency = (amount: number) => {
     return `${t("common.currency")} ${amount.toLocaleString()}`;

@@ -34,8 +34,8 @@ const Earnings: React.FC = () => {
   // Calculate total earned so far this month
   const totalEarned = monthlySalary * (periodProgress / 100);
   
-  // Available to withdraw should be the lesser of maxAdvanceAmount or totalEarned
-  const availableToWithdraw = Math.min(maxAdvanceAmount, totalEarned);
+  // Available to withdraw should be the advancePercentage of what has been earned
+  const availableToWithdraw = (totalEarned * advancePercentage) / 100;
   
   // Set initial withdraw amount when component mounts or when availableToWithdraw changes
   useEffect(() => {
