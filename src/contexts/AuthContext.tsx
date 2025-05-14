@@ -36,7 +36,7 @@ export const useAuth = () => {
 const mockUser: UserData = {
   id: "user-1234",
   name: "John Doe",
-  email: "john.doe@shomvob.com",
+  email: "john.doe@সম্ভব.com",
   position: "Software Engineer",
   department: "Engineering",
   joinDate: "2022-01-15",
@@ -52,7 +52,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Simulate loading the user from storage on initialization
   useEffect(() => {
-    const storedUser = localStorage.getItem("shomvob_user");
+    const storedUser = localStorage.getItem("সম্ভব_user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
@@ -66,7 +66,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Mock validation
       if (email && password.length >= 6) {
         setUser(mockUser);
-        localStorage.setItem("shomvob_user", JSON.stringify(mockUser));
+        localStorage.setItem("সম্ভব_user", JSON.stringify(mockUser));
         return true;
       }
       return false;
@@ -80,14 +80,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem("shomvob_user");
+    localStorage.removeItem("সম্ভব_user");
   };
 
   const updateUserProfile = (userData: Partial<UserData>) => {
     if (user) {
       const updatedUser = { ...user, ...userData };
       setUser(updatedUser);
-      localStorage.setItem("shomvob_user", JSON.stringify(updatedUser));
+      localStorage.setItem("সম্ভব_user", JSON.stringify(updatedUser));
     }
   };
 
