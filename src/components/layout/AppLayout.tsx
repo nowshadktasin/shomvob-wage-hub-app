@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useNavigate, Outlet, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -7,12 +8,14 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Home, User, Wallet, Calendar, Settings, Menu, LogOut } from "lucide-react";
+
 interface NavItemProps {
   icon: React.ElementType;
   label: string;
   href: string;
   active: boolean;
 }
+
 const NavItem: React.FC<NavItemProps> = ({
   icon: Icon,
   label,
@@ -24,6 +27,7 @@ const NavItem: React.FC<NavItemProps> = ({
       <span>{label}</span>
     </Link>;
 };
+
 const AppLayout: React.FC = () => {
   const {
     t,
@@ -37,13 +41,16 @@ const AppLayout: React.FC = () => {
   const [open, setOpen] = useState(false);
   const pathname = location.pathname;
   const isBangla = i18n.language === 'bn';
+
   const handleLogout = () => {
     logout();
     navigate("/");
   };
+
   const getInitials = (name: string) => {
     return name?.split(' ').map(part => part[0]).join('').toUpperCase().substring(0, 2) || "US";
   };
+
   const navItems = [{
     icon: Home,
     label: t("dashboard.title"),
@@ -65,9 +72,10 @@ const AppLayout: React.FC = () => {
     label: t("settings.title"),
     href: "/settings"
   }];
+
   return <div className={cn("min-h-screen flex flex-col bg-background", isBangla && "font-siliguri")}>
-      {/* Mobile header */}
-      <header className="sticky top-0 z-30 bg-white border-b h-16 flex items-center justify-between px-4 md:hidden">
+      {/* Mobile header - Updated to use bg-background instead of bg-white */}
+      <header className="sticky top-0 z-30 bg-background border-b h-16 flex items-center justify-between px-4 md:hidden">
         <div className="flex items-center gap-2">
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
@@ -105,8 +113,8 @@ const AppLayout: React.FC = () => {
       </header>
 
       <div className="flex-1 flex">
-        {/* Desktop sidebar */}
-        <aside className="hidden md:flex md:w-64 bg-card border-r flex-col h-screen sticky top-0">
+        {/* Desktop sidebar - Updated to use bg-sidebar instead of bg-card for better dark mode support */}
+        <aside className="hidden md:flex md:w-64 bg-sidebar border-r flex-col h-screen sticky top-0">
           <div className="h-16 flex items-center border-b px-6">
             <span className="font-bold text-lg text-primary">{t("app.name")}</span>
           </div>
@@ -124,7 +132,7 @@ const AppLayout: React.FC = () => {
                 <p className="text-sm font-medium truncate">{user.name}</p>
                 <p className="text-xs text-muted-foreground truncate">{user.email}</p>
               </div>
-              <Button variant="ghost" size="icon" onClick={handleLogout} className="text-red-500 hover:text-red-600 hover:bg-red-50">
+              <Button variant="ghost" size="icon" onClick={handleLogout} className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20">
                 <LogOut className="h-5 w-5" />
               </Button>
             </div>}
@@ -137,4 +145,5 @@ const AppLayout: React.FC = () => {
       </div>
     </div>;
 };
+
 export default AppLayout;
