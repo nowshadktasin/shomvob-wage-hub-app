@@ -25,20 +25,23 @@ const Earnings: React.FC = () => {
   const advancePercentage = user?.availableAdvancePercentage || 60;
   const maxAdvanceAmount = (monthlySalary * advancePercentage) / 100;
   
-  // Progress through the current month (for demo purposes)
+  // Progress through the current month
   const today = new Date();
   const dayOfMonth = today.getDate();
   const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
   const periodProgress = Math.round((dayOfMonth / daysInMonth) * 100);
   
-  // For this demo, we'll set the available to withdraw as the maxAdvanceAmount
-  const availableToWithdraw = maxAdvanceAmount;
+  // Calculate total earned so far this month
   const totalEarned = monthlySalary * (periodProgress / 100);
   
-  // Set initial withdraw amount when component mounts
+  // Available to withdraw should be the lesser of maxAdvanceAmount or totalEarned
+  const availableToWithdraw = Math.min(maxAdvanceAmount, totalEarned);
+  
+  // Set initial withdraw amount when component mounts or when availableToWithdraw changes
   useEffect(() => {
-    setWithdrawAmount(Math.min(5000, maxAdvanceAmount));
-  }, [maxAdvanceAmount]);
+    // Default to 5000 or the maximum available if less than 5000
+    setWithdrawAmount(Math.min(5000, availableToWithdraw));
+  }, [availableToWithdraw]);
   
   // Calculate service fee (2% of withdrawal amount)
   const serviceFee = withdrawAmount * 0.02;
@@ -106,14 +109,15 @@ const Earnings: React.FC = () => {
             <Slider
               value={[withdrawAmount]}
               min={1000}
-              max={maxAdvanceAmount}
+              max={availableToWithdraw}
               step={500}
               onValueChange={(value) => setWithdrawAmount(value[0])}
               className="mb-6"
+              disabled={availableToWithdraw < 1000}
             />
             <div className="flex justify-between text-sm">
               <span>৳1,000</span>
-              <span>৳{maxAdvanceAmount.toLocaleString()}</span>
+              <span>৳{availableToWithdraw.toLocaleString()}</span>
             </div>
           </div>
           
@@ -133,7 +137,11 @@ const Earnings: React.FC = () => {
           </div>
         </CardContent>
         <CardFooter>
-          <Button className="w-full" onClick={handleWithdraw}>
+          <Button 
+            className="w-full" 
+            onClick={handleWithdraw}
+            disabled={availableToWithdraw < 1000 || withdrawAmount <= 0}
+          >
             {t("earnings.withdraw")}
           </Button>
         </CardFooter>

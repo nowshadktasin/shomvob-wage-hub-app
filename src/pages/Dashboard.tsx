@@ -16,6 +16,23 @@ const Dashboard: React.FC = () => {
   const nextPayday = new Date();
   nextPayday.setDate(nextPayday.getDate() + 15);
   
+  // Calculate available to withdraw based on earnings logic
+  const monthlySalary = user?.monthlySalary || 50000;
+  const advancePercentage = user?.availableAdvancePercentage || 60;
+  const maxAdvanceAmount = (monthlySalary * advancePercentage) / 100;
+  
+  // Calculate period progress for consistency with Earnings page
+  const today = new Date();
+  const dayOfMonth = today.getDate();
+  const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+  const periodProgress = Math.round((dayOfMonth / daysInMonth) * 100);
+  
+  // Calculate total earned so far this month
+  const totalEarned = monthlySalary * (periodProgress / 100);
+  
+  // Available to withdraw should be the lesser of maxAdvanceAmount or totalEarned
+  const availableToWithdraw = Math.min(maxAdvanceAmount, totalEarned);
+  
   const formatCurrency = (amount: number) => {
     return `${t("common.currency")} ${amount.toLocaleString()}`;
   };
@@ -34,7 +51,7 @@ const Dashboard: React.FC = () => {
       <Card className="mb-6 overflow-hidden">
         <div className="bg-gradient-to-r from-primary to-primary/80 p-6 text-primary-foreground">
           <h2 className="font-medium">{t("earnings.available")}</h2>
-          <p className="text-3xl font-bold mt-1">{formatCurrency(25000)}</p>
+          <p className="text-3xl font-bold mt-1">{formatCurrency(availableToWithdraw)}</p>
           <div className="flex justify-between items-center mt-4">
             <div>
               <p className="text-xs opacity-80">{t("earnings.nextSalary")}</p>
