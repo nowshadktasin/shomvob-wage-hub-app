@@ -17,7 +17,8 @@
     "signIn": "লগইন করুন",
     "orContinueWith": "অথবা চালিয়ে যান",
     "biometric": "বায়োমেট্রিক লগইন",
-    "rememberMe": "আমাকে মনে রাখুন"
+    "rememberMe": "আমাকে মনে রাখুন",
+    "logout": "লগআউট"
   },
   "profile": {
     "title": "প্রোফাইল",
@@ -103,11 +104,29 @@
   },
   "settings": {
     "title": "সেটিংস",
+    "preferences": "পছন্দসমূহ",
     "language": "ভাষা",
+    "selectLanguage": "ভাষা নির্বাচন করুন",
+    "bangla": "বাংলা",
+    "english": "English",
     "notifications": "বিজ্ঞপ্তি",
+    "darkMode": "ডার্ক মোড",
     "theme": "থিম",
     "security": "নিরাপত্তা",
-    "help": "সাহায্য এবং সমর্থন"
+    "biometricLogin": "বায়োমেট্রিক লগইন",
+    "changePassword": "পাসওয়ার্ড পরিবর্তন করুন",
+    "about": "সম্পর্কে",
+    "help": "সাহায্য এবং সমর্থন",
+    "helpSupport": "সাহায্য এবং সমর্থন",
+    "termsConditions": "শর্তাবলী",
+    "privacyPolicy": "গোপনীয়তা নীতি",
+    "languageChanged": "ভাষা সফলভাবে পরিবর্তিত হয়েছে",
+    "notificationsEnabled": "বিজ্ঞপ্তি সক্রিয় করা হয়েছে",
+    "notificationsDisabled": "বিজ্ঞপ্তি নিষ্ক্রিয় করা হয়েছে",
+    "biometricEnabled": "বায়োমেট্রিক লগইন সক্রিয় করা হয়েছে",
+    "biometricDisabled": "বায়োমেট্রিক লগইন নিষ্ক্রিয় করা হয়েছে",
+    "lightModeEnabled": "লাইট মোড সক্রিয় করা হয়েছে",
+    "darkModeEnabled": "ডার্ক মোড সক্রিয় করা হয়েছে"
   },
   "locale": "bn-BD"
 }

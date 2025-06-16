@@ -1,3 +1,4 @@
+
 {
   "app": {
     "name": "Shomvob",
@@ -103,11 +104,29 @@
   },
   "settings": {
     "title": "Settings",
+    "preferences": "Preferences",
     "language": "Language",
+    "selectLanguage": "Select Language",
+    "bangla": "বাংলা",
+    "english": "English",
     "notifications": "Notifications",
+    "darkMode": "Dark Mode",
     "theme": "Theme",
     "security": "Security",
-    "help": "Help & Support"
+    "biometricLogin": "Biometric Login",
+    "changePassword": "Change Password",
+    "about": "About",
+    "help": "Help & Support",
+    "helpSupport": "Help & Support",
+    "termsConditions": "Terms & Conditions",
+    "privacyPolicy": "Privacy Policy",
+    "languageChanged": "Language changed successfully",
+    "notificationsEnabled": "Notifications enabled",
+    "notificationsDisabled": "Notifications disabled",
+    "biometricEnabled": "Biometric login enabled",
+    "biometricDisabled": "Biometric login disabled",
+    "lightModeEnabled": "Light mode enabled",
+    "darkModeEnabled": "Dark mode enabled"
   },
   "locale": "en-US"
 }
