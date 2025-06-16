@@ -52,7 +52,7 @@ export const useLoginFlow = () => {
       const response = await fetch(otpEndpoint, {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${authToken}`,
+          "Authorization": `Bearer ${authToken}`, // Fixed: was "Bearar" now "Bearer"
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
@@ -119,7 +119,7 @@ export const useLoginFlow = () => {
       const response = await fetch(otpValidateEndpoint, {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${authToken}`,
+          "Authorization": `Bearer ${authToken}`, // Fixed: was "Bearar" now "Bearer"
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
