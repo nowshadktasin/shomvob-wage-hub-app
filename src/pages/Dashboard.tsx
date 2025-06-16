@@ -1,9 +1,10 @@
+
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Wallet, User, ArrowRight } from "lucide-react";
 
 const Dashboard: React.FC = () => {
@@ -67,7 +68,7 @@ const Dashboard: React.FC = () => {
         </div>
       </Card>
 
-      <div className="space-y-4 mb-8">
+      <div className="space-y-4">
         <h2 className="text-lg font-semibold">{t("dashboard.quickActions")}</h2>
         
         <Card>
@@ -100,25 +101,6 @@ const Dashboard: React.FC = () => {
           </CardContent>
         </Card>
       </div>
-
-      {!user?.isProfileComplete && (
-        <Card className="bg-amber-50 border-amber-200">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-amber-800 text-base">{t("profile.completeProfile")}</CardTitle>
-            <CardDescription className="text-amber-700">
-              {t("profile.completeProfileDescription")}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button 
-              className="bg-amber-500 hover:bg-amber-600 text-white" 
-              onClick={() => navigate("/profile")}
-            >
-              {t("profile.updateProfile")}
-            </Button>
-          </CardContent>
-        </Card>
-      )}
     </div>
   );
 };
