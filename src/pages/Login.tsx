@@ -51,18 +51,12 @@ const Login: React.FC = () => {
     }
   };
 
-  const handleBiometricLogin = () => {
-    toast({
-      description: t("auth.biometricNotSupported"),
-    });
-  };
-
   return (
     <div className="min-h-screen flex flex-col bg-background p-4">
       <div className="flex-1 flex flex-col justify-center max-w-md mx-auto w-full">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-primary mb-2">{t("app.name")}</h1>
-          <p className="text-muted-foreground">{t("app.tagline")}</p>
+          <h1 className="text-3xl font-bold text-primary mb-2">Shomvob</h1>
+          <p className="text-muted-foreground">Early Wage Access</p>
         </div>
 
         <Card className="shadow-md">
@@ -112,25 +106,6 @@ const Login: React.FC = () => {
                 {isLoading ? t("common.loading") : t("auth.signIn")}
               </Button>
             </form>
-
-            <div className="relative my-4">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">
-                  {t("auth.orContinueWith")}
-                </span>
-              </div>
-            </div>
-            
-            <Button
-              variant="outline"
-              className="w-full"
-              onClick={handleBiometricLogin}
-            >
-              {t("auth.biometric")}
-            </Button>
           </CardContent>
           <CardFooter className="flex justify-center">
             <p className="text-sm text-center">
