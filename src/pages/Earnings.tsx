@@ -1,18 +1,18 @@
-
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Slider } from "@/components/ui/slider";
+import { Badge } from "@/components/ui/badge";
 import { toast } from "@/components/ui/sonner";
 import { useAuth } from "@/contexts/AuthContext";
 
-// Mock transaction data
+// Mock transaction data with different statuses
 const transactions = [
   { id: 1, date: new Date(2025, 4, 5), amount: 5000, status: "completed" },
-  { id: 2, date: new Date(2025, 3, 20), amount: 7000, status: "completed" },
-  { id: 3, date: new Date(2025, 3, 5), amount: 3000, status: "completed" },
+  { id: 2, date: new Date(2025, 3, 20), amount: 7000, status: "pending" },
+  { id: 3, date: new Date(2025, 3, 5), amount: 3000, status: "rejected" },
 ];
 
 const Earnings: React.FC = () => {
@@ -59,6 +59,35 @@ const Earnings: React.FC = () => {
 
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat(t("locale", { defaultValue: "bn-BD" })).format(date);
+  };
+
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case "completed":
+        return (
+          <Badge variant="default" className="bg-green-100 text-green-800 hover:bg-green-100">
+            {t(`earnings.status.${status}`)}
+          </Badge>
+        );
+      case "pending":
+        return (
+          <Badge variant="default" className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100">
+            {t(`earnings.status.${status}`)}
+          </Badge>
+        );
+      case "rejected":
+        return (
+          <Badge variant="default" className="bg-red-100 text-red-800 hover:bg-red-100">
+            {t(`earnings.status.${status}`)}
+          </Badge>
+        );
+      default:
+        return (
+          <Badge variant="outline">
+            {t(`earnings.status.${status}`)}
+          </Badge>
+        );
+    }
   };
 
   return (
@@ -152,15 +181,13 @@ const Earnings: React.FC = () => {
         {transactions.map((transaction) => (
           <Card key={transaction.id}>
             <CardContent className="p-4">
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center">
                 <div>
                   <p className="font-medium">{formatCurrency(transaction.amount)}</p>
                   <p className="text-sm text-muted-foreground">{formatDate(transaction.date)}</p>
                 </div>
                 <div className="flex items-center">
-                  <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                    {t(`earnings.status.${transaction.status}`)}
-                  </span>
+                  {getStatusBadge(transaction.status)}
                 </div>
               </div>
             </CardContent>
