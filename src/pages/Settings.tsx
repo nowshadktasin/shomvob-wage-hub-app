@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
@@ -23,7 +22,6 @@ const Settings: React.FC = () => {
   const { toast } = useToast();
 
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-  const [biometricEnabled, setBiometricEnabled] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   
   const handleLanguageChange = (language: string) => {
@@ -44,15 +42,6 @@ const Settings: React.FC = () => {
       description: notificationsEnabled 
         ? t("settings.notificationsDisabled") 
         : t("settings.notificationsEnabled"),
-    });
-  };
-
-  const toggleBiometric = () => {
-    setBiometricEnabled(!biometricEnabled);
-    toast({
-      description: biometricEnabled 
-        ? t("settings.biometricDisabled") 
-        : t("settings.biometricEnabled"),
     });
   };
 
@@ -118,15 +107,6 @@ const Settings: React.FC = () => {
             <CardTitle className="text-lg">{t("settings.security")}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="biometric">{t("settings.biometricLogin")}</Label>
-              <Switch
-                id="biometric"
-                checked={biometricEnabled}
-                onCheckedChange={toggleBiometric}
-              />
-            </div>
-            
             <Button
               variant="outline"
               className="w-full"
