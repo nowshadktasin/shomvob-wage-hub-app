@@ -9,9 +9,10 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
+import { Languages } from "lucide-react";
 
 const Login: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { login } = useAuth();
   const { toast } = useToast();
@@ -20,6 +21,11 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+
+  const toggleLanguage = () => {
+    const newLang = i18n.language === 'bn' ? 'en' : 'bn';
+    i18n.changeLanguage(newLang);
+  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,6 +59,18 @@ const Login: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-background p-4">
+      <div className="flex justify-end mb-4">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={toggleLanguage}
+          className="flex items-center gap-2"
+        >
+          <Languages className="h-4 w-4" />
+          {i18n.language === 'bn' ? 'English' : 'বাংলা'}
+        </Button>
+      </div>
+      
       <div className="flex-1 flex flex-col justify-center max-w-md mx-auto w-full">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-primary mb-2">Shomvob</h1>
