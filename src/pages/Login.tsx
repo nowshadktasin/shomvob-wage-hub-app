@@ -7,9 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
-import { Languages } from "lucide-react";
+import { Languages, Settings } from "lucide-react";
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 
 const Login: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -17,39 +17,110 @@ const Login: React.FC = () => {
   const { login } = useAuth();
   const { toast } = useToast();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [otp, setOtp] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
+  const [showConfig, setShowConfig] = useState(false);
+  const [curlEndpoint, setCurlEndpoint] = useState("");
 
   const toggleLanguage = () => {
     const newLang = i18n.language === 'bn' ? 'en' : 'bn';
     i18n.changeLanguage(newLang);
   };
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSendOTP = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!phoneNumber || phoneNumber.length < 11) {
+      toast({
+        title: "Error",
+        description: "Please enter a valid phone number",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!curlEndpoint) {
+      toast({
+        title: "Configuration Error",
+        description: "Please configure the OTP endpoint first",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    console.log("Sending OTP to:", phoneNumber);
+    console.log("Using endpoint:", curlEndpoint);
+
+    try {
+      const response = await fetch(curlEndpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          phone: phoneNumber,
+          countryCode: "+88"
+        }),
+      });
+
+      if (response.ok) {
+        setOtpSent(true);
+        toast({
+          title: "OTP Sent",
+          description: "Please check your phone for the verification code",
+        });
+      } else {
+        throw new Error("Failed to send OTP");
+      }
+    } catch (error) {
+      console.error("Error sending OTP:", error);
+      toast({
+        title: "Error",
+        description: "Failed to send OTP. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleVerifyOTP = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!otp || otp.length !== 6) {
+      toast({
+        title: "Error",
+        description: "Please enter the 6-digit OTP",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsLoading(true);
 
     try {
-      const success = await login(email, password);
+      // In a real app, this would verify the OTP with the server
+      const success = await login(phoneNumber, otp);
       if (success) {
         toast({
-          title: t("auth.login"),
-          description: t("auth.loginSuccess"),
+          title: "Login Successful",
+          description: "Welcome to Shomvob",
         });
         navigate("/dashboard");
       } else {
         toast({
-          title: t("auth.loginFailed"),
-          description: t("auth.invalidCredentials"),
+          title: "Invalid OTP",
+          description: "Please check your OTP and try again",
           variant: "destructive",
         });
       }
     } catch (error) {
       toast({
-        title: t("auth.loginError"),
-        description: t("auth.tryAgain"),
+        title: "Login Error",
+        description: "Please try again",
         variant: "destructive",
       });
     } finally {
@@ -59,7 +130,16 @@ const Login: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-background p-4">
-      <div className="flex justify-end mb-4">
+      <div className="flex justify-between items-center mb-4">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setShowConfig(!showConfig)}
+          className="flex items-center gap-2"
+        >
+          <Settings className="h-4 w-4" />
+          Config
+        </Button>
         <Button
           variant="outline"
           size="sm"
@@ -70,69 +150,113 @@ const Login: React.FC = () => {
           {i18n.language === 'bn' ? 'বাংলা' : 'English'}
         </Button>
       </div>
+
+      {showConfig && (
+        <Card className="mb-6 max-w-md mx-auto w-full">
+          <CardHeader>
+            <h3 className="text-lg font-semibold">OTP Configuration</h3>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              <Label htmlFor="curl-endpoint">OTP Endpoint URL</Label>
+              <Input
+                id="curl-endpoint"
+                type="url"
+                placeholder="https://your-api.com/send-otp"
+                value={curlEndpoint}
+                onChange={(e) => setCurlEndpoint(e.target.value)}
+              />
+              <p className="text-sm text-muted-foreground">
+                Enter the cURL endpoint that will receive phone number and send OTP
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
       
       <div className="flex-1 flex flex-col justify-center max-w-md mx-auto w-full">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-primary mb-2">Shomvob</h1>
-          <p className="text-muted-foreground">Early Wage Access</p>
+          <h1 className="text-3xl font-bold text-primary mb-2">
+            Welcome To <span className="text-green-500">Shomvob</span>
+          </h1>
+          <p className="text-muted-foreground text-lg">Sign In / Registration</p>
         </div>
 
         <Card className="shadow-md">
-          <CardHeader className="space-y-1 text-center">
-            <h2 className="text-2xl font-bold">{t("auth.login")}</h2>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleLogin} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email">{t("auth.phone")}</Label>
-                <Input
-                  id="email"
-                  type="text"
-                  placeholder="01XXXXXXXXX"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <Label htmlFor="password">{t("auth.password")}</Label>
-                  <Button variant="link" className="p-0 h-auto text-sm">
-                    {t("auth.forgotPassword")}
+          <CardContent className="pt-6">
+            {!otpSent ? (
+              <form onSubmit={handleSendOTP} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="phone" className="text-base">
+                    Enter your mobile number <span className="text-red-500">*</span>
+                  </Label>
+                  <div className="flex">
+                    <div className="flex items-center bg-gray-100 px-3 border border-r-0 rounded-l-md">
+                      <span className="text-sm font-medium">+88</span>
+                    </div>
+                    <Input
+                      id="phone"
+                      type="tel"
+                      placeholder="01XXXXXXXXX"
+                      value={phoneNumber}
+                      onChange={(e) => setPhoneNumber(e.target.value)}
+                      className="rounded-l-none"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <Button type="submit" className="w-full bg-gray-400 hover:bg-gray-500" disabled={isLoading}>
+                  {isLoading ? "Sending..." : "Send OTP"}
+                </Button>
+              </form>
+            ) : (
+              <form onSubmit={handleVerifyOTP} className="space-y-6">
+                <div className="text-center">
+                  <p className="text-sm text-muted-foreground mb-4">
+                    We've sent a 6-digit code to +88{phoneNumber}
+                  </p>
+                  <div className="space-y-2">
+                    <Label htmlFor="otp">Enter OTP</Label>
+                    <div className="flex justify-center">
+                      <InputOTP
+                        maxLength={6}
+                        value={otp}
+                        onChange={(value) => setOtp(value)}
+                      >
+                        <InputOTPGroup>
+                          <InputOTPSlot index={0} />
+                          <InputOTPSlot index={1} />
+                          <InputOTPSlot index={2} />
+                          <InputOTPSlot index={3} />
+                          <InputOTPSlot index={4} />
+                          <InputOTPSlot index={5} />
+                        </InputOTPGroup>
+                      </InputOTP>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <Button type="submit" className="w-full" disabled={isLoading}>
+                    {isLoading ? "Verifying..." : "Verify OTP"}
+                  </Button>
+                  
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full"
+                    onClick={() => {
+                      setOtpSent(false);
+                      setOtp("");
+                    }}
+                  >
+                    Change Phone Number
                   </Button>
                 </div>
-                <Input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="flex items-center">
-                <Checkbox 
-                  id="remember" 
-                  checked={rememberMe}
-                  onCheckedChange={(checked) => setRememberMe(checked as boolean)}
-                />
-                <Label htmlFor="remember" className="ml-2 text-sm">
-                  {t("auth.rememberMe")}
-                </Label>
-              </div>
-
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? t("common.loading") : t("auth.signIn")}
-              </Button>
-            </form>
+              </form>
+            )}
           </CardContent>
-          <CardFooter className="flex justify-center">
-            <p className="text-sm text-center">
-              {t("auth.dontHaveAccount")}{" "}
-              <Button variant="link" className="p-0 h-auto" onClick={() => navigate("/register")}>
-                {t("auth.signUp")}
-              </Button>
-            </p>
-          </CardFooter>
         </Card>
       </div>
     </div>
