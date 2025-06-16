@@ -25,13 +25,13 @@ const OTPVerificationForm: React.FC<OTPVerificationFormProps> = ({
     <form onSubmit={onSubmit} className="space-y-6">
       <div className="text-center">
         <p className="text-sm text-muted-foreground mb-4">
-          We've sent a 6-digit code to +88{phoneNumber}
+          We've sent a 4-digit code to +88{phoneNumber}
         </p>
         <div className="space-y-2">
           <Label htmlFor="otp">Enter OTP</Label>
           <div className="flex justify-center">
             <InputOTP
-              maxLength={6}
+              maxLength={4}
               value={otp}
               onChange={(value) => setOtp(value)}
             >
@@ -40,8 +40,6 @@ const OTPVerificationForm: React.FC<OTPVerificationFormProps> = ({
                 <InputOTPSlot index={1} />
                 <InputOTPSlot index={2} />
                 <InputOTPSlot index={3} />
-                <InputOTPSlot index={4} />
-                <InputOTPSlot index={5} />
               </InputOTPGroup>
             </InputOTP>
           </div>

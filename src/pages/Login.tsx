@@ -18,8 +18,9 @@ const Login: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
 
-  // Your provided endpoint configuration (fixed Authorization header)
+  // API endpoints and auth token
   const otpEndpoint = "https://backend-api.shomvob.co/api/v2/otp/phone?platform=wagely";
+  const otpValidateEndpoint = "https://backend-api.shomvob.co/api/v2/otp/validate";
   const authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNob212b2JUZWNoQVBJVXNlciIsImlhdCI6MTY1OTg5NTcwOH0.IOdKen62ye0N9WljM_cj3Xffmjs3dXUqoJRZ_1ezd4Q";
 
   const handleSendOTP = async (e: React.FormEvent) => {
@@ -45,7 +46,7 @@ const Login: React.FC = () => {
       const response = await fetch(otpEndpoint, {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${authToken}`, // Fixed typo: "Bearar" to "Bearer"
+          "Authorization": `Bearer ${authToken}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
@@ -91,36 +92,67 @@ const Login: React.FC = () => {
   const handleVerifyOTP = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!otp || otp.length !== 6) {
+    if (!otp || otp.length !== 4) {
       toast({
         title: "Error",
-        description: "Please enter the 6-digit OTP",
+        description: "Please enter the 4-digit OTP",
         variant: "destructive",
       });
       return;
     }
 
     setIsLoading(true);
+    console.log("Verifying OTP:", otp);
+    console.log("Using endpoint:", otpValidateEndpoint);
 
     try {
-      // In a real app, this would verify the OTP with the server
-      const success = await login(phoneNumber, otp);
-      if (success) {
-        toast({
-          title: "Login Successful",
-          description: "Welcome to Shomvob",
-        });
-        navigate("/dashboard");
+      // Format phone number to include country code if not present
+      const formattedPhone = phoneNumber.startsWith('88') ? phoneNumber : `88${phoneNumber}`;
+
+      const response = await fetch(otpValidateEndpoint, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${authToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          phone: formattedPhone,
+          otp: parseInt(otp)
+        }),
+      });
+
+      console.log("OTP Validation Response status:", response.status);
+      const responseData = await response.json();
+      console.log("OTP Validation Response data:", responseData);
+
+      if (response.ok && responseData.code === 200 && responseData.data?.status === "SUCCESS") {
+        // OTP verification successful
+        const success = await login(phoneNumber, otp);
+        if (success) {
+          toast({
+            title: "Login Successful",
+            description: "Welcome to Shomvob",
+          });
+          navigate("/dashboard");
+        } else {
+          toast({
+            title: "Login Error",
+            description: "Authentication failed after OTP verification",
+            variant: "destructive",
+          });
+        }
       } else {
+        // OTP verification failed
         toast({
           title: "Invalid OTP",
-          description: "Please check your OTP and try again",
+          description: responseData.msg || "Please check your OTP and try again",
           variant: "destructive",
         });
       }
     } catch (error) {
+      console.error("Error verifying OTP:", error);
       toast({
-        title: "Login Error",
+        title: "Verification Error",
         description: "Please try again",
         variant: "destructive",
       });
