@@ -66,14 +66,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("shomvob_user");
-    const storedSession = localStorage.getItem("shomvob_session");
+    // Read individual keys from localStorage
+    const phoneNumber = localStorage.getItem("phoneNumber");
+    const accessToken = localStorage.getItem("access_token");
+    const tokenType = localStorage.getItem("token_type");
+    const expiresIn = localStorage.getItem("expires_in");
+    const expiresAt = localStorage.getItem("expires_at");
+    const refreshToken = localStorage.getItem("refresh_token");
     
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-    if (storedSession) {
-      setSession(JSON.parse(storedSession));
+    if (phoneNumber && accessToken) {
+      // Reconstruct user object with phone number and mock data
+      const userData: UserData = {
+        ...mockUser,
+        phone: phoneNumber,
+        email: `${phoneNumber}@shomvob.com`,
+      };
+      setUser(userData);
+      
+      // Reconstruct session object
+      const sessionData: SessionData = {
+        access_token: accessToken,
+        token_type: tokenType || "bearer",
+        expires_in: expiresIn ? parseInt(expiresIn) : 604800,
+        expires_at: expiresAt ? parseInt(expiresAt) : 0,
+        refresh_token: refreshToken || "",
+      };
+      setSession(sessionData);
     }
     setLoading(false);
   }, []);
@@ -123,7 +141,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             refresh_token: sessionData.refresh_token,
           };
           setSession(sessionInfo);
-          localStorage.setItem("shomvob_session", JSON.stringify(sessionInfo));
+          
+          // Store session data as individual key-value pairs
+          localStorage.setItem("access_token", sessionData.access_token);
+          localStorage.setItem("token_type", sessionData.token_type);
+          localStorage.setItem("expires_in", sessionData.expires_in.toString());
+          localStorage.setItem("expires_at", sessionData.expires_at.toString());
+          localStorage.setItem("refresh_token", sessionData.refresh_token);
           
           // Store only the user ID from session.user object
           if (sessionData.user && sessionData.user.id) {
@@ -134,8 +158,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           localStorage.setItem("userId", userData.id);
         }
         
+        // Store only the phone number as separate key-value pair
+        localStorage.setItem("phoneNumber", userData.phone);
+        
         setUser(userData);
-        localStorage.setItem("shomvob_user", JSON.stringify(userData));
         return true;
       }
       return false;
@@ -150,21 +176,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = () => {
     setUser(null);
     setSession(null);
-    localStorage.removeItem("shomvob_user");
-    localStorage.removeItem("shomvob_session");
+    // Remove all individual keys
+    localStorage.removeItem("phoneNumber");
     localStorage.removeItem("userId");
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("token_type");
+    localStorage.removeItem("expires_in");
+    localStorage.removeItem("expires_at");
+    localStorage.removeItem("refresh_token");
   };
 
   const updateUserProfile = (userData: Partial<UserData>) => {
     if (user) {
       const updatedUser = { ...user, ...userData };
       setUser(updatedUser);
-      localStorage.setItem("shomvob_user", JSON.stringify(updatedUser));
+      // Only update phone number if it's being changed
+      if (userData.phone) {
+        localStorage.setItem("phoneNumber", userData.phone);
+      }
     }
   };
 
   const getAccessToken = (): string | null => {
-    return session?.access_token || null;
+    return session?.access_token || localStorage.getItem("access_token");
   };
 
   return (
