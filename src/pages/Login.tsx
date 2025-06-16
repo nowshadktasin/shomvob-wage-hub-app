@@ -67,7 +67,7 @@ const Login: React.FC = () => {
           className="flex items-center gap-2"
         >
           <Languages className="h-4 w-4" />
-          {i18n.language === 'bn' ? 'English' : 'বাংলা'}
+          {i18n.language === 'bn' ? 'বাংলা' : 'English'}
         </Button>
       </div>
       
