@@ -1,7 +1,6 @@
-
 {
   "app": {
-    "name": "সম্ভব",
+    "name": "Shomvob",
     "tagline": "Employee Wages App"
   },
   "auth": {
@@ -17,7 +16,8 @@
     "signIn": "Sign In",
     "orContinueWith": "Or continue with",
     "biometric": "Biometric Login",
-    "rememberMe": "Remember Me"
+    "rememberMe": "Remember Me",
+    "logout": "Logout"
   },
   "profile": {
     "title": "Profile",

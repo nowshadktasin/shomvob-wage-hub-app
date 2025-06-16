@@ -7,7 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Home, User, Wallet, Calendar, Settings, Menu, LogOut } from "lucide-react";
+import { Home, User, Wallet, Calendar, Settings, Menu, LogOut, Languages } from "lucide-react";
 
 interface NavItemProps {
   icon: React.ElementType;
@@ -47,6 +47,11 @@ const AppLayout: React.FC = () => {
     navigate("/");
   };
 
+  const toggleLanguage = () => {
+    const newLang = i18n.language === 'bn' ? 'en' : 'bn';
+    i18n.changeLanguage(newLang);
+  };
+
   const getInitials = (name: string) => {
     return name?.split(' ').map(part => part[0]).join('').toUpperCase().substring(0, 2) || "US";
   };
@@ -74,7 +79,7 @@ const AppLayout: React.FC = () => {
   }];
 
   return <div className={cn("min-h-screen flex flex-col bg-background", isBangla && "font-siliguri")}>
-      {/* Mobile header - Updated to use bg-background instead of bg-white */}
+      {/* Mobile header */}
       <header className="sticky top-0 z-30 bg-background border-b h-16 flex items-center justify-between px-4 md:hidden">
         <div className="flex items-center gap-2">
           <Sheet open={open} onOpenChange={setOpen}>
@@ -86,8 +91,11 @@ const AppLayout: React.FC = () => {
             </SheetTrigger>
             <SheetContent side="left" className="w-64 p-0">
               <div className="flex flex-col h-full">
-                <div className="h-16 flex items-center border-b px-6">
+                <div className="h-16 flex items-center justify-between border-b px-6">
                   <span className="font-bold text-lg text-primary">{t("app.name")}</span>
+                  <Button variant="ghost" size="icon" onClick={toggleLanguage}>
+                    <Languages className="h-5 w-5" />
+                  </Button>
                 </div>
 
                 <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
@@ -106,17 +114,25 @@ const AppLayout: React.FC = () => {
           <span className="font-bold text-primary">{t("app.name")}</span>
         </div>
         
-        {user && <Avatar className="h-8 w-8">
-            <AvatarImage src={user.avatar} alt={user.name} />
-            <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
-          </Avatar>}
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" size="icon" onClick={toggleLanguage}>
+            <Languages className="h-5 w-5" />
+          </Button>
+          {user && <Avatar className="h-8 w-8">
+              <AvatarImage src={user.avatar} alt={user.name} />
+              <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
+            </Avatar>}
+        </div>
       </header>
 
       <div className="flex-1 flex">
-        {/* Desktop sidebar - Updated to use bg-sidebar instead of bg-card for better dark mode support */}
+        {/* Desktop sidebar */}
         <aside className="hidden md:flex md:w-64 bg-sidebar border-r flex-col h-screen sticky top-0">
-          <div className="h-16 flex items-center border-b px-6">
+          <div className="h-16 flex items-center justify-between border-b px-6">
             <span className="font-bold text-lg text-primary">{t("app.name")}</span>
+            <Button variant="ghost" size="icon" onClick={toggleLanguage}>
+              <Languages className="h-5 w-5" />
+            </Button>
           </div>
 
           <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
