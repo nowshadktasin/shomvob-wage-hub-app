@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -136,8 +135,12 @@ export const useLoginFlow = () => {
       if (response.ok && responseData.status === 200) {
         // OTP verification successful - use the actual user data from API
         const userData = responseData.user || responseData.session?.user;
+        const sessionData = responseData.session;
         
-        const success = await login(formattedPhone, otp, userData);
+        console.log("User data:", userData);
+        console.log("Session data:", sessionData);
+        
+        const success = await login(formattedPhone, otp, userData, sessionData);
         if (success) {
           toast({
             title: "Login Successful",

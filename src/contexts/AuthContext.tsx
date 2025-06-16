@@ -17,12 +17,23 @@ export interface UserData {
   user_role?: string;
 }
 
+// Session data interface
+export interface SessionData {
+  access_token: string;
+  token_type: string;
+  expires_in: number;
+  expires_at: number;
+  refresh_token: string;
+}
+
 interface AuthContextType {
   user: UserData | null;
+  session: SessionData | null;
   loading: boolean;
-  login: (phoneNumber: string, otp: string, apiUserData?: any) => Promise<boolean>;
+  login: (phoneNumber: string, otp: string, apiUserData?: any, sessionData?: any) => Promise<boolean>;
   logout: () => void;
   updateUserProfile: (userData: Partial<UserData>) => void;
+  getAccessToken: () => string | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -51,17 +62,23 @@ const mockUser: UserData = {
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<UserData | null>(null);
+  const [session, setSession] = useState<SessionData | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("shomvob_user");
+    const storedSession = localStorage.getItem("shomvob_session");
+    
     if (storedUser) {
       setUser(JSON.parse(storedUser));
+    }
+    if (storedSession) {
+      setSession(JSON.parse(storedSession));
     }
     setLoading(false);
   }, []);
 
-  const login = async (phoneNumber: string, otp: string, apiUserData?: any): Promise<boolean> => {
+  const login = async (phoneNumber: string, otp: string, apiUserData?: any, sessionData?: any): Promise<boolean> => {
     try {
       setLoading(true);
       
@@ -94,6 +111,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             email: `${phoneNumber}@shomvob.com`,
           };
         }
+
+        // Handle session data
+        let sessionInfo: SessionData | null = null;
+        if (sessionData) {
+          sessionInfo = {
+            access_token: sessionData.access_token,
+            token_type: sessionData.token_type,
+            expires_in: sessionData.expires_in,
+            expires_at: sessionData.expires_at,
+            refresh_token: sessionData.refresh_token,
+          };
+          setSession(sessionInfo);
+          localStorage.setItem("shomvob_session", JSON.stringify(sessionInfo));
+        }
         
         setUser(userData);
         localStorage.setItem("shomvob_user", JSON.stringify(userData));
@@ -110,7 +141,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = () => {
     setUser(null);
+    setSession(null);
     localStorage.removeItem("shomvob_user");
+    localStorage.removeItem("shomvob_session");
   };
 
   const updateUserProfile = (userData: Partial<UserData>) => {
@@ -121,8 +154,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const getAccessToken = (): string | null => {
+    return session?.access_token || null;
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, updateUserProfile }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      session, 
+      loading, 
+      login, 
+      logout, 
+      updateUserProfile, 
+      getAccessToken 
+    }}>
       {children}
     </AuthContext.Provider>
   );
