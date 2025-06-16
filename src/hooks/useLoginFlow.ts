@@ -14,10 +14,6 @@ export const useLoginFlow = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
 
-  // Development mode - set to true for testing without API
-  const isDevelopmentMode = true;
-  const DEVELOPMENT_OTP = "1234"; // Test OTP for development
-
   // API endpoints and auth token
   const otpEndpoint = "https://backend-api.shomvob.co/api/v2/otp/phone?platform=wagely";
   const otpValidateEndpoint = "https://backend-api.shomvob.co/api/v2/otp/validate";
@@ -26,7 +22,7 @@ export const useLoginFlow = () => {
   const handleSendOTP = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!phoneNumber || phoneNumber.length < 11) {
+    if (!phoneNumber || phoneNumber.length < 10) {
       toast({
         title: "Error",
         description: "Please enter a valid phone number",
@@ -37,26 +33,21 @@ export const useLoginFlow = () => {
 
     setIsLoading(true);
 
-    if (isDevelopmentMode) {
-      // Development mode - simulate OTP sending
-      console.log("Development Mode: Simulating OTP send to:", phoneNumber);
-      setTimeout(() => {
-        setOtpSent(true);
-        setIsLoading(false);
-        toast({
-          title: "Development Mode",
-          description: `Test OTP sent! Use ${DEVELOPMENT_OTP} to login`,
-        });
-      }, 1000);
-      return;
-    }
-
-    console.log("Sending OTP to:", phoneNumber);
-    console.log("Using endpoint:", otpEndpoint);
-
     try {
-      // Format phone number to include country code if not present
-      const formattedPhone = phoneNumber.startsWith('88') ? phoneNumber : `88${phoneNumber}`;
+      // Format phone number - ensure it starts with 88 and has proper length
+      let formattedPhone = phoneNumber.replace(/\D/g, ''); // Remove non-digits
+      
+      // If it starts with 0, replace with 880
+      if (formattedPhone.startsWith('0')) {
+        formattedPhone = '88' + formattedPhone;
+      }
+      // If it doesn't start with 88, add 88
+      else if (!formattedPhone.startsWith('88')) {
+        formattedPhone = '88' + formattedPhone;
+      }
+
+      console.log("Sending OTP to:", formattedPhone);
+      console.log("Using endpoint:", otpEndpoint);
 
       const response = await fetch(otpEndpoint, {
         method: "POST",
@@ -73,30 +64,24 @@ export const useLoginFlow = () => {
       const responseData = await response.json();
       console.log("OTP Response data:", responseData);
 
-      if (response.ok) {
+      if (response.ok && responseData.code === 200) {
         setOtpSent(true);
         toast({
           title: "OTP Sent",
           description: "Please check your phone for the verification code",
         });
       } else {
-        // For development/testing purposes, allow proceeding to OTP screen even if API fails
-        console.warn("API call failed, but proceeding to OTP screen for testing");
-        setOtpSent(true);
         toast({
-          title: "API Error (Dev Mode)",
-          description: "API call failed, but you can proceed to test OTP input",
+          title: "Error",
+          description: responseData.msg || "Failed to send OTP. Please try again.",
           variant: "destructive",
         });
       }
     } catch (error) {
       console.error("Error sending OTP:", error);
-      // For development/testing purposes, allow proceeding to OTP screen even if network fails
-      console.warn("Network error, but proceeding to OTP screen for testing");
-      setOtpSent(true);
       toast({
-        title: "Network Error (Dev Mode)",
-        description: "Network error occurred, but you can proceed to test OTP input",
+        title: "Network Error",
+        description: "Please check your connection and try again",
         variant: "destructive",
       });
     } finally {
@@ -118,43 +103,18 @@ export const useLoginFlow = () => {
 
     setIsLoading(true);
 
-    if (isDevelopmentMode) {
-      // Development mode - check against test OTP
-      console.log("Development Mode: Verifying OTP:", otp);
-      setTimeout(async () => {
-        if (otp === DEVELOPMENT_OTP) {
-          const success = await login(phoneNumber, otp);
-          if (success) {
-            toast({
-              title: "Login Successful (Dev Mode)",
-              description: "Welcome to Shomvob",
-            });
-            navigate("/dashboard");
-          } else {
-            toast({
-              title: "Login Error",
-              description: "Authentication failed",
-              variant: "destructive",
-            });
-          }
-        } else {
-          toast({
-            title: "Invalid OTP",
-            description: `Please use ${DEVELOPMENT_OTP} for testing`,
-            variant: "destructive",
-          });
-        }
-        setIsLoading(false);
-      }, 1000);
-      return;
-    }
-
-    console.log("Verifying OTP:", otp);
-    console.log("Using endpoint:", otpValidateEndpoint);
-
     try {
-      // Format phone number to include country code if not present
-      const formattedPhone = phoneNumber.startsWith('88') ? phoneNumber : `88${phoneNumber}`;
+      // Format phone number same as in send OTP
+      let formattedPhone = phoneNumber.replace(/\D/g, '');
+      
+      if (formattedPhone.startsWith('0')) {
+        formattedPhone = '88' + formattedPhone;
+      } else if (!formattedPhone.startsWith('88')) {
+        formattedPhone = '88' + formattedPhone;
+      }
+
+      console.log("Verifying OTP:", otp);
+      console.log("Using endpoint:", otpValidateEndpoint);
 
       const response = await fetch(otpValidateEndpoint, {
         method: "POST",
@@ -174,7 +134,7 @@ export const useLoginFlow = () => {
 
       if (response.ok && responseData.code === 200 && responseData.data?.status === "SUCCESS") {
         // OTP verification successful
-        const success = await login(phoneNumber, otp);
+        const success = await login(formattedPhone, otp);
         if (success) {
           toast({
             title: "Login Successful",
@@ -220,8 +180,6 @@ export const useLoginFlow = () => {
     setOtp,
     isLoading,
     otpSent,
-    isDevelopmentMode,
-    DEVELOPMENT_OTP,
     handleSendOTP,
     handleVerifyOTP,
     handleChangePhoneNumber,

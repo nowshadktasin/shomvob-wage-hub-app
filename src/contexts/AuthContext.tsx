@@ -42,15 +42,14 @@ const mockUser: UserData = {
   joinDate: "2022-01-15",
   avatar: "",
   isProfileComplete: false,
-  monthlySalary: 50000, // Monthly salary in BDT
-  availableAdvancePercentage: 60, // 60% of salary available for advance
+  monthlySalary: 50000,
+  availableAdvancePercentage: 60,
 };
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Simulate loading the user from storage on initialization
   useEffect(() => {
     const storedUser = localStorage.getItem("shomvob_user");
     if (storedUser) {
@@ -60,12 +59,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const login = async (phoneNumber: string, otp: string): Promise<boolean> => {
-    // In a real app, this would verify credentials with a server
     try {
       setLoading(true);
-      // Mock validation - accept any phone number with correct OTP
+      
+      // After successful OTP verification, create user session
       if (phoneNumber && otp.length === 4) {
-        // Create a user based on phone number
         const phoneBasedUser = {
           ...mockUser,
           id: `user-${phoneNumber}`,
