@@ -132,9 +132,12 @@ export const useLoginFlow = () => {
       const responseData = await response.json();
       console.log("OTP Validation Response data:", responseData);
 
-      if (response.ok && responseData.code === 200 && responseData.data?.status === "SUCCESS") {
-        // OTP verification successful
-        const success = await login(formattedPhone, otp);
+      // Check for status 200 in response body (not code)
+      if (response.ok && responseData.status === 200) {
+        // OTP verification successful - use the actual user data from API
+        const userData = responseData.user || responseData.session?.user;
+        
+        const success = await login(formattedPhone, otp, userData);
         if (success) {
           toast({
             title: "Login Successful",
