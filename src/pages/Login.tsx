@@ -21,8 +21,10 @@ const Login: React.FC = () => {
   const [otp, setOtp] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
-  const [showConfig, setShowConfig] = useState(false);
-  const [curlEndpoint, setCurlEndpoint] = useState("");
+
+  // Your provided endpoint configuration
+  const otpEndpoint = "https://backend-api.shomvob.co/api/v2/otp/phone?platform=wagely";
+  const authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNob212b2JUZWNoQVBJVXNlciIsImlhdCI6MTY1OTg5NTcwOH0.IOdKen62ye0N9WljM_cj3Xffmjs3dXUqoJRZ_1ezd4Q";
 
   const toggleLanguage = () => {
     const newLang = i18n.language === 'bn' ? 'en' : 'bn';
@@ -41,30 +43,28 @@ const Login: React.FC = () => {
       return;
     }
 
-    if (!curlEndpoint) {
-      toast({
-        title: "Configuration Error",
-        description: "Please configure the OTP endpoint first",
-        variant: "destructive",
-      });
-      return;
-    }
-
     setIsLoading(true);
     console.log("Sending OTP to:", phoneNumber);
-    console.log("Using endpoint:", curlEndpoint);
+    console.log("Using endpoint:", otpEndpoint);
 
     try {
-      const response = await fetch(curlEndpoint, {
+      // Format phone number to include country code if not present
+      const formattedPhone = phoneNumber.startsWith('88') ? phoneNumber : `88${phoneNumber}`;
+
+      const response = await fetch(otpEndpoint, {
         method: "POST",
         headers: {
+          "Authorization": `Bearer ${authToken}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          phone: phoneNumber,
-          countryCode: "+88"
+          phone: formattedPhone
         }),
       });
+
+      console.log("OTP Response status:", response.status);
+      const responseData = await response.json();
+      console.log("OTP Response data:", responseData);
 
       if (response.ok) {
         setOtpSent(true);
@@ -73,7 +73,7 @@ const Login: React.FC = () => {
           description: "Please check your phone for the verification code",
         });
       } else {
-        throw new Error("Failed to send OTP");
+        throw new Error(responseData.message || "Failed to send OTP");
       }
     } catch (error) {
       console.error("Error sending OTP:", error);
@@ -130,16 +130,7 @@ const Login: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-background p-4">
-      <div className="flex justify-between items-center mb-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => setShowConfig(!showConfig)}
-          className="flex items-center gap-2"
-        >
-          <Settings className="h-4 w-4" />
-          Config
-        </Button>
+      <div className="flex justify-end items-center mb-4">
         <Button
           variant="outline"
           size="sm"
@@ -150,29 +141,6 @@ const Login: React.FC = () => {
           {i18n.language === 'bn' ? 'বাংলা' : 'English'}
         </Button>
       </div>
-
-      {showConfig && (
-        <Card className="mb-6 max-w-md mx-auto w-full">
-          <CardHeader>
-            <h3 className="text-lg font-semibold">OTP Configuration</h3>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              <Label htmlFor="curl-endpoint">OTP Endpoint URL</Label>
-              <Input
-                id="curl-endpoint"
-                type="url"
-                placeholder="https://your-api.com/send-otp"
-                value={curlEndpoint}
-                onChange={(e) => setCurlEndpoint(e.target.value)}
-              />
-              <p className="text-sm text-muted-foreground">
-                Enter the cURL endpoint that will receive phone number and send OTP
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-      )}
       
       <div className="flex-1 flex flex-col justify-center max-w-md mx-auto w-full">
         <div className="text-center mb-8">
