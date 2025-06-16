@@ -13,7 +13,6 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import Earnings from "./pages/Earnings";
-import Workplace from "./pages/Workplace";
 import Accounts from "./pages/Accounts";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
@@ -61,7 +60,6 @@ const App = () => {
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/earnings" element={<Earnings />} />
-                <Route path="/workplace" element={<Workplace />} />
                 <Route path="/accounts" element={<Accounts />} />
                 <Route path="/settings" element={<Settings />} />
               </Route>

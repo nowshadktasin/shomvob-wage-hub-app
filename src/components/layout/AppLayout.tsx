@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate, Outlet, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -7,7 +6,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Home, User, Wallet, Calendar, Settings, Menu, LogOut, Languages } from "lucide-react";
+import { Home, User, Wallet, Settings, Menu, LogOut, Languages } from "lucide-react";
 
 interface NavItemProps {
   icon: React.ElementType;
@@ -68,10 +67,6 @@ const AppLayout: React.FC = () => {
     icon: User,
     label: t("profile.title"),
     href: "/profile"
-  }, {
-    icon: Calendar,
-    label: t("workplace.title"),
-    href: "/workplace"
   }, {
     icon: Settings,
     label: t("settings.title"),
