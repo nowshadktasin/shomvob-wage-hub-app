@@ -18,7 +18,7 @@ export interface UserData {
 interface AuthContextType {
   user: UserData | null;
   loading: boolean;
-  login: (email: string, password: string) => Promise<boolean>;
+  login: (phoneNumber: string, otp: string) => Promise<boolean>;
   logout: () => void;
   updateUserProfile: (userData: Partial<UserData>) => void;
 }
@@ -59,14 +59,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setLoading(false);
   }, []);
 
-  const login = async (email: string, password: string): Promise<boolean> => {
+  const login = async (phoneNumber: string, otp: string): Promise<boolean> => {
     // In a real app, this would verify credentials with a server
     try {
       setLoading(true);
-      // Mock validation
-      if (email && password.length >= 6) {
-        setUser(mockUser);
-        localStorage.setItem("shomvob_user", JSON.stringify(mockUser));
+      // Mock validation - accept any phone number with correct OTP
+      if (phoneNumber && otp.length === 4) {
+        // Create a user based on phone number
+        const phoneBasedUser = {
+          ...mockUser,
+          id: `user-${phoneNumber}`,
+          email: `${phoneNumber}@shomvob.com`,
+        };
+        
+        setUser(phoneBasedUser);
+        localStorage.setItem("shomvob_user", JSON.stringify(phoneBasedUser));
         return true;
       }
       return false;
