@@ -102,9 +102,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             availableAdvancePercentage: apiUserData.availableAdvancePercentage || 60,
             user_role: apiUserData.user_metadata?.user_role || "employee",
           };
-          
-          // Store the user ID separately in localStorage as "userId"
-          localStorage.setItem("userId", apiUserData.id);
         } else {
           // Fallback to mock data structure
           userData = {
@@ -113,12 +110,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             phone: phoneNumber,
             email: `${phoneNumber}@shomvob.com`,
           };
-          
-          // Store the mock user ID
-          localStorage.setItem("userId", `user-${phoneNumber}`);
         }
 
-        // Handle session data
+        // Handle session data and extract user ID
         let sessionInfo: SessionData | null = null;
         if (sessionData) {
           sessionInfo = {
@@ -130,6 +124,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           };
           setSession(sessionInfo);
           localStorage.setItem("shomvob_session", JSON.stringify(sessionInfo));
+          
+          // Store only the user ID from session.user object
+          if (sessionData.user && sessionData.user.id) {
+            localStorage.setItem("userId", sessionData.user.id);
+          }
+        } else {
+          // Store the user ID from userData if no session data
+          localStorage.setItem("userId", userData.id);
         }
         
         setUser(userData);
