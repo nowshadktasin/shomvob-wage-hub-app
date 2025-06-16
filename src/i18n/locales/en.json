@@ -1,3 +1,4 @@
+
 {
   "app": {
     "name": "Shomvob",
@@ -132,6 +133,17 @@
     "biometricDisabled": "Biometric login disabled",
     "lightModeEnabled": "Light mode enabled",
     "darkModeEnabled": "Dark mode enabled"
+  },
+  "changePassword": {
+    "title": "Change Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm New Password",
+    "updatePassword": "Update Password",
+    "success": "Password updated successfully",
+    "error": "Failed to update password",
+    "passwordMismatch": "New passwords do not match",
+    "passwordTooShort": "Password must be at least 6 characters long"
   },
   "locale": "en-US"
 }
