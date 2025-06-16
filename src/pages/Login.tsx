@@ -1,18 +1,14 @@
 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
+import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Languages, Settings } from "lucide-react";
-import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
+import PhoneNumberForm from "@/components/auth/PhoneNumberForm";
+import OTPVerificationForm from "@/components/auth/OTPVerificationForm";
+import LanguageToggle from "@/components/auth/LanguageToggle";
 
 const Login: React.FC = () => {
-  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { login } = useAuth();
   const { toast } = useToast();
@@ -25,11 +21,6 @@ const Login: React.FC = () => {
   // Your provided endpoint configuration (fixed Authorization header)
   const otpEndpoint = "https://backend-api.shomvob.co/api/v2/otp/phone?platform=wagely";
   const authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNob212b2JUZWNoQVBJVXNlciIsImlhdCI6MTY1OTg5NTcwOH0.IOdKen62ye0N9WljM_cj3Xffmjs3dXUqoJRZ_1ezd4Q";
-
-  const toggleLanguage = () => {
-    const newLang = i18n.language === 'bn' ? 'en' : 'bn';
-    i18n.changeLanguage(newLang);
-  };
 
   const handleSendOTP = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -138,19 +129,14 @@ const Login: React.FC = () => {
     }
   };
 
+  const handleChangePhoneNumber = () => {
+    setOtpSent(false);
+    setOtp("");
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-background p-4">
-      <div className="flex justify-end items-center mb-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={toggleLanguage}
-          className="flex items-center gap-2"
-        >
-          <Languages className="h-4 w-4" />
-          {i18n.language === 'bn' ? 'বাংলা' : 'English'}
-        </Button>
-      </div>
+      <LanguageToggle />
       
       <div className="flex-1 flex flex-col justify-center max-w-md mx-auto w-full">
         <div className="text-center mb-8">
@@ -163,76 +149,21 @@ const Login: React.FC = () => {
         <Card className="shadow-md">
           <CardContent className="pt-6">
             {!otpSent ? (
-              <form onSubmit={handleSendOTP} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="phone" className="text-base">
-                    Enter your mobile number <span className="text-red-500">*</span>
-                  </Label>
-                  <div className="flex">
-                    <div className="flex items-center bg-gray-100 px-3 border border-r-0 rounded-l-md">
-                      <span className="text-sm font-medium">+88</span>
-                    </div>
-                    <Input
-                      id="phone"
-                      type="tel"
-                      placeholder="01XXXXXXXXX"
-                      value={phoneNumber}
-                      onChange={(e) => setPhoneNumber(e.target.value)}
-                      className="rounded-l-none"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <Button type="submit" className="w-full bg-gray-400 hover:bg-gray-500" disabled={isLoading}>
-                  {isLoading ? "Sending..." : "Send OTP"}
-                </Button>
-              </form>
+              <PhoneNumberForm
+                phoneNumber={phoneNumber}
+                setPhoneNumber={setPhoneNumber}
+                isLoading={isLoading}
+                onSubmit={handleSendOTP}
+              />
             ) : (
-              <form onSubmit={handleVerifyOTP} className="space-y-6">
-                <div className="text-center">
-                  <p className="text-sm text-muted-foreground mb-4">
-                    We've sent a 6-digit code to +88{phoneNumber}
-                  </p>
-                  <div className="space-y-2">
-                    <Label htmlFor="otp">Enter OTP</Label>
-                    <div className="flex justify-center">
-                      <InputOTP
-                        maxLength={6}
-                        value={otp}
-                        onChange={(value) => setOtp(value)}
-                      >
-                        <InputOTPGroup>
-                          <InputOTPSlot index={0} />
-                          <InputOTPSlot index={1} />
-                          <InputOTPSlot index={2} />
-                          <InputOTPSlot index={3} />
-                          <InputOTPSlot index={4} />
-                          <InputOTPSlot index={5} />
-                        </InputOTPGroup>
-                      </InputOTP>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-3">
-                  <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading ? "Verifying..." : "Verify OTP"}
-                  </Button>
-                  
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="w-full"
-                    onClick={() => {
-                      setOtpSent(false);
-                      setOtp("");
-                    }}
-                  >
-                    Change Phone Number
-                  </Button>
-                </div>
-              </form>
+              <OTPVerificationForm
+                phoneNumber={phoneNumber}
+                otp={otp}
+                setOtp={setOtp}
+                isLoading={isLoading}
+                onSubmit={handleVerifyOTP}
+                onChangePhoneNumber={handleChangePhoneNumber}
+              />
             )}
           </CardContent>
         </Card>
