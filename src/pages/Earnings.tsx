@@ -45,7 +45,7 @@ const Earnings: React.FC = () => {
   
   // Calculate service fee (2% of withdrawal amount)
   const serviceFee = withdrawAmount * 0.02;
-  const totalAmount = withdrawAmount - serviceFee;
+  const totalAmount = withdrawAmount + serviceFee; // Changed from subtraction to addition
   
   const handleWithdraw = () => {
     toast.success(t("earnings.withdrawSuccessTitle"), {
@@ -128,7 +128,7 @@ const Earnings: React.FC = () => {
             </div>
             <div className="flex justify-between mb-2 text-muted-foreground">
               <span>{t("earnings.serviceFee")}</span>
-              <span>- {formatCurrency(serviceFee)}</span>
+              <span>+ {formatCurrency(serviceFee)}</span>
             </div>
             <div className="border-t my-2 pt-2 flex justify-between font-medium">
               <span>{t("earnings.totalAmount")}</span>
