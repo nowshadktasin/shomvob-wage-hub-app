@@ -18,6 +18,10 @@ const Login: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
 
+  // Development mode - set to true for testing without API
+  const isDevelopmentMode = true;
+  const DEVELOPMENT_OTP = "1234"; // Test OTP for development
+
   // API endpoints and auth token
   const otpEndpoint = "https://backend-api.shomvob.co/api/v2/otp/phone?platform=wagely";
   const otpValidateEndpoint = "https://backend-api.shomvob.co/api/v2/otp/validate";
@@ -36,6 +40,21 @@ const Login: React.FC = () => {
     }
 
     setIsLoading(true);
+
+    if (isDevelopmentMode) {
+      // Development mode - simulate OTP sending
+      console.log("Development Mode: Simulating OTP send to:", phoneNumber);
+      setTimeout(() => {
+        setOtpSent(true);
+        setIsLoading(false);
+        toast({
+          title: "Development Mode",
+          description: `Test OTP sent! Use ${DEVELOPMENT_OTP} to login`,
+        });
+      }, 1000);
+      return;
+    }
+
     console.log("Sending OTP to:", phoneNumber);
     console.log("Using endpoint:", otpEndpoint);
 
@@ -102,6 +121,38 @@ const Login: React.FC = () => {
     }
 
     setIsLoading(true);
+
+    if (isDevelopmentMode) {
+      // Development mode - check against test OTP
+      console.log("Development Mode: Verifying OTP:", otp);
+      setTimeout(async () => {
+        if (otp === DEVELOPMENT_OTP) {
+          const success = await login(phoneNumber, otp);
+          if (success) {
+            toast({
+              title: "Login Successful (Dev Mode)",
+              description: "Welcome to Shomvob",
+            });
+            navigate("/dashboard");
+          } else {
+            toast({
+              title: "Login Error",
+              description: "Authentication failed",
+              variant: "destructive",
+            });
+          }
+        } else {
+          toast({
+            title: "Invalid OTP",
+            description: `Please use ${DEVELOPMENT_OTP} for testing`,
+            variant: "destructive",
+          });
+        }
+        setIsLoading(false);
+      }, 1000);
+      return;
+    }
+
     console.log("Verifying OTP:", otp);
     console.log("Using endpoint:", otpValidateEndpoint);
 
@@ -176,6 +227,11 @@ const Login: React.FC = () => {
             Welcome To <span className="text-green-500">Shomvob</span>
           </h1>
           <p className="text-muted-foreground text-lg">Sign In / Registration</p>
+          {isDevelopmentMode && (
+            <p className="text-xs text-orange-600 mt-2 bg-orange-50 p-2 rounded">
+              Development Mode: Use OTP {DEVELOPMENT_OTP} to login
+            </p>
+          )}
         </div>
 
         <Card className="shadow-md">
