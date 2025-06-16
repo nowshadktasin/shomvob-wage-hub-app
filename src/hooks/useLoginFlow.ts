@@ -22,7 +22,7 @@ export const useLoginFlow = () => {
   const handleSendOTP = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!phoneNumber || phoneNumber.length < 10) {
+    if (!phoneNumber || phoneNumber.length < 11) {
       toast({
         title: "Error",
         description: "Please enter a valid phone number",
