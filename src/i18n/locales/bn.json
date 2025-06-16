@@ -71,7 +71,12 @@
     "department": "বিভাগ",
     "joinDate": "যোগদানের তারিখ",
     "monthlySalary": "মাসিক বেতন",
-    "workSchedule": "কাজের সময়সূচী"
+    "workSchedule": "কাজের সময়সূচী",
+    "employmentDetails": "চাকরির বিবরণ",
+    "dates": "গুরুত্বপূর্ণ তারিখ",
+    "compensation": "বেতন ও সুবিধা",
+    "updateSuccess": "আপডেট সফল",
+    "infoUpdated": "কর্মসংস্থান তথ্য সফলভাবে আপডেট হয়েছে"
   },
   "accounts": {
     "title": "অর্থপ্রদান অ্যাকাউন্ট",

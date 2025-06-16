@@ -71,7 +71,12 @@
     "department": "Department",
     "joinDate": "Join Date",
     "monthlySalary": "Monthly Salary",
-    "workSchedule": "Work Schedule"
+    "workSchedule": "Work Schedule",
+    "employmentDetails": "Employment Details",
+    "dates": "Important Dates",
+    "compensation": "Compensation & Benefits",
+    "updateSuccess": "Update Successful",
+    "infoUpdated": "Workplace information updated successfully"
   },
   "accounts": {
     "title": "Disbursement Accounts",
