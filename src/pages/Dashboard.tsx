@@ -1,11 +1,10 @@
-
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Wallet, User, ArrowRight } from "lucide-react";
+import { Wallet, ArrowRight } from "lucide-react";
 
 const Dashboard: React.FC = () => {
   const { t } = useTranslation();
@@ -81,20 +80,6 @@ const Dashboard: React.FC = () => {
               <div className="flex items-center">
                 <Wallet className="h-5 w-5 mr-3 text-primary" />
                 <span>{t("dashboard.viewEarnings")}</span>
-              </div>
-              <ArrowRight className="h-5 w-5 text-muted-foreground" />
-            </Button>
-            
-            <div className="border-t" />
-            
-            <Button
-              variant="ghost"
-              className="flex items-center justify-between w-full p-4 h-auto"
-              onClick={() => navigate("/profile")}
-            >
-              <div className="flex items-center">
-                <User className="h-5 w-5 mr-3 text-primary" />
-                <span>{t("dashboard.updateProfile")}</span>
               </div>
               <ArrowRight className="h-5 w-5 text-muted-foreground" />
             </Button>
