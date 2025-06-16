@@ -102,6 +102,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             availableAdvancePercentage: apiUserData.availableAdvancePercentage || 60,
             user_role: apiUserData.user_metadata?.user_role || "employee",
           };
+          
+          // Store the user ID separately in localStorage as "userId"
+          localStorage.setItem("userId", apiUserData.id);
         } else {
           // Fallback to mock data structure
           userData = {
@@ -110,6 +113,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             phone: phoneNumber,
             email: `${phoneNumber}@shomvob.com`,
           };
+          
+          // Store the mock user ID
+          localStorage.setItem("userId", `user-${phoneNumber}`);
         }
 
         // Handle session data
@@ -144,6 +150,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setSession(null);
     localStorage.removeItem("shomvob_user");
     localStorage.removeItem("shomvob_session");
+    localStorage.removeItem("userId");
   };
 
   const updateUserProfile = (userData: Partial<UserData>) => {
