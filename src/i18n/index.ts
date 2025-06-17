@@ -20,8 +20,13 @@ i18n
     },
     lng: 'bn', // Default language set to Bangla
     fallbackLng: 'en',
+    debug: true, // Enable debug to see if translations are working
     interpolation: {
       escapeValue: false
+    },
+    detection: {
+      order: ['localStorage', 'navigator', 'htmlTag'],
+      caches: ['localStorage']
     }
   });
 

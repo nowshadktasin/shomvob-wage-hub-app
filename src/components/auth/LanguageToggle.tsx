@@ -5,10 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Languages } from "lucide-react";
 
 const LanguageToggle: React.FC = () => {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
+
+  console.log('Current language:', i18n.language);
+  console.log('Available languages:', Object.keys(i18n.options.resources || {}));
+  console.log('Translation test:', t('auth.login'));
 
   const toggleLanguage = () => {
     const newLang = i18n.language === 'bn' ? 'en' : 'bn';
+    console.log('Switching from', i18n.language, 'to', newLang);
     i18n.changeLanguage(newLang);
   };
 
