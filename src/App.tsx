@@ -16,6 +16,7 @@ import Earnings from "./pages/Earnings";
 import Accounts from "./pages/Accounts";
 import Settings from "./pages/Settings";
 import ChangePassword from "./pages/ChangePassword";
+import Help from "./pages/Help";
 import NotFound from "./pages/NotFound";
 
 // Import i18n
@@ -64,6 +65,7 @@ const App = () => {
                 <Route path="/accounts" element={<Accounts />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/change-password" element={<ChangePassword />} />
+                <Route path="/help" element={<Help />} />
               </Route>
               
               {/* Catch-all route */}

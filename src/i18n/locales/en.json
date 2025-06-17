@@ -145,5 +145,33 @@
     "passwordMismatch": "New passwords do not match",
     "passwordTooShort": "Password must be at least 6 characters long"
   },
+  "help": {
+    "title": "Help & Support",
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "description": "Find answers to common questions about Shomvob",
+      "withdrawalQuestion": "How do I withdraw my earnings?",
+      "withdrawalAnswer": "Go to the Earnings page, enter the amount you want to withdraw, and click 'Withdraw Now'. The funds will be transferred to your default disbursement account.",
+      "limitsQuestion": "What are the withdrawal limits?",
+      "limitsAnswer": "You can withdraw up to your available balance. Advance salary withdrawals may have different limits based on your employment terms.",
+      "feesQuestion": "Are there any fees for withdrawals?",
+      "feesAnswer": "A small service fee may apply depending on the withdrawal method and amount. The fee will be clearly shown before you confirm the transaction.",
+      "accountQuestion": "How do I add a bank account?",
+      "accountAnswer": "Go to Accounts in the menu, click 'Add New Account', and enter your bank details. Make sure to verify the information before saving."
+    },
+    "contact": {
+      "title": "Contact Support",
+      "description": "Need more help? Get in touch with our support team",
+      "email": "Email Support",
+      "phone": "Phone Support",
+      "chat": "Live Chat",
+      "chatHours": "Available 9 AM - 6 PM"
+    },
+    "app": {
+      "title": "App Information",
+      "version": "Version",
+      "lastUpdated": "Last Updated"
+    }
+  },
   "locale": "en-US"
 }
