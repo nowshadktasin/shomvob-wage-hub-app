@@ -13,9 +13,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import Earnings from "./pages/Earnings";
-import Accounts from "./pages/Accounts";
 import Settings from "./pages/Settings";
-import ChangePassword from "./pages/ChangePassword";
 import Help from "./pages/Help";
 import NotFound from "./pages/NotFound";
 
@@ -62,9 +60,7 @@ const App = () => {
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/earnings" element={<Earnings />} />
-                <Route path="/accounts" element={<Accounts />} />
                 <Route path="/settings" element={<Settings />} />
-                <Route path="/change-password" element={<ChangePassword />} />
                 <Route path="/help" element={<Help />} />
               </Route>
               
