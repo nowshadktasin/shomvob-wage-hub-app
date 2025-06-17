@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProfileData } from "@/hooks/useProfileData";
@@ -13,6 +13,7 @@ const Profile: React.FC = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
   const { refreshProfile, isRefreshing } = useProfileData();
+  const [activeTab, setActiveTab] = useState<'personal' | 'professional'>('personal');
 
   return (
     <div className="container max-w-md mx-auto px-4 py-6">
@@ -31,21 +32,37 @@ const Profile: React.FC = () => {
       </div>
       
       <div className="space-y-6">
+        {/* Tab Buttons */}
+        <div className="flex gap-3">
+          <Button
+            variant={activeTab === 'personal' ? 'default' : 'outline'}
+            className="flex-1"
+            onClick={() => setActiveTab('personal')}
+          >
+            Personal Information
+          </Button>
+          <Button
+            variant={activeTab === 'professional' ? 'default' : 'outline'}
+            className="flex-1"
+            onClick={() => setActiveTab('professional')}
+          >
+            Professional Information
+          </Button>
+        </div>
+
+        {/* Content Card */}
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-lg">Personal Information</CardTitle>
+            <CardTitle className="text-lg">
+              {activeTab === 'personal' ? 'Personal Information' : 'Professional Information'}
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <PersonalInformation user={user} />
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg">Professional Information</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ProfessionalInformation user={user} />
+            {activeTab === 'personal' ? (
+              <PersonalInformation user={user} />
+            ) : (
+              <ProfessionalInformation user={user} />
+            )}
           </CardContent>
         </Card>
       </div>
