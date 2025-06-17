@@ -1,40 +1,15 @@
 
 import React, { createContext, useState, useContext, useEffect } from "react";
-
-// User data interface updated to match API response
-export interface UserData {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  position: string;
-  department: string;
-  joinDate: string;
-  avatar: string;
-  isProfileComplete: boolean;
-  monthlySalary: number;
-  availableAdvancePercentage: number;
-  user_role?: string;
-}
-
-// Session data interface
-export interface SessionData {
-  access_token: string;
-  token_type: string;
-  expires_in: number;
-  expires_at: number;
-  refresh_token: string;
-}
-
-interface AuthContextType {
-  user: UserData | null;
-  session: SessionData | null;
-  loading: boolean;
-  login: (phoneNumber: string, otp: string, apiUserData?: any, sessionData?: any) => Promise<boolean>;
-  logout: () => void;
-  updateUserProfile: (userData: Partial<UserData>) => void;
-  getAccessToken: () => string | null;
-}
+import { AuthContextType, UserData, SessionData } from "@/types/auth";
+import { mockUser } from "@/constants/auth";
+import { 
+  getStoredAuthData, 
+  storeSessionData, 
+  storeUserData, 
+  storeUserId, 
+  clearAuthStorage, 
+  updatePhoneNumber 
+} from "@/utils/localStorage";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -46,33 +21,13 @@ export const useAuth = () => {
   return context;
 };
 
-const mockUser: UserData = {
-  id: "user-1234",
-  name: "John Doe",
-  email: "john.doe@shomvob.com",
-  phone: "",
-  position: "Software Engineer",
-  department: "Engineering",
-  joinDate: "2022-01-15",
-  avatar: "",
-  isProfileComplete: false,
-  monthlySalary: 50000,
-  availableAdvancePercentage: 60,
-};
-
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<UserData | null>(null);
   const [session, setSession] = useState<SessionData | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Read individual keys from localStorage
-    const phoneNumber = localStorage.getItem("phoneNumber");
-    const accessToken = localStorage.getItem("access_token");
-    const tokenType = localStorage.getItem("token_type");
-    const expiresIn = localStorage.getItem("expires_in");
-    const expiresAt = localStorage.getItem("expires_at");
-    const refreshToken = localStorage.getItem("refresh_token");
+    const { phoneNumber, accessToken, tokenType, expiresIn, expiresAt, refreshToken } = getStoredAuthData();
     
     if (phoneNumber && accessToken) {
       // Reconstruct user object with phone number and mock data
@@ -142,25 +97,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           };
           setSession(sessionInfo);
           
-          // Store session data as individual key-value pairs
-          localStorage.setItem("access_token", sessionData.access_token);
-          localStorage.setItem("token_type", sessionData.token_type);
-          localStorage.setItem("expires_in", sessionData.expires_in.toString());
-          localStorage.setItem("expires_at", sessionData.expires_at.toString());
-          localStorage.setItem("refresh_token", sessionData.refresh_token);
+          storeSessionData(sessionData);
           
           // Store only the user ID from session.user object
           if (sessionData.user && sessionData.user.id) {
-            localStorage.setItem("userId", sessionData.user.id);
+            storeUserId(sessionData.user.id);
           }
         } else {
           // Store the user ID from userData if no session data
-          localStorage.setItem("userId", userData.id);
+          storeUserId(userData.id);
         }
         
-        // Store only the phone number as separate key-value pair
-        localStorage.setItem("phoneNumber", userData.phone);
-        
+        storeUserData(userData);
         setUser(userData);
         return true;
       }
@@ -176,14 +124,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = () => {
     setUser(null);
     setSession(null);
-    // Remove all individual keys
-    localStorage.removeItem("phoneNumber");
-    localStorage.removeItem("userId");
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("token_type");
-    localStorage.removeItem("expires_in");
-    localStorage.removeItem("expires_at");
-    localStorage.removeItem("refresh_token");
+    clearAuthStorage();
   };
 
   const updateUserProfile = (userData: Partial<UserData>) => {
@@ -192,7 +133,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(updatedUser);
       // Only update phone number if it's being changed
       if (userData.phone) {
-        localStorage.setItem("phoneNumber", userData.phone);
+        updatePhoneNumber(userData.phone);
       }
     }
   };
