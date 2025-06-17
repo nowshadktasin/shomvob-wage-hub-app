@@ -14,8 +14,8 @@ export const useLoginFlow = () => {
   const [otpSent, setOtpSent] = useState(false);
 
   // API endpoints and auth token
-  const otpEndpoint = "https://backend-api.shomvob.co/api/v2/otp/phone?platform=wagely";
-  const otpValidateEndpoint = "https://backend-api.shomvob.co/api/v2/otp/validate";
+  const otpEndpoint = process.env.API_BASE_URL + "/otp/phone?platform=wagely";
+  const otpValidateEndpoint = process.env.API_BASE_URL + "/otp/validate";
   const authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNob212b2JUZWNoQVBJVXNlciIsImlhdCI6MTY1OTg5NTcwOH0.IOdKen62ye0N9WljM_cj3Xffmjs3dXUqoJRZ_1ezd4Q";
 
   const handleSendOTP = async (e: React.FormEvent) => {
