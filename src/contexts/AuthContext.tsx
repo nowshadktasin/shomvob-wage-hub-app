@@ -2,6 +2,7 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import { AuthContextType, UserData, SessionData } from "@/types/auth";
 import { mockUser } from "@/constants/auth";
+import { fetchEmployeeProfile } from "@/services/employeeApi";
 import { 
   getStoredAuthData, 
   storeSessionData, 
@@ -30,14 +31,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const { phoneNumber, accessToken, tokenType, expiresIn, expiresAt, refreshToken } = getStoredAuthData();
     
     if (phoneNumber && accessToken) {
-      // Reconstruct user object with phone number and mock data
-      const userData: UserData = {
-        ...mockUser,
-        phone: phoneNumber,
-        email: `${phoneNumber}@shomvob.com`,
-      };
-      setUser(userData);
-      
       // Reconstruct session object
       const sessionData: SessionData = {
         access_token: accessToken,
@@ -47,8 +40,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         refresh_token: refreshToken || "",
       };
       setSession(sessionData);
+
+      // Fetch real profile data from API
+      fetchEmployeeProfile(phoneNumber, accessToken)
+        .then((profileData) => {
+          setUser(profileData);
+          console.log('Profile data loaded:', profileData);
+        })
+        .catch((error) => {
+          console.error('Failed to fetch profile data, using mock data:', error);
+          // Fallback to mock data if API fails
+          const userData: UserData = {
+            ...mockUser,
+            phone: phoneNumber,
+            email: `${phoneNumber}@shomvob.com`,
+          };
+          setUser(userData);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } else {
+      setLoading(false);
     }
-    setLoading(false);
   }, []);
 
   const login = async (phoneNumber: string, otp: string, apiUserData?: any, sessionData?: any): Promise<boolean> => {
@@ -57,35 +71,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       // After successful OTP verification, create user session
       if (phoneNumber && otp.length === 4) {
-        let userData: UserData;
-        
-        if (apiUserData) {
-          // Use real user data from API
-          userData = {
-            id: apiUserData.id || `user-${phoneNumber}`,
-            name: apiUserData.name || "User",
-            email: apiUserData.email || `${phoneNumber}@shomvob.com`,
-            phone: apiUserData.phone || phoneNumber,
-            position: apiUserData.position || "Employee",
-            department: apiUserData.department || "General",
-            joinDate: apiUserData.created_at || new Date().toISOString().split('T')[0],
-            avatar: apiUserData.avatar || "",
-            isProfileComplete: apiUserData.isProfileComplete || false,
-            monthlySalary: apiUserData.monthlySalary || 50000,
-            availableAdvancePercentage: apiUserData.availableAdvancePercentage || 60,
-            user_role: apiUserData.user_metadata?.user_role || "employee",
-          };
-        } else {
-          // Fallback to mock data structure
-          userData = {
-            ...mockUser,
-            id: `user-${phoneNumber}`,
-            phone: phoneNumber,
-            email: `${phoneNumber}@shomvob.com`,
-          };
-        }
-
-        // Handle session data and extract user ID
+        // Handle session data
         let sessionInfo: SessionData | null = null;
         if (sessionData) {
           sessionInfo = {
@@ -103,13 +89,38 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           if (sessionData.user && sessionData.user.id) {
             storeUserId(sessionData.user.id);
           }
+
+          // Fetch real profile data using the access token
+          try {
+            const profileData = await fetchEmployeeProfile(phoneNumber, sessionData.access_token);
+            setUser(profileData);
+            storeUserData(profileData);
+            console.log('Profile data fetched during login:', profileData);
+          } catch (error) {
+            console.error('Failed to fetch profile data during login:', error);
+            // Fallback to mock data structure
+            const userData: UserData = {
+              ...mockUser,
+              id: `user-${phoneNumber}`,
+              phone: phoneNumber,
+              email: `${phoneNumber}@shomvob.com`,
+            };
+            setUser(userData);
+            storeUserData(userData);
+          }
         } else {
-          // Store the user ID from userData if no session data
+          // Fallback when no session data
+          const userData: UserData = {
+            ...mockUser,
+            id: `user-${phoneNumber}`,
+            phone: phoneNumber,
+            email: `${phoneNumber}@shomvob.com`,
+          };
+          setUser(userData);
+          storeUserData(userData);
           storeUserId(userData.id);
         }
         
-        storeUserData(userData);
-        setUser(userData);
         return true;
       }
       return false;
