@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
@@ -21,7 +22,7 @@ const Earnings: React.FC = () => {
   const [withdrawAmount, setWithdrawAmount] = useState<number>(5000);
   
   // Calculate the maximum available withdrawal based on 60% of the monthly salary
-  const monthlySalary = user?.monthlySalary || 50000;
+  const monthlySalary = user?.gross_salary || 50000;
   const advancePercentage = user?.availableAdvancePercentage || 60;
   const maxAdvanceAmount = (monthlySalary * advancePercentage) / 100;
   

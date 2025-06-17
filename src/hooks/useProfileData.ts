@@ -10,7 +10,7 @@ export const useProfileData = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const refreshProfile = async () => {
-    if (!user?.phone || !session?.access_token) {
+    if (!user?.contact_number || !session?.access_token) {
       toast({
         title: "Error",
         description: "Unable to refresh profile - missing authentication data",
@@ -21,7 +21,7 @@ export const useProfileData = () => {
 
     setIsRefreshing(true);
     try {
-      const profileData = await fetchEmployeeProfile(user.phone, session.access_token);
+      const profileData = await fetchEmployeeProfile(user.contact_number, session.access_token);
       updateUserProfile(profileData);
       toast({
         description: "Profile data refreshed successfully",

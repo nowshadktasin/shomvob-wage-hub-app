@@ -20,8 +20,8 @@ const ProfileAvatar: React.FC<ProfileAvatarProps> = ({ user }) => {
   return (
     <div className="flex flex-col items-center justify-center">
       <Avatar className="h-24 w-24 mb-2">
-        <AvatarImage src={user?.avatar} alt={user?.name || ""} />
-        <AvatarFallback className="text-xl">{getInitials(user?.name || "")}</AvatarFallback>
+        <AvatarImage src={user?.avatar} alt={user?.full_name || ""} />
+        <AvatarFallback className="text-xl">{getInitials(user?.full_name || "")}</AvatarFallback>
       </Avatar>
     </div>
   );
