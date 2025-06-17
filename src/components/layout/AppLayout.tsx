@@ -125,8 +125,8 @@ const AppLayout: React.FC = () => {
             {i18n.language === 'bn' ? '🇺🇸 EN' : '🇧🇩 বাং'}
           </Button>
           {user && <Avatar className="h-8 w-8">
-              <AvatarImage src={user.avatar} alt={user.name} />
-              <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
+              <AvatarImage src={user.avatar} alt={user.full_name} />
+              <AvatarFallback>{getInitials(user.full_name)}</AvatarFallback>
             </Avatar>}
         </div>
       </header>
@@ -152,11 +152,11 @@ const AppLayout: React.FC = () => {
 
           {user && <div className="border-t p-4 flex items-center">
               <Avatar className="h-9 w-9 mr-3">
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
+                <AvatarImage src={user.avatar} alt={user.full_name} />
+                <AvatarFallback>{getInitials(user.full_name)}</AvatarFallback>
               </Avatar>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium truncate">{user.name}</p>
+                <p className="text-sm font-medium truncate">{user.full_name}</p>
                 <p className="text-xs text-muted-foreground truncate">{user.email}</p>
               </div>
               <Button variant="ghost" size="icon" onClick={handleLogout} className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20">

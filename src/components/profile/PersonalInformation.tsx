@@ -16,33 +16,33 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({ user }) => {
   return (
     <div className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="name">{t("profile.fullName")}</Label>
+        <Label htmlFor="fullName">Full Name</Label>
         <Input
-          id="name"
-          value={user?.name || ""}
-          placeholder={t("profile.fullName")}
+          id="fullName"
+          value={user?.full_name || ""}
+          placeholder="Full Name"
           disabled
           className="bg-gray-50"
         />
       </div>
       
       <div className="space-y-2">
-        <Label htmlFor="email">{t("profile.email")}</Label>
+        <Label htmlFor="email">Email</Label>
         <Input
           id="email"
           type="email"
           value={user?.email || ""}
-          placeholder={t("profile.email")}
+          placeholder="Email"
           disabled
           className="bg-gray-50"
         />
       </div>
       
       <div className="space-y-2">
-        <Label htmlFor="phone">Contact Number</Label>
+        <Label htmlFor="contactNumber">Contact Number</Label>
         <Input
-          id="phone"
-          value={user?.phone || ""}
+          id="contactNumber"
+          value={user?.contact_number || ""}
           placeholder="Contact Number"
           disabled
           className="bg-gray-50"
@@ -51,7 +51,7 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({ user }) => {
       
       <div className="space-y-2">
         <Label htmlFor="gender">Gender</Label>
-        <Select value="male" disabled>
+        <Select value={user?.gender?.toLowerCase() || "male"} disabled>
           <SelectTrigger className="bg-gray-50">
             <SelectValue />
           </SelectTrigger>
@@ -67,7 +67,7 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({ user }) => {
         <Label htmlFor="presentAddress">Present Address</Label>
         <Input
           id="presentAddress"
-          value=""
+          value={user?.present_address || ""}
           placeholder="Present Address"
           disabled
           className="bg-gray-50"
@@ -78,7 +78,7 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({ user }) => {
         <Label htmlFor="permanentAddress">Permanent Address</Label>
         <Input
           id="permanentAddress"
-          value=""
+          value={user?.permanent_address || ""}
           placeholder="Permanent Address"
           disabled
           className="bg-gray-50"

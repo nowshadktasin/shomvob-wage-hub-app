@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -16,7 +17,7 @@ const Dashboard: React.FC = () => {
   nextPayday.setDate(nextPayday.getDate() + 15);
   
   // Calculate available to withdraw based on earnings logic
-  const monthlySalary = user?.monthlySalary || 50000;
+  const monthlySalary = user?.gross_salary || 50000;
   const advancePercentage = user?.availableAdvancePercentage || 60;
   
   // Calculate period progress for consistency with Earnings page
@@ -39,10 +40,13 @@ const Dashboard: React.FC = () => {
     return new Intl.DateTimeFormat('bn-BD').format(date);
   };
 
+  // Get first name from full_name
+  const firstName = user?.full_name?.split(' ')[0] || 'User';
+
   return (
     <div className="container max-w-md mx-auto px-4 py-6">
       <header className="mb-6">
-        <h1 className="text-2xl font-bold mb-1">{t("dashboard.welcome")}, {user?.name.split(' ')[0]}</h1>
+        <h1 className="text-2xl font-bold mb-1">{t("dashboard.welcome")}, {firstName}</h1>
         <p className="text-muted-foreground">{formatDate(new Date())}</p>
       </header>
 

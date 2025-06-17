@@ -1,7 +1,6 @@
 
 import React, { createContext, useState, useContext, useEffect } from "react";
 import { AuthContextType, UserData, SessionData } from "@/types/auth";
-import { mockUser } from "@/constants/auth";
 import { fetchEmployeeProfile } from "@/services/employeeApi";
 import { 
   getStoredAuthData, 
@@ -48,12 +47,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           console.log('Profile data loaded:', profileData);
         })
         .catch((error) => {
-          console.error('Failed to fetch profile data, using mock data:', error);
-          // Fallback to mock data if API fails
+          console.error('Failed to fetch profile data, using fallback data:', error);
+          // Fallback to basic user data if API fails
           const userData: UserData = {
-            ...mockUser,
-            phone: phoneNumber,
+            id: `user-${phoneNumber}`,
+            full_name: "User",
             email: `${phoneNumber}@shomvob.com`,
+            contact_number: phoneNumber,
+            designation: "Employee",
+            department: "General",
+            joining_date: new Date().toISOString().split('T')[0],
+            company_name: "Emission Softwares",
+            gross_salary: 50000,
+            present_address: "",
+            permanent_address: "",
+            gender: "Male",
+            avatar: "",
+            isProfileComplete: false,
+            availableAdvancePercentage: 60,
+            user_role: "employee",
           };
           setUser(userData);
         })
@@ -98,12 +110,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             console.log('Profile data fetched during login:', profileData);
           } catch (error) {
             console.error('Failed to fetch profile data during login:', error);
-            // Fallback to mock data structure
+            // Fallback to basic user data structure
             const userData: UserData = {
-              ...mockUser,
               id: `user-${phoneNumber}`,
-              phone: phoneNumber,
+              full_name: "User",
               email: `${phoneNumber}@shomvob.com`,
+              contact_number: phoneNumber,
+              designation: "Employee",
+              department: "General",
+              joining_date: new Date().toISOString().split('T')[0],
+              company_name: "Emission Softwares",
+              gross_salary: 50000,
+              present_address: "",
+              permanent_address: "",
+              gender: "Male",
+              avatar: "",
+              isProfileComplete: false,
+              availableAdvancePercentage: 60,
+              user_role: "employee",
             };
             setUser(userData);
             storeUserData(userData);
@@ -111,10 +135,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         } else {
           // Fallback when no session data
           const userData: UserData = {
-            ...mockUser,
             id: `user-${phoneNumber}`,
-            phone: phoneNumber,
+            full_name: "User",
             email: `${phoneNumber}@shomvob.com`,
+            contact_number: phoneNumber,
+            designation: "Employee",
+            department: "General",
+            joining_date: new Date().toISOString().split('T')[0],
+            company_name: "Emission Softwares",
+            gross_salary: 50000,
+            present_address: "",
+            permanent_address: "",
+            gender: "Male",
+            avatar: "",
+            isProfileComplete: false,
+            availableAdvancePercentage: 60,
+            user_role: "employee",
           };
           setUser(userData);
           storeUserData(userData);
@@ -143,8 +179,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const updatedUser = { ...user, ...userData };
       setUser(updatedUser);
       // Only update phone number if it's being changed
-      if (userData.phone) {
-        updatePhoneNumber(userData.phone);
+      if (userData.contact_number) {
+        updatePhoneNumber(userData.contact_number);
       }
     }
   };

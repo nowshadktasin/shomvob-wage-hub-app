@@ -15,10 +15,10 @@ const ProfessionalInformation: React.FC<ProfessionalInformationProps> = ({ user 
   return (
     <div className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="company">Company Name</Label>
+        <Label htmlFor="companyName">Company Name</Label>
         <Input
-          id="company"
-          value="Emission Softwares"
+          id="companyName"
+          value={user?.company_name || ""}
           placeholder="Company Name"
           disabled
           className="bg-gray-50"
@@ -40,7 +40,7 @@ const ProfessionalInformation: React.FC<ProfessionalInformationProps> = ({ user 
         <Label htmlFor="designation">Designation</Label>
         <Input
           id="designation"
-          value={user?.position || ""}
+          value={user?.designation || ""}
           placeholder="Designation"
           disabled
           className="bg-gray-50"
@@ -51,7 +51,7 @@ const ProfessionalInformation: React.FC<ProfessionalInformationProps> = ({ user 
         <Label htmlFor="grossSalary">Gross Salary</Label>
         <Input
           id="grossSalary"
-          value={user?.monthlySalary || ""}
+          value={user?.gross_salary || ""}
           placeholder="Gross Salary"
           disabled
           className="bg-gray-50"
@@ -59,11 +59,11 @@ const ProfessionalInformation: React.FC<ProfessionalInformationProps> = ({ user 
       </div>
       
       <div className="space-y-2">
-        <Label htmlFor="joinDate">Joining Date</Label>
+        <Label htmlFor="joiningDate">Joining Date</Label>
         <Input
-          id="joinDate"
+          id="joiningDate"
           type="date"
-          value={user?.joinDate || ""}
+          value={user?.joining_date || ""}
           disabled
           className="bg-gray-50"
         />

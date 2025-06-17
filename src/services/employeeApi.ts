@@ -1,20 +1,22 @@
 
 export interface EmployeeProfileResponse {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  position: string;
-  department: string;
-  joinDate: string;
-  avatar?: string;
-  isProfileComplete: boolean;
-  monthlySalary: number;
-  availableAdvancePercentage: number;
-  user_role?: string;
+  error: number;
+  data: Array<{
+    full_name: string;
+    department: string;
+    designation: string;
+    contact_number: string;
+    gross_salary: number;
+    joining_date: string;
+    company_name: string;
+    email: string;
+    present_address: string;
+    permanent_address: string;
+    gender: string;
+  }>;
 }
 
-export const fetchEmployeeProfile = async (phoneNumber: string, userAccessToken: string): Promise<EmployeeProfileResponse> => {
+export const fetchEmployeeProfile = async (phoneNumber: string, userAccessToken: string): Promise<any> => {
   const apiUrl = 'https://asia-southeast1-shomvob-employer-web-cbbf3.cloudfunctions.net/employerAPIService/employer/api/v2/wagely/employee/details';
   const authToken = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNob212b2JUZWNoQVBJVXNlciIsImlhdCI6MTY1OTg5NTcwOH0.IOdKen62ye0N9WljM_cj3Xffmjs3dXUqoJRZ_1ezd4Q';
 
@@ -33,23 +35,33 @@ export const fetchEmployeeProfile = async (phoneNumber: string, userAccessToken:
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const data = await response.json();
-    console.log('Employee profile data:', data);
+    const responseData: EmployeeProfileResponse = await response.json();
+    console.log('Employee profile data:', responseData);
+
+    if (responseData.error !== 0 || !responseData.data || responseData.data.length === 0) {
+      throw new Error('Invalid response format or no data found');
+    }
+
+    const data = responseData.data[0]; // Get the first employee record
 
     // Map the API response to our UserData interface
     return {
-      id: data.id || `user-${phoneNumber}`,
-      name: data.name || data.fullName || 'User',
+      id: `user-${phoneNumber}`,
+      full_name: data.full_name || 'User',
       email: data.email || `${phoneNumber}@shomvob.com`,
-      phone: data.phone || phoneNumber,
-      position: data.position || data.designation || 'Employee',
+      contact_number: data.contact_number || phoneNumber,
+      designation: data.designation || 'Employee',
       department: data.department || 'General',
-      joinDate: data.joinDate || data.joiningDate || new Date().toISOString().split('T')[0],
-      avatar: data.avatar || data.profilePicture || '',
-      isProfileComplete: data.isProfileComplete || false,
-      monthlySalary: data.monthlySalary || data.salary || 50000,
-      availableAdvancePercentage: data.availableAdvancePercentage || 60,
-      user_role: data.user_role || data.role || 'employee',
+      joining_date: data.joining_date || new Date().toISOString().split('T')[0],
+      company_name: data.company_name || 'Emission Softwares',
+      gross_salary: data.gross_salary || 50000,
+      present_address: data.present_address || '',
+      permanent_address: data.permanent_address || '',
+      gender: data.gender || 'Male',
+      avatar: '',
+      isProfileComplete: true,
+      availableAdvancePercentage: 60,
+      user_role: 'employee',
     };
   } catch (error) {
     console.error('Error fetching employee profile:', error);

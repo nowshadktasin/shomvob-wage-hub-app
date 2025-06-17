@@ -2,15 +2,19 @@
 // User data interface updated to match API response
 export interface UserData {
   id: string;
-  name: string;
+  full_name: string;
   email: string;
-  phone: string;
-  position: string;
+  contact_number: string;
+  designation: string;
   department: string;
-  joinDate: string;
+  joining_date: string;
+  company_name: string;
+  gross_salary: number;
+  present_address: string;
+  permanent_address: string;
+  gender: string;
   avatar?: string; // Made optional to match EmployeeProfileResponse
   isProfileComplete: boolean;
-  monthlySalary: number;
   availableAdvancePercentage: number;
   user_role?: string;
 }

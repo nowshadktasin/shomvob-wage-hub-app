@@ -38,7 +38,7 @@ export const storeSessionData = (sessionData: any) => {
 };
 
 export const storeUserData = (userData: UserData) => {
-  localStorage.setItem(storageKeys.phoneNumber, userData.phone);
+  localStorage.setItem(storageKeys.phoneNumber, userData.contact_number);
   localStorage.setItem(storageKeys.userId, userData.id);
 };
 
