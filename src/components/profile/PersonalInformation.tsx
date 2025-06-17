@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/input";
@@ -38,28 +39,50 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({ user }) => {
       </div>
       
       <div className="space-y-2">
-        <Label htmlFor="phone">{t("profile.phone")}</Label>
+        <Label htmlFor="phone">Contact Number</Label>
         <Input
           id="phone"
-          value="01712345678"
-          placeholder={t("profile.phone")}
+          value={user?.phone || ""}
+          placeholder="Contact Number"
           disabled
           className="bg-gray-50"
         />
       </div>
       
       <div className="space-y-2">
-        <Label htmlFor="gender">{t("profile.gender")}</Label>
+        <Label htmlFor="gender">Gender</Label>
         <Select value="male" disabled>
           <SelectTrigger className="bg-gray-50">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="male">{t("profile.male")}</SelectItem>
-            <SelectItem value="female">{t("profile.female")}</SelectItem>
-            <SelectItem value="other">{t("profile.other")}</SelectItem>
+            <SelectItem value="male">Male</SelectItem>
+            <SelectItem value="female">Female</SelectItem>
+            <SelectItem value="other">Other</SelectItem>
           </SelectContent>
         </Select>
+      </div>
+      
+      <div className="space-y-2">
+        <Label htmlFor="presentAddress">Present Address</Label>
+        <Input
+          id="presentAddress"
+          value=""
+          placeholder="Present Address"
+          disabled
+          className="bg-gray-50"
+        />
+      </div>
+      
+      <div className="space-y-2">
+        <Label htmlFor="permanentAddress">Permanent Address</Label>
+        <Input
+          id="permanentAddress"
+          value=""
+          placeholder="Permanent Address"
+          disabled
+          className="bg-gray-50"
+        />
       </div>
     </div>
   );

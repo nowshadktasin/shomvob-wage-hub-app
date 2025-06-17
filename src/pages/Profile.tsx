@@ -6,10 +6,8 @@ import { useProfileData } from "@/hooks/useProfileData";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { RefreshCw } from "lucide-react";
-import ProfileAvatar from "@/components/profile/ProfileAvatar";
 import PersonalInformation from "@/components/profile/PersonalInformation";
 import ProfessionalInformation from "@/components/profile/ProfessionalInformation";
-import ProfileInfoNotice from "@/components/profile/ProfileInfoNotice";
 
 const Profile: React.FC = () => {
   const { t } = useTranslation();
@@ -32,20 +30,25 @@ const Profile: React.FC = () => {
         </Button>
       </div>
       
-      <Card>
-        <CardHeader className="pb-3">
-          <CardTitle className="text-lg">{t("profile.title")}</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <ProfileAvatar user={user} />
-          
-          <div className="space-y-4">
+      <div className="space-y-6">
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg">Personal Information</CardTitle>
+          </CardHeader>
+          <CardContent>
             <PersonalInformation user={user} />
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg">Professional Information</CardTitle>
+          </CardHeader>
+          <CardContent>
             <ProfessionalInformation user={user} />
-            <ProfileInfoNotice />
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };
