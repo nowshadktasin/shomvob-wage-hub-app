@@ -3,6 +3,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { useEarnings } from "@/contexts/EarningsContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Wallet, ArrowRight } from "lucide-react";
@@ -11,26 +12,19 @@ const Dashboard: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { earningsData } = useEarnings();
 
-  // Mock data for the dashboard
-  const nextPayday = new Date();
-  nextPayday.setDate(nextPayday.getDate() + 15);
+  // Get available amount from API or fallback
+  const availableToWithdraw = earningsData?.claimable_wages || 0;
   
-  // Calculate available to withdraw based on earnings logic
-  const monthlySalary = user?.gross_salary || 50000;
-  const advancePercentage = user?.availableAdvancePercentage || 60;
-  
-  // Calculate period progress for consistency with Earnings page
-  const today = new Date();
-  const dayOfMonth = today.getDate();
-  const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
-  const periodProgress = Math.round((dayOfMonth / daysInMonth) * 100);
-  
-  // Calculate total earned so far this month
-  const totalEarned = monthlySalary * (periodProgress / 100);
-  
-  // Available to withdraw should be the advancePercentage of what has been earned
-  const availableToWithdraw = (totalEarned * advancePercentage) / 100;
+  // Parse next salary date from API or create fallback
+  const nextPayday = earningsData?.next_salary_date 
+    ? new Date(earningsData.next_salary_date)
+    : (() => {
+        const date = new Date();
+        date.setDate(date.getDate() + 15);
+        return date;
+      })();
   
   const formatCurrency = (amount: number) => {
     return `${t("common.currency")} ${amount.toLocaleString()}`;

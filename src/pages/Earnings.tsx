@@ -7,6 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/components/ui/sonner";
+import { useEarnings } from "@/contexts/EarningsContext";
 import { useAuth } from "@/contexts/AuthContext";
 
 // Mock transaction data with different statuses
@@ -19,34 +20,26 @@ const transactions = [
 const Earnings: React.FC = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
-  const [withdrawAmount, setWithdrawAmount] = useState<number>(5000);
+  const { earningsData, loading, refreshEarnings } = useEarnings();
+  const [withdrawAmount, setWithdrawAmount] = useState<number>(1000);
   
-  // Calculate the maximum available withdrawal based on 60% of the monthly salary
-  const monthlySalary = user?.gross_salary || 50000;
-  const advancePercentage = user?.availableAdvancePercentage || 60;
-  const maxAdvanceAmount = (monthlySalary * advancePercentage) / 100;
-  
-  // Progress through the current month
-  const today = new Date();
-  const dayOfMonth = today.getDate();
-  const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
-  const periodProgress = Math.round((dayOfMonth / daysInMonth) * 100);
-  
-  // Calculate total earned so far this month
-  const totalEarned = monthlySalary * (periodProgress / 100);
-  
-  // Available to withdraw should be the advancePercentage of what has been earned
-  const availableToWithdraw = (totalEarned * advancePercentage) / 100;
+  // Get values from API or fallback to defaults
+  const totalEarned = earningsData?.total_earnings_completed || 0;
+  const availableToWithdraw = earningsData?.claimable_wages || 0;
+  const periodProgress = earningsData?.earnings_completed_percentage || 0;
+  const minWages = earningsData?.min_wages || 1000;
+  const serviceChargePercentage = earningsData?.service_charge_percentage || 2;
+  const advancePercentage = earningsData?.claimable_wages_percentage || 60;
   
   // Set initial withdraw amount when component mounts or when availableToWithdraw changes
   useEffect(() => {
-    // Default to 5000 or the maximum available if less than 5000
-    setWithdrawAmount(Math.min(5000, availableToWithdraw));
-  }, [availableToWithdraw]);
+    // Default to minimum wage or the maximum available if less than minimum
+    setWithdrawAmount(Math.min(minWages, availableToWithdraw));
+  }, [availableToWithdraw, minWages]);
   
-  // Calculate service fee (2% of withdrawal amount)
-  const serviceFee = withdrawAmount * 0.02;
-  const totalAmount = withdrawAmount + serviceFee; // Changed from subtraction to addition
+  // Calculate service fee based on API percentage
+  const serviceFee = (withdrawAmount * serviceChargePercentage) / 100;
+  const totalAmount = withdrawAmount + serviceFee;
   
   const handleWithdraw = () => {
     toast.success(t("earnings.withdrawSuccessTitle"), {
@@ -91,9 +84,24 @@ const Earnings: React.FC = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="container max-w-md mx-auto px-4 py-6 font-siliguri">
+        <div className="flex items-center justify-center min-h-64">
+          <div className="text-center">Loading earnings data...</div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="container max-w-md mx-auto px-4 py-6 font-siliguri">
-      <h1 className="text-2xl font-bold mb-6">{t("earnings.title")}</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">{t("earnings.title")}</h1>
+        <Button variant="outline" size="sm" onClick={refreshEarnings} disabled={loading}>
+          Refresh
+        </Button>
+      </div>
       
       <Card className="mb-6">
         <CardHeader className="pb-3">
@@ -138,15 +146,15 @@ const Earnings: React.FC = () => {
           <div className="space-y-2">
             <Slider
               value={[withdrawAmount]}
-              min={1000}
+              min={minWages}
               max={availableToWithdraw}
               step={500}
               onValueChange={(value) => setWithdrawAmount(value[0])}
               className="mb-6"
-              disabled={availableToWithdraw < 1000}
+              disabled={availableToWithdraw < minWages}
             />
             <div className="flex justify-between text-sm">
-              <span>৳1,000</span>
+              <span>৳{minWages.toLocaleString()}</span>
               <span>৳{availableToWithdraw.toLocaleString()}</span>
             </div>
           </div>
@@ -157,7 +165,7 @@ const Earnings: React.FC = () => {
               <span>{formatCurrency(withdrawAmount)}</span>
             </div>
             <div className="flex justify-between mb-2 text-muted-foreground">
-              <span>{t("earnings.serviceFee")}</span>
+              <span>{t("earnings.serviceFee")} ({serviceChargePercentage}%)</span>
               <span>+ {formatCurrency(serviceFee)}</span>
             </div>
             <div className="border-t my-2 pt-2 flex justify-between font-medium">
@@ -170,7 +178,7 @@ const Earnings: React.FC = () => {
           <Button 
             className="w-full" 
             onClick={handleWithdraw}
-            disabled={availableToWithdraw < 1000 || withdrawAmount <= 0}
+            disabled={availableToWithdraw < minWages || withdrawAmount <= 0 || !earningsData?.is_enabled}
           >
             {t("earnings.withdraw")}
           </Button>
