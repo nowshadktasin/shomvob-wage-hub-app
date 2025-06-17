@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useNavigate, Outlet, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -6,7 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Home, User, Wallet, Settings, Menu, LogOut, Languages } from "lucide-react";
+import { Home, User, Wallet, Settings, Menu, LogOut } from "lucide-react";
 
 interface NavItemProps {
   icon: React.ElementType;
@@ -88,8 +89,13 @@ const AppLayout: React.FC = () => {
               <div className="flex flex-col h-full">
                 <div className="h-16 flex items-center justify-between border-b px-6">
                   <span className="font-bold text-lg text-primary">{t("app.name")}</span>
-                  <Button variant="ghost" size="icon" onClick={toggleLanguage}>
-                    <Languages className="h-5 w-5" />
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={toggleLanguage}
+                    className="flex items-center gap-1 px-2 py-1 text-xs"
+                  >
+                    {i18n.language === 'bn' ? '🇺🇸 EN' : '🇧🇩 বাং'}
                   </Button>
                 </div>
 
@@ -110,8 +116,13 @@ const AppLayout: React.FC = () => {
         </div>
         
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" onClick={toggleLanguage}>
-            <Languages className="h-5 w-5" />
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={toggleLanguage}
+            className="flex items-center gap-1 px-2 py-1 text-xs border"
+          >
+            {i18n.language === 'bn' ? '🇺🇸 EN' : '🇧🇩 বাং'}
           </Button>
           {user && <Avatar className="h-8 w-8">
               <AvatarImage src={user.avatar} alt={user.name} />
@@ -125,8 +136,13 @@ const AppLayout: React.FC = () => {
         <aside className="hidden md:flex md:w-64 bg-sidebar border-r flex-col h-screen sticky top-0">
           <div className="h-16 flex items-center justify-between border-b px-6">
             <span className="font-bold text-lg text-primary">{t("app.name")}</span>
-            <Button variant="ghost" size="icon" onClick={toggleLanguage}>
-              <Languages className="h-5 w-5" />
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={toggleLanguage}
+              className="flex items-center gap-1 px-2 py-1 text-xs border"
+            >
+              {i18n.language === 'bn' ? '🇺🇸 EN' : '🇧🇩 বাং'}
             </Button>
           </div>
 

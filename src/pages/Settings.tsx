@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
@@ -67,7 +68,9 @@ const Settings: React.FC = () => {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="language">{t("settings.language")}</Label>
+              <Label htmlFor="language" className="flex items-center gap-2">
+                🌐 {t("settings.language")}
+              </Label>
               <Select
                 value={i18n.language}
                 onValueChange={handleLanguageChange}
@@ -76,8 +79,16 @@ const Settings: React.FC = () => {
                   <SelectValue placeholder={t("settings.selectLanguage")} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="bn">{t("settings.bangla")}</SelectItem>
-                  <SelectItem value="en">{t("settings.english")}</SelectItem>
+                  <SelectItem value="bn" className="flex items-center gap-2">
+                    <span className="flex items-center gap-2">
+                      🇧🇩 {t("settings.bangla")} (বাংলা)
+                    </span>
+                  </SelectItem>
+                  <SelectItem value="en" className="flex items-center gap-2">
+                    <span className="flex items-center gap-2">
+                      🇺🇸 {t("settings.english")} (English)
+                    </span>
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
