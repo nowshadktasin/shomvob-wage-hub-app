@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -52,7 +51,7 @@ export const useLoginFlow = () => {
       const response = await fetch(otpEndpoint, {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${authToken}`,
+          "Authorization": `Bearar ${authToken}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
@@ -119,7 +118,7 @@ export const useLoginFlow = () => {
       const response = await fetch(otpValidateEndpoint, {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${authToken}`,
+          "Authorization": `Bearar ${authToken}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
