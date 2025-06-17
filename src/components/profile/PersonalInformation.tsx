@@ -1,10 +1,9 @@
-
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { UserData } from "@/contexts/AuthContext";
+import { UserData } from "@/types/auth";
 
 interface PersonalInformationProps {
   user: UserData | null;
