@@ -8,7 +8,7 @@ export interface UserData {
   position: string;
   department: string;
   joinDate: string;
-  avatar: string;
+  avatar?: string; // Made optional to match EmployeeProfileResponse
   isProfileComplete: boolean;
   monthlySalary: number;
   availableAdvancePercentage: number;
