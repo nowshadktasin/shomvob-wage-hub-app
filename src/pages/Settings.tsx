@@ -104,21 +104,6 @@ const Settings: React.FC = () => {
         
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-lg">{t("settings.security")}</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <Button
-              variant="outline"
-              className="w-full"
-              onClick={() => navigate("/change-password")}
-            >
-              {t("settings.changePassword")}
-            </Button>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader className="pb-3">
             <CardTitle className="text-lg">{t("settings.about")}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -128,22 +113,6 @@ const Settings: React.FC = () => {
               onClick={() => navigate("/help")}
             >
               {t("settings.helpSupport")}
-            </Button>
-            
-            <Button
-              variant="outline"
-              className="w-full"
-              onClick={() => navigate("/terms")}
-            >
-              {t("settings.termsConditions")}
-            </Button>
-            
-            <Button
-              variant="outline"
-              className="w-full"
-              onClick={() => navigate("/privacy")}
-            >
-              {t("settings.privacyPolicy")}
             </Button>
           </CardContent>
         </Card>
