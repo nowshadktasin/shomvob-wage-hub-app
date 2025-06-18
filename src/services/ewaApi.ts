@@ -1,0 +1,52 @@
+
+export interface EwaRequestResponse {
+  error: number;
+  data: {
+    requested_amount: number;
+    service_charge: number;
+    total_amount: number;
+    status: string;
+    requested_month: number;
+    requested_year: number;
+    updated_at: string;
+  };
+}
+
+export const submitEwaRequest = async (phoneNumber: string, userAccessToken: string, requestedAmount: number): Promise<EwaRequestResponse['data']> => {
+  const apiUrl = 'https://asia-southeast1-shomvob-employer-web-cbbf3.cloudfunctions.net/employerAPIService/employer/api/v2/wagely/employees/ewa-request';
+  const authToken = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNob212b2JUZWNoQVBJVXNlciIsImlhdCI6MTY1OTg5NTcwOH0.IOdKen62ye0N9WljM_cj3Xffmjs3dXUqoJRZ_1ezd4Q';
+
+  // Ensure phone number has country code
+  const formattedPhoneNumber = phoneNumber.startsWith('880') ? phoneNumber : `880${phoneNumber.replace(/^0/, '')}`;
+  
+  const url = `${apiUrl}?phoneNumber=${formattedPhoneNumber}&user_access_token=${userAccessToken}`;
+
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Authorization': authToken,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        requestedAmount: requestedAmount
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const responseData: EwaRequestResponse = await response.json();
+    console.log('EWA request response:', responseData);
+
+    if (responseData.error !== 0) {
+      throw new Error('Invalid response format or error in API response');
+    }
+
+    return responseData.data;
+  } catch (error) {
+    console.error('Error submitting EWA request:', error);
+    throw error;
+  }
+};

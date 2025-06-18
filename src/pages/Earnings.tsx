@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "@/components/ui/sonner";
 import { useEarnings } from "@/contexts/EarningsContext";
 import { useAuth } from "@/contexts/AuthContext";
+import { submitEwaRequest } from "@/services/ewaApi";
 
 // Mock transaction data with different statuses
 const transactions = [
@@ -19,9 +20,10 @@ const transactions = [
 
 const Earnings: React.FC = () => {
   const { t } = useTranslation();
-  const { user } = useAuth();
+  const { user, session } = useAuth();
   const { earningsData, loading, refreshEarnings } = useEarnings();
   const [withdrawAmount, setWithdrawAmount] = useState<number>(1000);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   // Get values from API or fallback to defaults
   const totalEarned = earningsData?.total_earnings_completed || 0;
@@ -41,10 +43,36 @@ const Earnings: React.FC = () => {
   const serviceFee = (withdrawAmount * serviceChargePercentage) / 100;
   const totalAmount = withdrawAmount + serviceFee;
   
-  const handleWithdraw = () => {
-    toast.success(t("earnings.withdrawSuccessTitle"), {
-      description: t("earnings.withdrawSuccessDescription", { amount: withdrawAmount }),
-    });
+  const handleWithdraw = async () => {
+    if (!user?.contact_number || !session?.access_token) {
+      toast.error("Authentication Error", {
+        description: "Please log in again to make a withdrawal request.",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const response = await submitEwaRequest(
+        user.contact_number,
+        session.access_token,
+        withdrawAmount
+      );
+
+      toast.success(t("earnings.withdrawSuccessTitle"), {
+        description: `Request submitted for ${formatCurrency(response.requested_amount)}. Status: ${response.status}`,
+      });
+
+      // Refresh earnings data after successful request
+      await refreshEarnings();
+    } catch (error) {
+      console.error('Withdrawal request failed:', error);
+      toast.error("Request Failed", {
+        description: "Failed to submit withdrawal request. Please try again.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const formatCurrency = (amount: number) => {
@@ -151,7 +179,7 @@ const Earnings: React.FC = () => {
               step={500}
               onValueChange={(value) => setWithdrawAmount(value[0])}
               className="mb-6"
-              disabled={availableToWithdraw < minWages}
+              disabled={availableToWithdraw < minWages || isSubmitting}
             />
             <div className="flex justify-between text-sm">
               <span>৳{minWages.toLocaleString()}</span>
@@ -178,9 +206,9 @@ const Earnings: React.FC = () => {
           <Button 
             className="w-full" 
             onClick={handleWithdraw}
-            disabled={availableToWithdraw < minWages || withdrawAmount <= 0 || !earningsData?.is_enabled}
+            disabled={availableToWithdraw < minWages || withdrawAmount <= 0 || !earningsData?.is_enabled || isSubmitting}
           >
-            {t("earnings.withdraw")}
+            {isSubmitting ? "Submitting..." : t("earnings.withdraw")}
           </Button>
         </CardFooter>
       </Card>
