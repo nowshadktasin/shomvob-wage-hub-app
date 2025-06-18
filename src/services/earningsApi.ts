@@ -19,7 +19,7 @@ export const fetchEarnedWages = async (phoneNumber: string, userAccessToken: str
   const authToken = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNob212b2JUZWNoQVBJVXNlciIsImlhdCI6MTY1OTg5NTcwOH0.IOdKen62ye0N9WljM_cj3Xffmjs3dXUqoJRZ_1ezd4Q';
 
   // Ensure phone number has country code
-  const formattedPhoneNumber = phoneNumber.startsWith('880') ? phoneNumber : `880${phoneNumber.replace(/^0/, '')}`;
+  const formattedPhoneNumber = phoneNumber.split("88")[1];
   
   const url = `${apiUrl}?phoneNumber=${formattedPhoneNumber}&user_access_token=${userAccessToken}`;
 
