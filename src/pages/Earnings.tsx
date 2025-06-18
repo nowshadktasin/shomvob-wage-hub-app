@@ -5,16 +5,11 @@ import { toast } from "@/components/ui/sonner";
 import { useEarnings } from "@/contexts/EarningsContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { submitEwaRequest } from "@/services/ewaApi";
+import { fetchTransactionHistory } from "@/services/transactionHistoryApi";
 import EarningsHeader from "@/components/earnings/EarningsHeader";
 import EarningsSummaryCard from "@/components/earnings/EarningsSummaryCard";
 import WithdrawalCard from "@/components/earnings/WithdrawalCard";
 import TransactionHistory from "@/components/earnings/TransactionHistory";
-
-const transactions = [
-  { id: 1, date: new Date(2025, 4, 5), amount: 5000, status: "completed" },
-  { id: 2, date: new Date(2025, 3, 20), amount: 7000, status: "pending" },
-  { id: 3, date: new Date(2025, 3, 5), amount: 3000, status: "rejected" },
-];
 
 const Earnings: React.FC = () => {
   const { t } = useTranslation();
@@ -22,6 +17,8 @@ const Earnings: React.FC = () => {
   const { earningsData, loading, refreshEarnings } = useEarnings();
   const [withdrawAmount, setWithdrawAmount] = useState<number>(1000);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [transactions, setTransactions] = useState<any[]>([]);
+  const [transactionsLoading, setTransactionsLoading] = useState(false);
   
   const totalEarned = earningsData?.total_earnings_completed || 0;
   const availableToWithdraw = earningsData?.claimable_wages || 0;
@@ -33,6 +30,33 @@ const Earnings: React.FC = () => {
   useEffect(() => {
     setWithdrawAmount(Math.min(minWages, availableToWithdraw));
   }, [availableToWithdraw, minWages]);
+
+  const loadTransactionHistory = async () => {
+    if (!user?.contact_number || !session?.access_token) {
+      return;
+    }
+
+    setTransactionsLoading(true);
+    try {
+      const historyData = await fetchTransactionHistory(
+        user.contact_number,
+        session.access_token
+      );
+      setTransactions(historyData);
+      console.log('Transaction history loaded:', historyData);
+    } catch (error) {
+      console.error('Failed to fetch transaction history:', error);
+      // Don't show error toast for transaction history as it's not critical
+    } finally {
+      setTransactionsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (user?.contact_number && session?.access_token) {
+      loadTransactionHistory();
+    }
+  }, [user?.contact_number, session?.access_token]);
   
   const handleWithdraw = async () => {
     if (!user?.contact_number || !session?.access_token) {
@@ -55,6 +79,7 @@ const Earnings: React.FC = () => {
       });
 
       await refreshEarnings();
+      await loadTransactionHistory(); // Refresh transaction history after successful withdrawal
     } catch (error) {
       console.error('Withdrawal request failed:', error);
       toast.error("Request Failed", {
@@ -65,12 +90,13 @@ const Earnings: React.FC = () => {
     }
   };
 
-  const formatCurrency = (amount: number) => {
-    return `${t("common.currency")} ${amount.toLocaleString()}`;
+  const handleRefresh = async () => {
+    await refreshEarnings();
+    await loadTransactionHistory();
   };
 
-  const formatDate = (date: Date) => {
-    return new Intl.DateTimeFormat(t("locale", { defaultValue: "bn-BD" })).format(date);
+  const formatCurrency = (amount: number) => {
+    return `${t("common.currency")} ${amount.toLocaleString()}`;
   };
 
   if (loading) {
@@ -85,7 +111,7 @@ const Earnings: React.FC = () => {
 
   return (
     <div className="container max-w-md mx-auto px-4 py-6 font-siliguri">
-      <EarningsHeader onRefresh={refreshEarnings} loading={loading} />
+      <EarningsHeader onRefresh={handleRefresh} loading={loading || transactionsLoading} />
       
       <EarningsSummaryCard
         periodProgress={periodProgress}
@@ -110,7 +136,6 @@ const Earnings: React.FC = () => {
       <TransactionHistory
         transactions={transactions}
         formatCurrency={formatCurrency}
-        formatDate={formatDate}
       />
     </div>
   );
