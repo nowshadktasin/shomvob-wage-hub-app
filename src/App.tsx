@@ -10,7 +10,6 @@ import AppLayout from "./components/layout/AppLayout";
 
 // Import pages
 import Login from "./pages/Login";
-import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import Earnings from "./pages/Earnings";
@@ -51,7 +50,6 @@ const App = () => {
               <Routes>
                 {/* Public routes */}
                 <Route path="/" element={<Login />} />
-                <Route path="/register" element={<Register />} />
                 
                 {/* Protected routes with AppLayout */}
                 <Route path="/" element={
