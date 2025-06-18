@@ -79,7 +79,12 @@ const Earnings: React.FC = () => {
       });
 
       await refreshEarnings();
-      await loadTransactionHistory(); // Refresh transaction history after successful withdrawal
+      
+      // Wait a bit before refreshing transaction history to allow backend processing
+      setTimeout(async () => {
+        await loadTransactionHistory();
+      }, 2000);
+      
     } catch (error) {
       console.error('Withdrawal request failed:', error);
       toast.error("Request Failed", {
@@ -95,7 +100,10 @@ const Earnings: React.FC = () => {
     await loadTransactionHistory();
   };
 
-  const formatCurrency = (amount: number) => {
+  const formatCurrency = (amount: number | undefined) => {
+    if (amount === undefined || amount === null) {
+      return `${t("common.currency")} 0`;
+    }
     return `${t("common.currency")} ${amount.toLocaleString()}`;
   };
 

@@ -16,7 +16,7 @@ interface Transaction {
 
 interface TransactionHistoryProps {
   transactions: Transaction[];
-  formatCurrency: (amount: number) => string;
+  formatCurrency: (amount: number | undefined) => string;
 }
 
 const TransactionHistory: React.FC<TransactionHistoryProps> = ({
