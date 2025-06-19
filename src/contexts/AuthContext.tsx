@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useContext, useEffect } from "react";
 import { AuthContextType, UserData, SessionData } from "@/types/auth";
 import { fetchEmployeeProfile } from "@/services/employeeApi";
@@ -7,6 +6,7 @@ import {
   storeSessionData, 
   storeUserData, 
   storeUserId, 
+  storeEmployeeId,
   clearAuthStorage, 
   updatePhoneNumber 
 } from "@/utils/localStorage";
@@ -27,7 +27,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const { phoneNumber, accessToken, tokenType, expiresIn, expiresAt, refreshToken } = getStoredAuthData();
+    const { phoneNumber, accessToken, tokenType, expiresIn, expiresAt, refreshToken, employeeId } = getStoredAuthData();
     
     if (phoneNumber && accessToken) {
       // Reconstruct session object
@@ -44,13 +44,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       fetchEmployeeProfile(phoneNumber, accessToken)
         .then((profileData) => {
           setUser(profileData);
+          // Store the employee ID from the API response
+          if (profileData.id) {
+            storeEmployeeId(profileData.id);
+          }
           console.log('Profile data loaded:', profileData);
         })
         .catch((error) => {
           console.error('Failed to fetch profile data, using fallback data:', error);
           // Fallback to basic user data if API fails
           const userData: UserData = {
-            id: `user-${phoneNumber}`,
+            id: employeeId || `user-${phoneNumber}`,
             full_name: "User",
             email: `${phoneNumber}@shomvob.com`,
             contact_number: phoneNumber,
@@ -107,6 +111,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             const profileData = await fetchEmployeeProfile(phoneNumber, sessionData.access_token);
             setUser(profileData);
             storeUserData(profileData);
+            // Store the employee ID from the API response
+            if (profileData.id) {
+              storeEmployeeId(profileData.id);
+            }
             console.log('Profile data fetched during login:', profileData);
           } catch (error) {
             console.error('Failed to fetch profile data during login:', error);
@@ -181,6 +189,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Only update phone number if it's being changed
       if (userData.contact_number) {
         updatePhoneNumber(userData.contact_number);
+      }
+      // Store employee ID if it's being updated
+      if (userData.id) {
+        storeEmployeeId(userData.id);
       }
     }
   };

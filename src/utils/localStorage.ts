@@ -4,6 +4,7 @@ import { UserData, SessionData } from "@/types/auth";
 export const storageKeys = {
   phoneNumber: "phoneNumber",
   userId: "userId",
+  employeeId: "employeeId", // Add new key for employee ID from API
   accessToken: "access_token",
   tokenType: "token_type",
   expiresIn: "expires_in",
@@ -18,6 +19,7 @@ export const getStoredAuthData = () => {
   const expiresIn = localStorage.getItem(storageKeys.expiresIn);
   const expiresAt = localStorage.getItem(storageKeys.expiresAt);
   const refreshToken = localStorage.getItem(storageKeys.refreshToken);
+  const employeeId = localStorage.getItem(storageKeys.employeeId);
 
   return {
     phoneNumber,
@@ -26,6 +28,7 @@ export const getStoredAuthData = () => {
     expiresIn,
     expiresAt,
     refreshToken,
+    employeeId,
   };
 };
 
@@ -40,10 +43,16 @@ export const storeSessionData = (sessionData: any) => {
 export const storeUserData = (userData: UserData) => {
   localStorage.setItem(storageKeys.phoneNumber, userData.contact_number);
   localStorage.setItem(storageKeys.userId, userData.id);
+  // Store employee ID separately if it's different from the generic user ID
+  localStorage.setItem(storageKeys.employeeId, userData.id);
 };
 
 export const storeUserId = (userId: string) => {
   localStorage.setItem(storageKeys.userId, userId);
+};
+
+export const storeEmployeeId = (employeeId: string) => {
+  localStorage.setItem(storageKeys.employeeId, employeeId);
 };
 
 export const clearAuthStorage = () => {

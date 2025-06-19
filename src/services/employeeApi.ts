@@ -2,6 +2,7 @@
 export interface EmployeeProfileResponse {
   error: number;
   data: Array<{
+    id: number;
     full_name: string;
     department: string;
     designation: string;
@@ -44,9 +45,9 @@ export const fetchEmployeeProfile = async (phoneNumber: string, userAccessToken:
 
     const data = responseData.data[0]; // Get the first employee record
 
-    // Map the API response to our UserData interface
+    // Map the API response to our UserData interface, using the API id
     return {
-      id: `user-${phoneNumber}`,
+      id: data.id.toString(), // Convert number to string for consistency
       full_name: data.full_name || 'User',
       email: data.email || `${phoneNumber}@shomvob.com`,
       contact_number: data.contact_number || phoneNumber,
