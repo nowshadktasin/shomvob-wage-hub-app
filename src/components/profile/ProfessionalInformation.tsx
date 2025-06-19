@@ -15,51 +15,51 @@ const ProfessionalInformation: React.FC<ProfessionalInformationProps> = ({ user 
   return (
     <div className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="companyName">Company Name</Label>
+        <Label htmlFor="companyName">{t("workplace.company")}</Label>
         <Input
           id="companyName"
           value={user?.company_name || ""}
-          placeholder="Company Name"
+          placeholder={t("workplace.company")}
           disabled
           className="bg-gray-50"
         />
       </div>
       
       <div className="space-y-2">
-        <Label htmlFor="department">Department</Label>
+        <Label htmlFor="department">{t("workplace.department")}</Label>
         <Input
           id="department"
           value={user?.department || ""}
-          placeholder="Department"
+          placeholder={t("workplace.department")}
           disabled
           className="bg-gray-50"
         />
       </div>
       
       <div className="space-y-2">
-        <Label htmlFor="designation">Designation</Label>
+        <Label htmlFor="designation">{t("workplace.position")}</Label>
         <Input
           id="designation"
           value={user?.designation || ""}
-          placeholder="Designation"
+          placeholder={t("workplace.position")}
           disabled
           className="bg-gray-50"
         />
       </div>
       
       <div className="space-y-2">
-        <Label htmlFor="grossSalary">Gross Salary</Label>
+        <Label htmlFor="grossSalary">{t("workplace.monthlySalary")}</Label>
         <Input
           id="grossSalary"
           value={user?.gross_salary || ""}
-          placeholder="Gross Salary"
+          placeholder={t("workplace.monthlySalary")}
           disabled
           className="bg-gray-50"
         />
       </div>
       
       <div className="space-y-2">
-        <Label htmlFor="joiningDate">Joining Date</Label>
+        <Label htmlFor="joiningDate">{t("workplace.joinDate")}</Label>
         <Input
           id="joiningDate"
           type="date"

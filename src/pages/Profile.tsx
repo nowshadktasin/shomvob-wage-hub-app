@@ -39,14 +39,14 @@ const Profile: React.FC = () => {
             className="flex-1"
             onClick={() => setActiveTab('personal')}
           >
-            Personal Information
+            {t("profile.personalInfo")}
           </Button>
           <Button
             variant={activeTab === 'professional' ? 'default' : 'outline'}
             className="flex-1"
             onClick={() => setActiveTab('professional')}
           >
-            Professional Information
+            {t("profile.professionalInfo")}
           </Button>
         </div>
 
@@ -54,7 +54,7 @@ const Profile: React.FC = () => {
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-lg">
-              {activeTab === 'personal' ? 'Personal Information' : 'Professional Information'}
+              {activeTab === 'personal' ? t("profile.personalInfo") : t("profile.professionalInfo")}
             </CardTitle>
           </CardHeader>
           <CardContent>
