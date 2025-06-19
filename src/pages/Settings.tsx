@@ -81,12 +81,12 @@ const Settings: React.FC = () => {
                 <SelectContent>
                   <SelectItem value="bn" className="flex items-center gap-2">
                     <span className="flex items-center gap-2">
-                      🇧🇩 {t("settings.bangla")} (বাংলা)
+                      🇧🇩 বাংলা (Bangla)
                     </span>
                   </SelectItem>
                   <SelectItem value="en" className="flex items-center gap-2">
                     <span className="flex items-center gap-2">
-                      🇺🇸 {t("settings.english")} (English)
+                      🇺🇸 English (English)
                     </span>
                   </SelectItem>
                 </SelectContent>
