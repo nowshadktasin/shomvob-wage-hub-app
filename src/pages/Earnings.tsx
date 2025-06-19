@@ -31,7 +31,7 @@ const Earnings: React.FC = () => {
   }, [availableToWithdraw, minWages]);
 
   const loadTransactionHistory = async () => {
-    if (!user?.contact_number || !session?.access_token) {
+    if (!user?.contact_number || !session?.access_token || !user?.id) {
       return;
     }
 
@@ -39,7 +39,8 @@ const Earnings: React.FC = () => {
     try {
       const historyData = await fetchTransactionHistory(
         user.contact_number,
-        session.access_token
+        session.access_token,
+        user.id
       );
       setTransactions(historyData);
       console.log('Transaction history loaded:', historyData);
@@ -52,10 +53,10 @@ const Earnings: React.FC = () => {
   };
 
   useEffect(() => {
-    if (user?.contact_number && session?.access_token) {
+    if (user?.contact_number && session?.access_token && user?.id) {
       loadTransactionHistory();
     }
-  }, [user?.contact_number, session?.access_token]);
+  }, [user?.contact_number, session?.access_token, user?.id]);
   
   const handleWithdraw = async () => {
     if (!user?.contact_number || !session?.access_token || !user?.id) {
