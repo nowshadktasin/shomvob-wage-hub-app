@@ -7,9 +7,10 @@ import { useEarnings } from "@/contexts/EarningsContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Wallet, ArrowRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const Dashboard: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { user } = useAuth();
   const { earningsData } = useEarnings();
@@ -31,7 +32,13 @@ const Dashboard: React.FC = () => {
   };
 
   const formatDate = (date: Date) => {
-    return new Intl.DateTimeFormat('bn-BD').format(date);
+    // Use proper locale based on selected language
+    const locale = i18n.language === 'bn' ? 'bn-BD' : 'en-US';
+    return new Intl.DateTimeFormat(locale, {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric'
+    }).format(date);
   };
 
   // Get display name from full_name
@@ -46,12 +53,15 @@ const Dashboard: React.FC = () => {
   };
 
   const displayName = user?.full_name ? getDisplayName(user.full_name) : 'User';
+  const isBangla = i18n.language === 'bn';
 
   return (
-    <div className="container max-w-md mx-auto px-4 py-6">
+    <div className={cn("container max-w-md mx-auto px-4 py-6", isBangla && "font-siliguri")}>
       <header className="mb-6">
         <h1 className="text-2xl font-bold mb-1">{t("dashboard.welcome")}, {displayName}</h1>
-        <p className="text-muted-foreground">{formatDate(new Date())}</p>
+        <p className={cn("text-muted-foreground", isBangla ? "font-sans" : "")}>
+          {formatDate(new Date())}
+        </p>
       </header>
 
       <Card className="mb-6 overflow-hidden">
@@ -61,7 +71,9 @@ const Dashboard: React.FC = () => {
           <div className="flex justify-between items-center mt-4">
             <div>
               <p className="text-xs opacity-80">{t("earnings.nextSalary")}</p>
-              <p className="font-medium">{formatDate(nextPayday)}</p>
+              <p className={cn("font-medium", isBangla ? "font-sans" : "")}>
+                {formatDate(nextPayday)}
+              </p>
             </div>
             <Button 
               variant="secondary" 
