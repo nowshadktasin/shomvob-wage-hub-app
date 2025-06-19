@@ -39,14 +39,14 @@ export const EarningsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [loading, setLoading] = useState(false);
 
   const refreshEarnings = async () => {
-    if (!user?.contact_number || !session?.access_token) {
-      console.log('Cannot fetch earnings: missing authentication data');
+    if (!user?.contact_number || !session?.access_token || !user?.id) {
+      console.log('Cannot fetch earnings: missing authentication data or user ID');
       return;
     }
 
     setLoading(true);
     try {
-      const data = await fetchEarnedWages(user.contact_number, session.access_token);
+      const data = await fetchEarnedWages(user.contact_number, session.access_token, user.id);
       setEarningsData(data);
       console.log('Earnings data loaded:', data);
     } catch (error) {
@@ -62,10 +62,10 @@ export const EarningsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   useEffect(() => {
-    if (user?.contact_number && session?.access_token) {
+    if (user?.contact_number && session?.access_token && user?.id) {
       refreshEarnings();
     }
-  }, [user?.contact_number, session?.access_token]);
+  }, [user?.contact_number, session?.access_token, user?.id]);
 
   return (
     <EarningsContext.Provider value={{ earningsData, loading, refreshEarnings }}>
