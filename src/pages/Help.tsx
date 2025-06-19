@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { ArrowLeft, Mail, Phone, MessageCircle, HelpCircle } from "lucide-react";
+import { ArrowLeft, Mail, Phone, HelpCircle } from "lucide-react";
 
 const Help: React.FC = () => {
   const { t } = useTranslation();
@@ -100,17 +100,6 @@ const Help: React.FC = () => {
                 <div className="text-left">
                   <div className="font-medium">{t("help.contact.phone")}</div>
                   <div className="text-sm text-muted-foreground">+880 1234-567890</div>
-                </div>
-              </Button>
-
-              <Button
-                variant="outline"
-                className="flex items-center gap-3 h-auto p-4 justify-start"
-              >
-                <MessageCircle className="h-5 w-5 text-purple-500" />
-                <div className="text-left">
-                  <div className="font-medium">{t("help.contact.chat")}</div>
-                  <div className="text-sm text-muted-foreground">{t("help.contact.chatHours")}</div>
                 </div>
               </Button>
             </div>
