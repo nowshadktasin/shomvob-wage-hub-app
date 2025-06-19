@@ -44,7 +44,7 @@ const WithdrawalCard: React.FC<WithdrawalCardProps> = ({
             value={[withdrawAmount]}
             min={minWages}
             max={availableToWithdraw}
-            step={500}
+            step={100}
             onValueChange={(value) => onWithdrawAmountChange(value[0])}
             className="mb-6"
             disabled={availableToWithdraw < minWages || isSubmitting}
