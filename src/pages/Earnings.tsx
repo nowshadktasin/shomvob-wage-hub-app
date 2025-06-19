@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "@/components/ui/sonner";
@@ -59,7 +58,7 @@ const Earnings: React.FC = () => {
   }, [user?.contact_number, session?.access_token]);
   
   const handleWithdraw = async () => {
-    if (!user?.contact_number || !session?.access_token) {
+    if (!user?.contact_number || !session?.access_token || !user?.id) {
       toast.error("Authentication Error", {
         description: "Please log in again to make a withdrawal request.",
       });
@@ -71,7 +70,8 @@ const Earnings: React.FC = () => {
       const response = await submitEwaRequest(
         user.contact_number,
         session.access_token,
-        withdrawAmount
+        withdrawAmount,
+        user.id
       );
 
       toast.success(t("earnings.withdrawSuccessTitle"), {
