@@ -95,7 +95,7 @@ const AppLayout: React.FC = () => {
                     onClick={toggleLanguage}
                     className="flex items-center gap-1 px-2 py-1 text-xs"
                   >
-                    {i18n.language === 'bn' ? '🇺🇸 EN' : '🇧🇩 বাং'}
+                    {i18n.language === 'bn' ? '🇧🇩 বাং' : '🇺🇸 EN'}
                   </Button>
                 </div>
 
@@ -122,7 +122,7 @@ const AppLayout: React.FC = () => {
             onClick={toggleLanguage}
             className="flex items-center gap-1 px-2 py-1 text-xs border"
           >
-            {i18n.language === 'bn' ? '🇺🇸 EN' : '🇧🇩 বাং'}
+            {i18n.language === 'bn' ? '🇧🇩 বাং' : '🇺🇸 EN'}
           </Button>
           {user && <Avatar className="h-8 w-8">
               <AvatarImage src={user.avatar} alt={user.full_name} />
@@ -142,7 +142,7 @@ const AppLayout: React.FC = () => {
               onClick={toggleLanguage}
               className="flex items-center gap-1 px-2 py-1 text-xs border"
             >
-              {i18n.language === 'bn' ? '🇺🇸 EN' : '🇧🇩 বাং'}
+              {i18n.language === 'bn' ? '🇧🇩 বাং' : '🇺🇸 EN'}
             </Button>
           </div>
 
