@@ -18,15 +18,17 @@ i18n
         translation: bnTranslation
       }
     },
-    lng: 'bn', // Default language set to Bangla
-    fallbackLng: 'en',
+    lng: undefined, // Let the detector determine the language
+    fallbackLng: 'bn', // Default fallback to Bangla
     debug: true, // Enable debug to see if translations are working
     interpolation: {
       escapeValue: false
     },
     detection: {
       order: ['localStorage', 'navigator', 'htmlTag'],
-      caches: ['localStorage']
+      lookupLocalStorage: 'i18nextLng',
+      caches: ['localStorage'],
+      checkWhitelist: true
     }
   });
 
