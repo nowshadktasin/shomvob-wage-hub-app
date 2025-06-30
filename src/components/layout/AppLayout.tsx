@@ -87,16 +87,8 @@ const AppLayout: React.FC = () => {
             </SheetTrigger>
             <SheetContent side="left" className="w-64 p-0">
               <div className="flex flex-col h-full">
-                <div className="h-16 flex items-center justify-between border-b px-6">
+                <div className="h-16 flex items-center justify-center border-b px-6">
                   <span className="font-bold text-lg text-primary">{t("app.name")}</span>
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    onClick={toggleLanguage}
-                    className="flex items-center gap-1 px-2 py-1 text-xs"
-                  >
-                    {i18n.language === 'bn' ? '🇧🇩 বাং' : '🇺🇸 EN'}
-                  </Button>
                 </div>
 
                 <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
