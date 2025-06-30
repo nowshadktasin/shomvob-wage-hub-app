@@ -27,7 +27,14 @@ const Earnings: React.FC = () => {
   const advancePercentage = earningsData?.claimable_wages_percentage || 60;
   
   useEffect(() => {
-    setWithdrawAmount(Math.min(minWages, availableToWithdraw));
+    if (availableToWithdraw > 0 && minWages > 0) {
+      // Set initial amount to be visually inward from minimum (25% between min and max)
+      const range = availableToWithdraw - minWages;
+      const defaultAmount = Math.max(minWages, minWages + Math.min(range * 0.25, 1000));
+      setWithdrawAmount(Math.round(defaultAmount / 100) * 100); // Round to nearest 100
+    } else {
+      setWithdrawAmount(minWages);
+    }
   }, [availableToWithdraw, minWages]);
 
   const loadTransactionHistory = async () => {

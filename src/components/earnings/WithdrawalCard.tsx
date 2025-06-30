@@ -40,16 +40,18 @@ const WithdrawalCard: React.FC<WithdrawalCardProps> = ({
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-2">
-          <Slider
-            value={[withdrawAmount]}
-            min={minWages}
-            max={availableToWithdraw}
-            step={100}
-            onValueChange={(value) => onWithdrawAmountChange(value[0])}
-            className="mb-6"
-            disabled={availableToWithdraw < minWages || isSubmitting}
-          />
-          <div className="flex justify-between text-sm">
+          <div className="px-4">
+            <Slider
+              value={[withdrawAmount]}
+              min={minWages}
+              max={availableToWithdraw}
+              step={100}
+              onValueChange={(value) => onWithdrawAmountChange(value[0])}
+              className="mb-6"
+              disabled={availableToWithdraw < minWages || isSubmitting}
+            />
+          </div>
+          <div className="flex justify-between text-sm px-2">
             <span>৳{minWages.toLocaleString()}</span>
             <span>৳{availableToWithdraw.toLocaleString()}</span>
           </div>
