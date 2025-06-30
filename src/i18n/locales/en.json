@@ -50,7 +50,7 @@
     "requestAmount": "Request Amount",
     "serviceFee": "Service Fee",
     "totalAmount": "Total Amount",
-    "withdraw": "Withdraw Now",
+    "withdraw": "Request",
     "history": "Transaction History",
     "nextSalary": "Next Salary Date",
     "payrollDate": "Payroll Date",
@@ -164,7 +164,6 @@
       "description": "Need more help? Get in touch with our support team",
       "email": "Email Support",
       "phone": "Phone Support",
-      "chat": "Live Chat",
       "chatHours": "Available 9 AM - 6 PM"
     },
     "app": {
