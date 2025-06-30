@@ -12,6 +12,7 @@ interface WithdrawalCardProps {
   serviceChargePercentage: number;
   isSubmitting: boolean;
   isEnabled: boolean;
+  hasPendingRequest: boolean;
   onWithdrawAmountChange: (value: number) => void;
   onWithdraw: () => void;
   formatCurrency: (amount: number) => string;
@@ -24,6 +25,7 @@ const WithdrawalCard: React.FC<WithdrawalCardProps> = ({
   serviceChargePercentage,
   isSubmitting,
   isEnabled,
+  hasPendingRequest,
   onWithdrawAmountChange,
   onWithdraw,
   formatCurrency,
@@ -32,6 +34,19 @@ const WithdrawalCard: React.FC<WithdrawalCardProps> = ({
   
   const serviceFee = (withdrawAmount * serviceChargePercentage) / 100;
   const totalAmount = withdrawAmount + serviceFee;
+
+  const getButtonText = () => {
+    if (isSubmitting) return "Submitting...";
+    if (hasPendingRequest) return "Request Pending";
+    return t("earnings.withdraw");
+  };
+
+  const isButtonDisabled = 
+    availableToWithdraw < minWages || 
+    withdrawAmount <= 0 || 
+    !isEnabled || 
+    isSubmitting || 
+    hasPendingRequest;
 
   return (
     <Card className="mb-6">
@@ -48,7 +63,7 @@ const WithdrawalCard: React.FC<WithdrawalCardProps> = ({
               step={100}
               onValueChange={(value) => onWithdrawAmountChange(value[0])}
               className="mb-6"
-              disabled={availableToWithdraw < minWages || isSubmitting}
+              disabled={availableToWithdraw < minWages || isSubmitting || hasPendingRequest}
             />
           </div>
           <div className="flex justify-between text-sm px-2">
@@ -71,14 +86,22 @@ const WithdrawalCard: React.FC<WithdrawalCardProps> = ({
             <span>{formatCurrency(totalAmount)}</span>
           </div>
         </div>
+
+        {hasPendingRequest && (
+          <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-md">
+            <p className="text-sm text-yellow-800">
+              You have a pending request. Please wait for it to be processed before making a new request.
+            </p>
+          </div>
+        )}
       </CardContent>
       <CardFooter>
         <Button 
           className="w-full" 
           onClick={onWithdraw}
-          disabled={availableToWithdraw < minWages || withdrawAmount <= 0 || !isEnabled || isSubmitting}
+          disabled={isButtonDisabled}
         >
-          {isSubmitting ? "Submitting..." : t("earnings.withdraw")}
+          {getButtonText()}
         </Button>
       </CardFooter>
     </Card>

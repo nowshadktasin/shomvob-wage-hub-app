@@ -26,6 +26,11 @@ const Earnings: React.FC = () => {
   const serviceChargePercentage = earningsData?.service_charge_percentage || 2;
   const advancePercentage = earningsData?.claimable_wages_percentage || 60;
   
+  // Check if there are any pending requests
+  const hasPendingRequest = transactions.some(transaction => 
+    transaction.status.toLowerCase() === 'pending'
+  );
+  
   useEffect(() => {
     if (availableToWithdraw > 0 && minWages > 0) {
       // Set initial amount to be visually inward from minimum (25% between min and max)
@@ -144,6 +149,7 @@ const Earnings: React.FC = () => {
         serviceChargePercentage={serviceChargePercentage}
         isSubmitting={isSubmitting}
         isEnabled={earningsData?.is_enabled || false}
+        hasPendingRequest={hasPendingRequest}
         onWithdrawAmountChange={setWithdrawAmount}
         onWithdraw={handleWithdraw}
         formatCurrency={formatCurrency}
