@@ -32,13 +32,11 @@ const Dashboard: React.FC = () => {
   };
 
   const formatDate = (date: Date) => {
-    // Use proper locale based on selected language
-    const locale = i18n.language === 'bn' ? 'bn-BD' : 'en-US';
-    return new Intl.DateTimeFormat(locale, {
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric'
-    }).format(date);
+    // Format as dd-mm-yyyy (Bangladeshi format)
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
   };
 
   // Get display name from full_name

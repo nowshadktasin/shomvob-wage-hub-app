@@ -59,7 +59,11 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return new Intl.DateTimeFormat(t("locale", { defaultValue: "bn-BD" })).format(date);
+    // Format as dd-mm-yyyy (Bangladeshi format)
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
   };
 
   return (
