@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "@/components/ui/sonner";
@@ -102,20 +101,10 @@ const Earnings: React.FC = () => {
     } catch (error: any) {
       console.error('Withdrawal request failed:', error);
       
-      // Check if the error is due to pending request
-      if (error.message && error.message.includes("pending")) {
-        toast.error("Request Not Allowed", {
-          description: "You cannot submit a new request while you have a pending request. Please wait for approval.",
-        });
-      } else if (error.message && error.message.includes("limit")) {
-        toast.error("Request Limit Exceeded", {
-          description: "You have exceeded your monthly withdrawal limit. Please try again next month.",
-        });
-      } else {
-        toast.error("Request Failed", {
-          description: "Failed to submit withdrawal request. Please try again.",
-        });
-      }
+      // The error messages are now properly formatted from the API service
+      toast.error("Request Failed", {
+        description: error.message || "Failed to submit withdrawal request. Please try again.",
+      });
     } finally {
       setIsSubmitting(false);
     }

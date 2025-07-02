@@ -1,7 +1,7 @@
 
 export interface EwaRequestResponse {
   error: number;
-  data: {
+  data?: {
     requested_amount: number;
     service_charge: number;
     total_amount: number;
@@ -10,6 +10,7 @@ export interface EwaRequestResponse {
     requested_year: number;
     updated_at: string;
   };
+  msg?: string;
 }
 
 export const submitEwaRequest = async (phoneNumber: string, userAccessToken: string, requestedAmount: number, rowId: string): Promise<EwaRequestResponse['data']> => {
@@ -20,6 +21,9 @@ export const submitEwaRequest = async (phoneNumber: string, userAccessToken: str
   const formattedPhoneNumber = phoneNumber.startsWith('880') ? phoneNumber : `880${phoneNumber.replace(/^0/, '')}`;
   
   const url = `${apiUrl}?phoneNumber=${formattedPhoneNumber}&user_access_token=${userAccessToken}&rowId=${rowId}`;
+
+  console.log('Submitting EWA request to:', url);
+  console.log('Request payload:', { requestedAmount });
 
   try {
     const response = await fetch(url, {
@@ -33,20 +37,49 @@ export const submitEwaRequest = async (phoneNumber: string, userAccessToken: str
       }),
     });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+    console.log('Response status:', response.status);
 
     const responseData: EwaRequestResponse = await response.json();
     console.log('EWA request response:', responseData);
 
+    // Handle different error scenarios based on API response
     if (responseData.error !== 0) {
-      throw new Error('Invalid response format or error in API response');
+      const errorMessage = responseData.msg || 'Unknown error occurred';
+      
+      // Check for specific error conditions and throw appropriate messages
+      if (errorMessage.toLowerCase().includes('pending')) {
+        throw new Error('You cannot submit a new request while you have a pending request. Please wait for approval.');
+      } else if (errorMessage.toLowerCase().includes('limit') || errorMessage.toLowerCase().includes('exceed')) {
+        throw new Error('You have exceeded your monthly withdrawal limit. Please try again next month.');
+      } else if (errorMessage.toLowerCase().includes('function') && errorMessage.toLowerCase().includes('not found')) {
+        throw new Error('Service temporarily unavailable. Please try again later.');
+      } else {
+        throw new Error(errorMessage);
+      }
+    }
+
+    if (!responseData.data) {
+      throw new Error('Invalid response format from server');
     }
 
     return responseData.data;
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error submitting EWA request:', error);
-    throw error;
+    
+    // If it's already our custom error, re-throw it
+    if (error.message && (
+      error.message.includes('pending') || 
+      error.message.includes('limit') ||
+      error.message.includes('Service temporarily')
+    )) {
+      throw error;
+    }
+    
+    // For network or other errors
+    if (error instanceof TypeError && error.message.includes('fetch')) {
+      throw new Error('Network error. Please check your connection and try again.');
+    }
+    
+    throw new Error('Failed to submit withdrawal request. Please try again.');
   }
 };
