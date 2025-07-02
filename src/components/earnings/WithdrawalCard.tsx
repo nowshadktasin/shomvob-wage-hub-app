@@ -37,7 +37,6 @@ const WithdrawalCard: React.FC<WithdrawalCardProps> = ({
 
   const getButtonText = () => {
     if (isSubmitting) return "Submitting...";
-    if (hasPendingRequest) return "Request Pending";
     return t("earnings.withdraw");
   };
 
@@ -45,8 +44,7 @@ const WithdrawalCard: React.FC<WithdrawalCardProps> = ({
     availableToWithdraw < minWages || 
     withdrawAmount <= 0 || 
     !isEnabled || 
-    isSubmitting || 
-    hasPendingRequest;
+    isSubmitting;
 
   return (
     <Card className="mb-6">
@@ -63,7 +61,7 @@ const WithdrawalCard: React.FC<WithdrawalCardProps> = ({
               step={100}
               onValueChange={(value) => onWithdrawAmountChange(value[0])}
               className="mb-6"
-              disabled={availableToWithdraw < minWages || isSubmitting || hasPendingRequest}
+              disabled={availableToWithdraw < minWages || isSubmitting}
             />
           </div>
           <div className="flex justify-between text-sm px-2">
@@ -90,7 +88,7 @@ const WithdrawalCard: React.FC<WithdrawalCardProps> = ({
         {hasPendingRequest && (
           <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-md">
             <p className="text-sm text-yellow-800">
-              You have a pending request. Please wait for it to be processed before making a new request.
+              You have a pending request. You can still submit a new request, but it may be subject to approval policies.
             </p>
           </div>
         )}
