@@ -15,6 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import OrganizationEWAInfo from "@/components/settings/OrganizationEWAInfo";
 
 const Settings: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -24,6 +25,22 @@ const Settings: React.FC = () => {
 
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
+  
+  // Example organization EWA data - in a real app, this would come from an API
+  const organizationEWAData = {
+    slabs: [
+      {
+        fees: 500,
+        maxAmount: 5000,
+        minAmount: 1000
+      }
+    ],
+    claimable_percentage: "60",
+    maximum_wage_limit: 100000,
+    min_experience: 60,
+    ewa_enabled: true,
+    withdraw_limit: 3
+  };
   
   const handleLanguageChange = (language: string) => {
     i18n.changeLanguage(language);
@@ -112,6 +129,8 @@ const Settings: React.FC = () => {
             </div>
           </CardContent>
         </Card>
+        
+        <OrganizationEWAInfo data={organizationEWAData} />
         
         <Card>
           <CardHeader className="pb-3">
