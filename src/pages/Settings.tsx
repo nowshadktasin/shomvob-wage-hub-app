@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -16,31 +16,46 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import OrganizationEWAInfo from "@/components/settings/OrganizationEWAInfo";
+import { fetchOrganizationEwaSettings, OrganizationEwaSettings } from "@/services/organizationEwaApi";
 
 const Settings: React.FC = () => {
   const { t, i18n } = useTranslation();
-  const { logout } = useAuth();
+  const { logout, user, session } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
-  
-  // Example organization EWA data - in a real app, this would come from an API
-  const organizationEWAData = {
-    slabs: [
-      {
-        fees: 500,
-        maxAmount: 5000,
-        minAmount: 1000
+  const [organizationEWAData, setOrganizationEWAData] = useState<OrganizationEwaSettings | null>(null);
+  const [ewaDataLoading, setEwaDataLoading] = useState(false);
+  const [ewaDataError, setEwaDataError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const loadOrganizationEwaSettings = async () => {
+      if (!user?.contact_number || !session?.access_token) {
+        return;
       }
-    ],
-    claimable_percentage: "60",
-    maximum_wage_limit: 100000,
-    min_experience: 60,
-    ewa_enabled: true,
-    withdraw_limit: 3
-  };
+
+      setEwaDataLoading(true);
+      setEwaDataError(null);
+
+      try {
+        const data = await fetchOrganizationEwaSettings(
+          user.contact_number,
+          session.access_token
+        );
+        setOrganizationEWAData(data);
+        console.log('Organization EWA settings loaded:', data);
+      } catch (error: any) {
+        console.error('Failed to fetch organization EWA settings:', error);
+        setEwaDataError(error.message || 'Failed to load organization EWA settings');
+      } finally {
+        setEwaDataLoading(false);
+      }
+    };
+
+    loadOrganizationEwaSettings();
+  }, [user?.contact_number, session?.access_token]);
   
   const handleLanguageChange = (language: string) => {
     i18n.changeLanguage(language);
@@ -130,7 +145,29 @@ const Settings: React.FC = () => {
           </CardContent>
         </Card>
         
-        <OrganizationEWAInfo data={organizationEWAData} />
+        {ewaDataLoading && (
+          <Card>
+            <CardContent className="py-6">
+              <div className="text-center text-muted-foreground">
+                Loading organization EWA policy...
+              </div>
+            </CardContent>
+          </Card>
+        )}
+        
+        {ewaDataError && (
+          <Card>
+            <CardContent className="py-6">
+              <div className="text-center text-destructive">
+                {ewaDataError}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+        
+        {organizationEWAData && !ewaDataLoading && (
+          <OrganizationEWAInfo data={organizationEWAData} />
+        )}
         
         <Card>
           <CardHeader className="pb-3">
