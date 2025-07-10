@@ -19,10 +19,10 @@ export const fetchOrganizationEwaSettings = async (
   const apiUrl = 'https://asia-southeast1-shomvob-employer-web-cbbf3.cloudfunctions.net/employerAPIService/employer/api/v2/wagely/settings';
   const authToken = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNob212b2JUZWNoQVBJVXNlciIsImlhdCI6MTY1OTg5NTcwOH0.IOdKen62ye0N9WljM_cj3Xffmjs3dXUqoJRZ_1ezd4Q';
 
-  // Ensure phone number format (without country code as per the curl example)
+  // Ensure phone number format (keep leading 0 for local format)
   const formattedPhoneNumber = phoneNumber.startsWith('880') 
-    ? phoneNumber.slice(3) 
-    : phoneNumber.replace(/^0/, '');
+    ? '0' + phoneNumber.slice(3) 
+    : phoneNumber;
   
   const url = `${apiUrl}?PhoneNumber=${formattedPhoneNumber}&user_access_token=${userAccessToken}`;
 
