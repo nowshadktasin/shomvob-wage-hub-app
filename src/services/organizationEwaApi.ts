@@ -46,9 +46,9 @@ export const fetchOrganizationEwaSettings = async (
     const responseData = await response.json();
     console.log('Organization EWA settings response:', responseData);
 
-    // The API returns an array, so we take the first element
-    if (Array.isArray(responseData) && responseData.length > 0) {
-      return responseData[0];
+    // The API returns an object with error field and data nested inside
+    if (responseData && responseData.error === 0 && responseData.data) {
+      return responseData.data;
     }
 
     throw new Error('Invalid response format from server');
