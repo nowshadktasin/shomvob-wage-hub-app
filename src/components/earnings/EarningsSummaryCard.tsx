@@ -35,7 +35,7 @@ const EarningsSummaryCard: React.FC<EarningsSummaryCardProps> = ({
             <p className="text-2xl font-semibold">{formatCurrency(availableToWithdraw)}</p>
           </div>
           <div>
-            <p className="text-muted-foreground h-8 flex items-center whitespace-pre-line text-xs">{t("earnings.totalEarned")}</p>
+            <p className="text-muted-foreground h-8 flex items-center text-xs">{t("earnings.totalEarned")}</p>
             <p className="text-2xl font-semibold">{formatCurrency(totalEarned)}</p>
           </div>
         </div>
