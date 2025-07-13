@@ -45,7 +45,7 @@
   "earnings": {
     "title": "আমার উপার্জন",
     "currentPeriod": "বর্তমান বেতন সময়কাল",
-    "available": "উত্তোলনযোগ্য",
+    "available": "উত্তোলন\nযোগ্য",
     "totalEarned": "মোট\nউপার্জন",
     "requestAmount": "অনুরোধ পরিমাণ",
     "serviceFee": "সেবা ফি",
