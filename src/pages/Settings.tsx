@@ -25,7 +25,7 @@ const Settings: React.FC = () => {
   const { toast } = useToast();
 
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(document.documentElement.classList.contains("dark"));
   const [organizationEWAData, setOrganizationEWAData] = useState<OrganizationEwaSettings | null>(null);
   const [ewaDataLoading, setEwaDataLoading] = useState(false);
   const [ewaDataError, setEwaDataError] = useState<string | null>(null);
