@@ -79,7 +79,7 @@ const AppLayout: React.FC = () => {
             <SheetContent side="left" className="w-64 p-0">
               <div className="flex flex-col h-full">
                 <div className="h-16 flex items-center justify-center border-b px-6">
-                  <img src="/lovable-uploads/ad3ce8ee-2613-4ded-a413-f5548f1236a8.png" alt="Shomvob EWA" className="h-8" />
+                  <img src="/lovable-uploads/ad3ce8ee-2613-4ded-a413-f5548f1236a8.png" alt="Shomvob EWA" className="h-12" />
                 </div>
 
                 <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
