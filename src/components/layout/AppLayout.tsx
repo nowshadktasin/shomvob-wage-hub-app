@@ -79,7 +79,9 @@ const AppLayout: React.FC = () => {
             <SheetContent side="left" className="w-64 p-0">
               <div className="flex flex-col h-full">
                 <div className="h-16 flex items-center justify-center border-b px-6">
-                  <img src="/lovable-uploads/ad3ce8ee-2613-4ded-a413-f5548f1236a8.png" alt="Shomvob EWA" className="h-12" />
+                  <Link to="/dashboard" onClick={() => setOpen(false)}>
+                    <img src="/lovable-uploads/ad3ce8ee-2613-4ded-a413-f5548f1236a8.png" alt="Shomvob EWA" className="h-12 cursor-pointer" />
+                  </Link>
                 </div>
 
                 <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
@@ -95,7 +97,9 @@ const AppLayout: React.FC = () => {
               </div>
             </SheetContent>
           </Sheet>
-          <img src="/lovable-uploads/ad3ce8ee-2613-4ded-a413-f5548f1236a8.png" alt="Shomvob EWA" className="h-10" />
+          <Link to="/dashboard">
+            <img src="/lovable-uploads/ad3ce8ee-2613-4ded-a413-f5548f1236a8.png" alt="Shomvob EWA" className="h-10 cursor-pointer" />
+          </Link>
         </div>
         
         <div className="flex items-center gap-2">
@@ -113,7 +117,9 @@ const AppLayout: React.FC = () => {
         {/* Desktop sidebar */}
         <aside className="hidden md:flex md:w-64 bg-sidebar border-r flex-col h-screen sticky top-0">
           <div className="h-16 flex items-center justify-between border-b px-6">
-            <img src="/lovable-uploads/ad3ce8ee-2613-4ded-a413-f5548f1236a8.png" alt="Shomvob EWA" className="h-12" />
+            <Link to="/dashboard">
+              <img src="/lovable-uploads/ad3ce8ee-2613-4ded-a413-f5548f1236a8.png" alt="Shomvob EWA" className="h-12 cursor-pointer" />
+            </Link>
             <Button variant="ghost" size="sm" onClick={toggleLanguage} className="flex items-center gap-1 px-2 py-1 text-xs border">
               {i18n.language === 'bn' ? '🇧🇩 বাং' : '🇺🇸 EN'}
             </Button>
