@@ -48,7 +48,7 @@ export const submitEwaRequest = async (phoneNumber: string, userAccessToken: str
       
       // Check for specific error conditions and throw appropriate messages
       if (errorMessage.toLowerCase().includes('pending')) {
-        throw new Error('You cannot submit a new request while you have a pending request. Please wait for approval.');
+        throw new Error(errorMessage);
       } else if (errorMessage.toLowerCase().includes('limit') || errorMessage.toLowerCase().includes('exceed')) {
         throw new Error('You have exceeded your monthly withdrawal limit. Please try again next month.');
       } else if (errorMessage.toLowerCase().includes('function') && errorMessage.toLowerCase().includes('not found')) {
