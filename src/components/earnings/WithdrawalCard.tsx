@@ -9,7 +9,7 @@ interface WithdrawalCardProps {
   withdrawAmount: number;
   minWages: number;
   availableToWithdraw: number;
-  serviceChargePercentage: number;
+  calculateServiceFee: (amount: number) => number;
   isSubmitting: boolean;
   isEnabled: boolean;
   hasPendingRequest: boolean;
@@ -22,7 +22,7 @@ const WithdrawalCard: React.FC<WithdrawalCardProps> = ({
   withdrawAmount,
   minWages,
   availableToWithdraw,
-  serviceChargePercentage,
+  calculateServiceFee,
   isSubmitting,
   isEnabled,
   hasPendingRequest,
@@ -32,7 +32,7 @@ const WithdrawalCard: React.FC<WithdrawalCardProps> = ({
 }) => {
   const { t } = useTranslation();
   
-  const serviceFee = (withdrawAmount * serviceChargePercentage) / 100;
+  const serviceFee = calculateServiceFee(withdrawAmount);
   const totalAmount = withdrawAmount + serviceFee;
 
   const getButtonText = () => {
@@ -76,7 +76,7 @@ const WithdrawalCard: React.FC<WithdrawalCardProps> = ({
             <span>{formatCurrency(withdrawAmount)}</span>
           </div>
           <div className="flex justify-between mb-2 text-muted-foreground">
-            <span>{t("earnings.serviceFee")} ({serviceChargePercentage}%)</span>
+            <span>{t("earnings.serviceFee")}</span>
             <span>+ {formatCurrency(serviceFee)}</span>
           </div>
           <div className="border-t my-2 pt-2 flex justify-between font-medium">

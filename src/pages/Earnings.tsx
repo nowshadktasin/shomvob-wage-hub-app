@@ -9,6 +9,7 @@ import EarningsHeader from "@/components/earnings/EarningsHeader";
 import EarningsSummaryCard from "@/components/earnings/EarningsSummaryCard";
 import WithdrawalCard from "@/components/earnings/WithdrawalCard";
 import TransactionHistory from "@/components/earnings/TransactionHistory";
+import { fetchOrganizationEwaSettings, OrganizationEwaSettings } from "@/services/organizationEwaApi";
 
 const Earnings: React.FC = () => {
   const { t } = useTranslation();
@@ -18,13 +19,27 @@ const Earnings: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [transactions, setTransactions] = useState<any[]>([]);
   const [transactionsLoading, setTransactionsLoading] = useState(false);
+  const [organizationEwaSettings, setOrganizationEwaSettings] = useState<OrganizationEwaSettings | null>(null);
   
   const totalEarned = earningsData?.total_earnings_completed || 0;
   const availableToWithdraw = earningsData?.claimable_wages || 0;
   const periodProgress = earningsData?.earnings_completed_percentage || 0;
   const minWages = earningsData?.min_wages || 1000;
-  const serviceChargePercentage = earningsData?.service_charge_percentage || 2;
   const advancePercentage = earningsData?.claimable_wages_percentage || 60;
+  
+  // Calculate service fee based on slabs instead of percentage
+  const calculateServiceFee = (amount: number): number => {
+    if (!organizationEwaSettings?.slabs || organizationEwaSettings.slabs.length === 0) {
+      return 0;
+    }
+    
+    // Find the appropriate slab for the amount
+    const applicableSlab = organizationEwaSettings.slabs.find(slab => 
+      amount >= slab.minAmount && amount <= slab.maxAmount
+    );
+    
+    return applicableSlab ? applicableSlab.fees : 0;
+  };
   
   // Check if there are any pending requests
   const hasPendingRequest = transactions.some(transaction => 
@@ -64,9 +79,27 @@ const Earnings: React.FC = () => {
     }
   };
 
+  const loadOrganizationEwaSettings = async () => {
+    if (!user?.contact_number || !session?.access_token) {
+      return;
+    }
+
+    try {
+      const settings = await fetchOrganizationEwaSettings(
+        user.contact_number,
+        session.access_token
+      );
+      setOrganizationEwaSettings(settings);
+      console.log('Organization EWA settings loaded:', settings);
+    } catch (error) {
+      console.error('Failed to fetch organization EWA settings:', error);
+    }
+  };
+
   useEffect(() => {
     if (user?.contact_number && session?.access_token && user?.id) {
       loadTransactionHistory();
+      loadOrganizationEwaSettings();
     }
   }, [user?.contact_number, session?.access_token, user?.id]);
   
@@ -148,7 +181,7 @@ const Earnings: React.FC = () => {
         withdrawAmount={withdrawAmount}
         minWages={minWages}
         availableToWithdraw={availableToWithdraw}
-        serviceChargePercentage={serviceChargePercentage}
+        calculateServiceFee={calculateServiceFee}
         isSubmitting={isSubmitting}
         isEnabled={earningsData?.is_enabled || false}
         hasPendingRequest={hasPendingRequest}
