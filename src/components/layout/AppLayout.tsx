@@ -7,14 +7,12 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Home, User, Wallet, Settings, Menu, LogOut } from "lucide-react";
-
 interface NavItemProps {
   icon: React.ElementType;
   label: string;
   href: string;
   active: boolean;
 }
-
 const NavItem: React.FC<NavItemProps> = ({
   icon: Icon,
   label,
@@ -26,7 +24,6 @@ const NavItem: React.FC<NavItemProps> = ({
       <span>{label}</span>
     </Link>;
 };
-
 const AppLayout: React.FC = () => {
   const {
     t,
@@ -40,21 +37,17 @@ const AppLayout: React.FC = () => {
   const [open, setOpen] = useState(false);
   const pathname = location.pathname;
   const isBangla = i18n.language === 'bn';
-
   const handleLogout = () => {
     logout();
     navigate("/");
   };
-
   const toggleLanguage = () => {
     const newLang = i18n.language === 'bn' ? 'en' : 'bn';
     i18n.changeLanguage(newLang);
   };
-
   const getInitials = (name: string) => {
     return name?.split(' ').map(part => part[0]).join('').toUpperCase().substring(0, 2) || "US";
   };
-
   const navItems = [{
     icon: Home,
     label: t("dashboard.title"),
@@ -72,7 +65,6 @@ const AppLayout: React.FC = () => {
     label: t("settings.title"),
     href: "/settings"
   }];
-
   return <div className={cn("min-h-screen flex flex-col bg-background", isBangla && "font-siliguri")}>
       {/* Mobile header */}
       <header className="sticky top-0 z-30 bg-background border-b h-16 flex items-center justify-between px-4 md:hidden">
@@ -107,12 +99,7 @@ const AppLayout: React.FC = () => {
         </div>
         
         <div className="flex items-center gap-2">
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            onClick={toggleLanguage}
-            className="flex items-center gap-1 px-2 py-1 text-xs border"
-          >
+          <Button variant="ghost" size="sm" onClick={toggleLanguage} className="flex items-center gap-1 px-2 py-1 text-xs border">
             {i18n.language === 'bn' ? '🇧🇩 বাং' : '🇺🇸 EN'}
           </Button>
           {user && <Avatar className="h-8 w-8">
@@ -126,13 +113,8 @@ const AppLayout: React.FC = () => {
         {/* Desktop sidebar */}
         <aside className="hidden md:flex md:w-64 bg-sidebar border-r flex-col h-screen sticky top-0">
           <div className="h-16 flex items-center justify-between border-b px-6">
-            <img src="/lovable-uploads/ad3ce8ee-2613-4ded-a413-f5548f1236a8.png" alt="Shomvob EWA" className="h-8" />
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              onClick={toggleLanguage}
-              className="flex items-center gap-1 px-2 py-1 text-xs border"
-            >
+            <img src="/lovable-uploads/ad3ce8ee-2613-4ded-a413-f5548f1236a8.png" alt="Shomvob EWA" className="h-12" />
+            <Button variant="ghost" size="sm" onClick={toggleLanguage} className="flex items-center gap-1 px-2 py-1 text-xs border">
               {i18n.language === 'bn' ? '🇧🇩 বাং' : '🇺🇸 EN'}
             </Button>
           </div>
@@ -163,5 +145,4 @@ const AppLayout: React.FC = () => {
       </div>
     </div>;
 };
-
 export default AppLayout;
