@@ -95,7 +95,7 @@ const AppLayout: React.FC = () => {
               </div>
             </SheetContent>
           </Sheet>
-          <img src="/lovable-uploads/ad3ce8ee-2613-4ded-a413-f5548f1236a8.png" alt="Shomvob EWA" className="h-6" />
+          <img src="/lovable-uploads/ad3ce8ee-2613-4ded-a413-f5548f1236a8.png" alt="Shomvob EWA" className="h-10" />
         </div>
         
         <div className="flex items-center gap-2">
