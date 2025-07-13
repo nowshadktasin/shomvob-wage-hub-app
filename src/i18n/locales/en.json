@@ -172,5 +172,23 @@
       "lastUpdated": "Last Updated"
     }
   },
+  "organizationEwa": {
+    "title": "Organization EWA Policy",
+    "description": "Your organization's Employee Wage Advance settings and fee structure",
+    "feeStructure": "Fee Structure",
+    "minimumAmount": "Minimum Amount",
+    "maximumAmount": "Maximum Amount",
+    "chargedFee": "Charged Fee",
+    "organizationRequirements": "Organization Requirements",
+    "claimablePercentage": "Claimable Percentage",
+    "maximumWageLimit": "Maximum Wage Limit",
+    "minimumExperience": "Minimum Experience",
+    "ewaStatus": "EWA Status",
+    "monthlyWithdrawLimit": "Monthly Withdraw Limit",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "days": "days",
+    "times": "times"
+  },
   "locale": "en-US"
 }

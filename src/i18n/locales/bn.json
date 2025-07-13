@@ -172,5 +172,23 @@
       "lastUpdated": "সর্বশেষ আপডেট"
     }
   },
+  "organizationEwa": {
+    "title": "প্রতিষ্ঠানের ইডব্লিউএ নীতি",
+    "description": "আপনার প্রতিষ্ঠানের কর্মচারী মজুরি অগ্রিম সেটিংস এবং ফি কাঠামো",
+    "feeStructure": "ফি কাঠামো",
+    "minimumAmount": "সর্বনিম্ন পরিমাণ",
+    "maximumAmount": "সর্বোচ্চ পরিমাণ",
+    "chargedFee": "চার্জকৃত ফি",
+    "organizationRequirements": "প্রতিষ্ঠানের প্রয়োজনীয়তা",
+    "claimablePercentage": "দাবিযোগ্য শতাংশ",
+    "maximumWageLimit": "সর্বোচ্চ মজুরি সীমা",
+    "minimumExperience": "সর্বনিম্ন অভিজ্ঞতা",
+    "ewaStatus": "ইডব্লিউএ অবস্থা",
+    "monthlyWithdrawLimit": "মাসিক তোলার সীমা",
+    "enabled": "সক্রিয়",
+    "disabled": "নিষ্ক্রিয়",
+    "days": "দিন",
+    "times": "বার"
+  },
   "locale": "bn-BD"
 }

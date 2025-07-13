@@ -40,21 +40,21 @@ const OrganizationEWAInfo: React.FC<OrganizationEWAInfoProps> = ({ data }) => {
   return (
     <Card>
       <CardHeader className="pb-3">
-        <CardTitle className="text-lg">Organization EWA Policy</CardTitle>
+        <CardTitle className="text-lg">{t("organizationEwa.title")}</CardTitle>
         <CardDescription>
-          Your organization's Employee Wage Advance settings and fee structure
+          {t("organizationEwa.description")}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Fee Slabs */}
         <div>
-          <h4 className="font-medium mb-3">Fee Structure</h4>
+          <h4 className="font-medium mb-3">{t("organizationEwa.feeStructure")}</h4>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Minimum Amount</TableHead>
-                <TableHead>Maximum Amount</TableHead>
-                <TableHead>Charged Fee</TableHead>
+                <TableHead>{t("organizationEwa.minimumAmount")}</TableHead>
+                <TableHead>{t("organizationEwa.maximumAmount")}</TableHead>
+                <TableHead>{t("organizationEwa.chargedFee")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -73,36 +73,36 @@ const OrganizationEWAInfo: React.FC<OrganizationEWAInfoProps> = ({ data }) => {
 
         {/* Organization Requirements */}
         <div>
-          <h4 className="font-medium mb-3">Organization Requirements</h4>
+          <h4 className="font-medium mb-3">{t("organizationEwa.organizationRequirements")}</h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Claimable Percentage:</span>
+                <span className="text-sm text-muted-foreground">{t("organizationEwa.claimablePercentage")}:</span>
                 <Badge variant="secondary">{data.claimable_percentage}%</Badge>
               </div>
               
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Maximum Wage Limit:</span>
+                <span className="text-sm text-muted-foreground">{t("organizationEwa.maximumWageLimit")}:</span>
                 <span className="font-medium">{formatCurrency(data.maximum_wage_limit)}</span>
               </div>
               
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Minimum Experience:</span>
-                <span className="font-medium">{data.min_experience} days</span>
+                <span className="text-sm text-muted-foreground">{t("organizationEwa.minimumExperience")}:</span>
+                <span className="font-medium">{data.min_experience} {t("organizationEwa.days")}</span>
               </div>
             </div>
 
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">EWA Status:</span>
+                <span className="text-sm text-muted-foreground">{t("organizationEwa.ewaStatus")}:</span>
                 <Badge variant={data.ewa_enabled ? "default" : "destructive"}>
-                  {data.ewa_enabled ? "Enabled" : "Disabled"}
+                  {data.ewa_enabled ? t("organizationEwa.enabled") : t("organizationEwa.disabled")}
                 </Badge>
               </div>
               
               <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">Monthly Withdraw Limit:</span>
-                <span className="font-medium">{data.withdraw_limit} times</span>
+                <span className="text-sm text-muted-foreground">{t("organizationEwa.monthlyWithdrawLimit")}:</span>
+                <span className="font-medium">{data.withdraw_limit} {t("organizationEwa.times")}</span>
               </div>
             </div>
           </div>
