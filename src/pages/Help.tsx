@@ -88,7 +88,7 @@ const Help: React.FC = () => {
                 <Mail className="h-5 w-5 text-blue-500" />
                 <div className="text-left">
                   <div className="font-medium">{t("help.contact.email")}</div>
-                  <div className="text-sm text-muted-foreground">support@shomvob.com</div>
+                  <div className="text-sm text-muted-foreground">info@shomvob.com</div>
                 </div>
               </Button>
 
@@ -99,7 +99,7 @@ const Help: React.FC = () => {
                 <Phone className="h-5 w-5 text-green-500" />
                 <div className="text-left">
                   <div className="font-medium">{t("help.contact.phone")}</div>
-                  <div className="text-sm text-muted-foreground">+880 1234-567890</div>
+                  <div className="text-sm text-muted-foreground">+880 9638-885588</div>
                 </div>
               </Button>
             </div>
