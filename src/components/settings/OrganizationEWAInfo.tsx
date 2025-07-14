@@ -46,64 +46,62 @@ const OrganizationEWAInfo: React.FC<OrganizationEWAInfoProps> = ({ data }) => {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        {/* Fee Slabs */}
+        {/* Fee Structure */}
         <div>
-          <h4 className="font-medium mb-3">{t("organizationEwa.feeStructure")}</h4>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>{t("organizationEwa.minimumAmount")}</TableHead>
-                <TableHead>{t("organizationEwa.maximumAmount")}</TableHead>
-                <TableHead>{t("organizationEwa.chargedFee")}</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {data.slabs.map((slab, index) => (
-                <TableRow key={index}>
-                  <TableCell>{formatCurrency(slab.minAmount)}</TableCell>
-                  <TableCell>{formatCurrency(slab.maxAmount)}</TableCell>
-                  <TableCell className="font-medium text-primary">
-                    {formatCurrency(slab.fees)}
-                  </TableCell>
+          <h4 className="font-semibold text-lg mb-4">{t("organizationEwa.feeStructure")}</h4>
+          <div className="overflow-hidden rounded-lg border">
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-muted/50">
+                  <TableHead className="font-medium text-muted-foreground">{t("organizationEwa.minimumAmount")}</TableHead>
+                  <TableHead className="font-medium text-muted-foreground">{t("organizationEwa.maximumAmount")}</TableHead>
+                  <TableHead className="font-medium text-muted-foreground">{t("organizationEwa.chargedFee")}</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {data.slabs.map((slab, index) => (
+                  <TableRow key={index} className="border-b last:border-b-0">
+                    <TableCell className="font-medium text-primary">{formatCurrency(slab.minAmount)}</TableCell>
+                    <TableCell className="font-medium text-primary">{formatCurrency(slab.maxAmount)}</TableCell>
+                    <TableCell className="font-semibold text-green-600">
+                      {formatCurrency(slab.fees)}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </div>
 
         {/* Organization Requirements */}
         <div>
-          <h4 className="font-medium mb-3">{t("organizationEwa.organizationRequirements")}</h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-3">
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">{t("organizationEwa.claimablePercentage")}:</span>
-                <Badge variant="secondary">{data.claimable_percentage}%</Badge>
-              </div>
-              
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">{t("organizationEwa.maximumWageLimit")}:</span>
-                <span className="font-medium">{formatCurrency(data.maximum_wage_limit)}</span>
-              </div>
-              
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">{t("organizationEwa.minimumExperience")}:</span>
-                <span className="font-medium">{data.min_experience} {t("organizationEwa.days")}</span>
-              </div>
+          <h4 className="font-semibold text-lg mb-4">{t("organizationEwa.organizationRequirements")}</h4>
+          <div className="space-y-4">
+            <div className="flex justify-between items-center py-2">
+              <span className="text-muted-foreground">{t("organizationEwa.claimablePercentage")}:</span>
+              <span className="font-semibold text-green-600">{data.claimable_percentage}%</span>
+            </div>
+            
+            <div className="flex justify-between items-center py-2">
+              <span className="text-muted-foreground">{t("organizationEwa.maximumWageLimit")}:</span>
+              <span className="font-semibold">{formatCurrency(data.maximum_wage_limit)}</span>
+            </div>
+            
+            <div className="flex justify-between items-center py-2">
+              <span className="text-muted-foreground">{t("organizationEwa.minimumExperience")}:</span>
+              <span className="font-semibold">{data.min_experience} {t("organizationEwa.days")}</span>
             </div>
 
-            <div className="space-y-3">
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">{t("organizationEwa.ewaStatus")}:</span>
-                <Badge variant={data.ewa_enabled ? "default" : "destructive"}>
-                  {data.ewa_enabled ? t("organizationEwa.enabled") : t("organizationEwa.disabled")}
-                </Badge>
-              </div>
-              
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">{t("organizationEwa.monthlyWithdrawLimit")}:</span>
-                <span className="font-medium">{data.withdraw_limit} {t("organizationEwa.times")}</span>
-              </div>
+            <div className="flex justify-between items-center py-2">
+              <span className="text-muted-foreground">{t("organizationEwa.ewaStatus")}:</span>
+              <Badge variant={data.ewa_enabled ? "default" : "destructive"} className={data.ewa_enabled ? "bg-green-100 text-green-800 hover:bg-green-100" : ""}>
+                {data.ewa_enabled ? t("organizationEwa.enabled") : t("organizationEwa.disabled")}
+              </Badge>
+            </div>
+            
+            <div className="flex justify-between items-center py-2">
+              <span className="text-muted-foreground">{t("organizationEwa.monthlyWithdrawLimit")}:</span>
+              <span className="font-semibold">{data.withdraw_limit} {t("organizationEwa.times")}</span>
             </div>
           </div>
         </div>
