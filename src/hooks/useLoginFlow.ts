@@ -179,6 +179,73 @@ export const useLoginFlow = () => {
     setOtp("");
   };
 
+  const handleResendOTP = async () => {
+    if (!phoneNumber || phoneNumber.length < 11) {
+      toast({
+        title: "Error",
+        description: "Please enter a valid phone number",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      // Format phone number - ensure it starts with 88 and has proper length
+      let formattedPhone = phoneNumber.replace(/\D/g, ''); // Remove non-digits
+      
+      // If it starts with 0, replace with 880
+      if (formattedPhone.startsWith('0')) {
+        formattedPhone = '88' + formattedPhone;
+      }
+      // If it doesn't start with 88, add 88
+      else if (!formattedPhone.startsWith('88')) {
+        formattedPhone = '88' + formattedPhone;
+      }
+
+      console.log("Resending OTP to:", formattedPhone);
+      console.log("Using endpoint:", otpEndpoint);
+
+      const response = await fetch(otpEndpoint, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearar ${authToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          phone: formattedPhone
+        }),
+      });
+
+      console.log("Resend OTP Response status:", response.status);
+      const responseData = await response.json();
+      console.log("Resend OTP Response data:", responseData);
+
+      if (response.ok && responseData.code === 200) {
+        toast({
+          title: "OTP Resent",
+          description: "Please check your phone for the new verification code",
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: responseData.msg || "Failed to resend OTP. Please try again.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Error resending OTP:", error);
+      toast({
+        title: "Network Error",
+        description: "Please check your connection and try again",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return {
     phoneNumber,
     setPhoneNumber,
@@ -189,5 +256,6 @@ export const useLoginFlow = () => {
     handleSendOTP,
     handleVerifyOTP,
     handleChangePhoneNumber,
+    handleResendOTP,
   };
 };

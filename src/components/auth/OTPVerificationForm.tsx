@@ -11,6 +11,7 @@ interface OTPVerificationFormProps {
   isLoading: boolean;
   onSubmit: (e: React.FormEvent) => void;
   onChangePhoneNumber: () => void;
+  onResendOTP: () => void;
 }
 
 const OTPVerificationForm: React.FC<OTPVerificationFormProps> = ({
@@ -20,6 +21,7 @@ const OTPVerificationForm: React.FC<OTPVerificationFormProps> = ({
   isLoading,
   onSubmit,
   onChangePhoneNumber,
+  onResendOTP,
 }) => {
   return (
     <form onSubmit={onSubmit} className="space-y-6">
@@ -49,6 +51,16 @@ const OTPVerificationForm: React.FC<OTPVerificationFormProps> = ({
       <div className="space-y-3">
         <Button type="submit" className="w-full" disabled={isLoading}>
           {isLoading ? "Verifying..." : "Verify OTP"}
+        </Button>
+        
+        <Button
+          type="button"
+          variant="outline"
+          className="w-full"
+          onClick={onResendOTP}
+          disabled={isLoading}
+        >
+          Resend OTP
         </Button>
         
         <Button

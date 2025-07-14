@@ -16,6 +16,7 @@ const LoginFormContainer: React.FC = () => {
     handleSendOTP,
     handleVerifyOTP,
     handleChangePhoneNumber,
+    handleResendOTP,
   } = useLoginFlow();
 
   return (
@@ -36,6 +37,7 @@ const LoginFormContainer: React.FC = () => {
             isLoading={isLoading}
             onSubmit={handleVerifyOTP}
             onChangePhoneNumber={handleChangePhoneNumber}
+            onResendOTP={handleResendOTP}
           />
         )}
       </CardContent>
