@@ -64,8 +64,11 @@ const WithdrawalCard: React.FC<WithdrawalCardProps> = ({
               disabled={availableToWithdraw < minWages || isSubmitting}
             />
           </div>
-          <div className="flex justify-between text-sm px-2">
+          <div className="flex justify-between items-center text-sm px-2">
             <span>৳{minWages.toLocaleString()}</span>
+            <div className="text-lg font-bold text-green-600">
+              ৳{withdrawAmount.toLocaleString()}
+            </div>
             <span>৳{availableToWithdraw.toLocaleString()}</span>
           </div>
         </div>
