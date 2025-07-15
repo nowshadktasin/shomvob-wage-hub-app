@@ -13,20 +13,16 @@ const Help: React.FC = () => {
 
   const faqs = [
     {
-      question: t("help.faq.withdrawalQuestion"),
-      answer: t("help.faq.withdrawalAnswer")
+      question: "How much of my salary can I withdraw using Shomvob EWA?",
+      answer: "You can withdraw a percentage of your earned but unpaid wages, based on your organization's policy. For example, if you've earned 20,000 BDT so far this month and your withdrawal limit is 50%, you can request up to 10,000 BDT through Shomvob EWA."
     },
     {
-      question: t("help.faq.limitsQuestion"),
-      answer: t("help.faq.limitsAnswer")
+      question: "Will using Shomvob EWA affect my regular payday salary?",
+      answer: "Yes, but only by the amount you've already withdrawn. On payday, your salary will be adjusted to subtract the amount you accessed early through EWA. The remaining balance will be paid as usual."
     },
     {
-      question: t("help.faq.feesQuestion"),
-      answer: t("help.faq.feesAnswer")
-    },
-    {
-      question: t("help.faq.accountQuestion"),
-      answer: t("help.faq.accountAnswer")
+      question: "Is there a service charge for using Shomvob EWA?",
+      answer: "Yes, a small service fee is applied to each withdrawal request. You can view the exact fee structure by going to Settings > Organization EWA Policy inside the Shomvob EWA platform."
     }
   ];
 
