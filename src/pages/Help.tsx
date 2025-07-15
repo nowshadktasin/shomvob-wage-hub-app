@@ -118,7 +118,7 @@ const Help: React.FC = () => {
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">{t("help.app.lastUpdated")}</span>
-              <span>2024-01-15</span>
+              <span>2025-07-15</span>
             </div>
           </CardContent>
         </Card>
