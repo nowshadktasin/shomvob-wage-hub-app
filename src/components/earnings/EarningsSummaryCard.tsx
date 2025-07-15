@@ -27,8 +27,10 @@ const EarningsSummaryCard: React.FC<EarningsSummaryCardProps> = ({
         <div className="flex items-center gap-2">
           <CardTitle className="text-lg">{t("earnings.currentPeriod")}</CardTitle>
           <Tooltip>
-            <TooltipTrigger>
-              <HelpCircle className="h-4 w-4 text-muted-foreground" />
+            <TooltipTrigger asChild>
+              <button className="p-0 bg-transparent border-none cursor-help">
+                <HelpCircle className="h-4 w-4 text-muted-foreground hover:text-foreground transition-colors" />
+              </button>
             </TooltipTrigger>
             <TooltipContent>
               <p className="max-w-xs text-sm">{t("earnings.tooltips.currentPeriod")}</p>
@@ -47,8 +49,10 @@ const EarningsSummaryCard: React.FC<EarningsSummaryCardProps> = ({
             <div className="flex items-center gap-2 h-8">
               <p className="text-muted-foreground text-xs">{t("earnings.available")}</p>
               <Tooltip>
-                <TooltipTrigger>
-                  <HelpCircle className="h-3 w-3 text-muted-foreground" />
+                <TooltipTrigger asChild>
+                  <button className="p-0 bg-transparent border-none cursor-help">
+                    <HelpCircle className="h-3 w-3 text-muted-foreground hover:text-foreground transition-colors" />
+                  </button>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p className="max-w-xs text-sm">{t("earnings.tooltips.availableToWithdraw")}</p>
@@ -61,8 +65,10 @@ const EarningsSummaryCard: React.FC<EarningsSummaryCardProps> = ({
             <div className="flex items-center gap-2 h-8">
               <p className="text-muted-foreground text-xs">{t("earnings.totalEarned")}</p>
               <Tooltip>
-                <TooltipTrigger>
-                  <HelpCircle className="h-3 w-3 text-muted-foreground" />
+                <TooltipTrigger asChild>
+                  <button className="p-0 bg-transparent border-none cursor-help">
+                    <HelpCircle className="h-3 w-3 text-muted-foreground hover:text-foreground transition-colors" />
+                  </button>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p className="max-w-xs text-sm">{t("earnings.tooltips.totalEarned")}</p>
@@ -77,8 +83,10 @@ const EarningsSummaryCard: React.FC<EarningsSummaryCardProps> = ({
           <div className="flex items-center gap-2 mb-2">
             <p className="text-muted-foreground text-xs">{t("earnings.advanceLimit")}</p>
             <Tooltip>
-              <TooltipTrigger>
-                <HelpCircle className="h-3 w-3 text-muted-foreground" />
+              <TooltipTrigger asChild>
+                <button className="p-0 bg-transparent border-none cursor-help">
+                  <HelpCircle className="h-3 w-3 text-muted-foreground hover:text-foreground transition-colors" />
+                </button>
               </TooltipTrigger>
               <TooltipContent>
                 <p className="max-w-xs text-sm">{t("earnings.tooltips.advanceLimit")}</p>
