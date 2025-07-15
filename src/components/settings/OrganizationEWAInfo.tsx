@@ -59,15 +59,23 @@ const OrganizationEWAInfo: React.FC<OrganizationEWAInfoProps> = ({ data }) => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {data.slabs.map((slab, index) => (
-                  <TableRow key={index} className="border-b last:border-b-0">
-                    <TableCell className="text-foreground">{formatCurrency(slab.minAmount)}</TableCell>
-                    <TableCell className="text-foreground">{formatCurrency(slab.maxAmount)}</TableCell>
-                    <TableCell className="font-semibold text-green-600">
-                      {formatCurrency(slab.fees)}
+                {data.slabs && data.slabs.length > 0 ? (
+                  data.slabs.map((slab, index) => (
+                    <TableRow key={index} className="border-b last:border-b-0">
+                      <TableCell className="text-foreground">{formatCurrency(slab.minAmount)}</TableCell>
+                      <TableCell className="text-foreground">{formatCurrency(slab.maxAmount)}</TableCell>
+                      <TableCell className="font-semibold text-green-600">
+                        {formatCurrency(slab.fees)}
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={3} className="text-center text-muted-foreground py-4">
+                      {t("organizationEwa.noFeeSlabs")}
                     </TableCell>
                   </TableRow>
-                ))}
+                )}
               </TableBody>
             </Table>
           </div>
