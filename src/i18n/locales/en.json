@@ -56,6 +56,12 @@
     "payrollDate": "Payroll Date",
     "complete": "Complete",
     "advanceLimit": "Advance Salary Limit",
+    "tooltips": {
+      "currentPeriod": "This indicates how much of the current salary cycle has been completed based on the days of the month.",
+      "totalEarned": "This shows how much salary you've earned so far based on the completion of Current Pay Period",
+      "availableToWithdraw": "This is the maximum amount you can request now, based on your earned wages and the company's advance limit.",
+      "advanceLimit": "This is the percentage of your earned salary that you're allowed to access before payday, as per your organization's EWA policy."
+    },
     "withdrawSuccessTitle": "Withdrawal Successful",
     "withdrawSuccessDescription": "Your withdrawal request for {{amount}} has been processed.",
     "status": {
