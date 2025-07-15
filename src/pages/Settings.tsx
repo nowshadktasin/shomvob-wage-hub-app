@@ -108,7 +108,9 @@ const Settings: React.FC = () => {
                 onValueChange={handleLanguageChange}
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder={t("settings.selectLanguage")} />
+                  <SelectValue placeholder={t("settings.selectLanguage")}>
+                    {i18n.language === 'bn' ? '🇧🇩 বাংলা (Bangla)' : '🇺🇸 English (English)'}
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="bn" className="flex items-center gap-2">
