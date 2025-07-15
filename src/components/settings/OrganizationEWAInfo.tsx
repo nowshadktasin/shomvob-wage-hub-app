@@ -61,8 +61,8 @@ const OrganizationEWAInfo: React.FC<OrganizationEWAInfoProps> = ({ data }) => {
               <TableBody>
                 {data.slabs.map((slab, index) => (
                   <TableRow key={index} className="border-b last:border-b-0">
-                    <TableCell className="font-medium text-primary">{formatCurrency(slab.minAmount)}</TableCell>
-                    <TableCell className="font-medium text-primary">{formatCurrency(slab.maxAmount)}</TableCell>
+                    <TableCell className="text-foreground">{formatCurrency(slab.minAmount)}</TableCell>
+                    <TableCell className="text-foreground">{formatCurrency(slab.maxAmount)}</TableCell>
                     <TableCell className="font-semibold text-green-600">
                       {formatCurrency(slab.fees)}
                     </TableCell>
