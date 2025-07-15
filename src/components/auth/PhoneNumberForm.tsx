@@ -39,7 +39,7 @@ const PhoneNumberForm: React.FC<PhoneNumberFormProps> = ({
         </div>
       </div>
 
-      <Button type="submit" className="w-full bg-gray-400 hover:bg-gray-500" disabled={isLoading}>
+      <Button type="submit" className="w-full" disabled={isLoading}>
         {isLoading ? "Sending..." : "Send OTP"}
       </Button>
     </form>
