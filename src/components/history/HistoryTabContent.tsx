@@ -1,0 +1,67 @@
+
+import React from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import TransactionCard from "./TransactionCard";
+
+interface Transaction {
+  total_amount: number;
+  requested_amount: number;
+  service_charge: number;
+  status: string;
+  requested_month: number;
+  requested_year: number;
+  updated_at: string;
+}
+
+interface HistoryTabContentProps {
+  transactions: Transaction[];
+  loading: boolean;
+  emptyMessage: string;
+  formatCurrency: (amount: number | undefined) => string;
+}
+
+const HistoryTabContent: React.FC<HistoryTabContentProps> = ({
+  transactions,
+  loading,
+  emptyMessage,
+  formatCurrency,
+}) => {
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-8">
+        <div className="text-center text-muted-foreground">
+          Loading transactions...
+        </div>
+      </div>
+    );
+  }
+
+  if (transactions.length === 0) {
+    return (
+      <Card>
+        <CardContent className="p-6 text-center text-muted-foreground">
+          {emptyMessage}
+        </CardContent>
+      </Card>
+    );
+  }
+
+  // Sort transactions by updated_at in descending order (latest first)
+  const sortedTransactions = [...transactions].sort((a, b) => 
+    new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
+  );
+
+  return (
+    <div className="space-y-3">
+      {sortedTransactions.map((transaction, index) => (
+        <TransactionCard
+          key={`${transaction.requested_month}-${transaction.requested_year}-${index}`}
+          transaction={transaction}
+          formatCurrency={formatCurrency}
+        />
+      ))}
+    </div>
+  );
+};
+
+export default HistoryTabContent;

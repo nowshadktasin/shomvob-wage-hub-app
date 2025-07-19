@@ -1,14 +1,13 @@
+
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "@/components/ui/sonner";
 import { useEarnings } from "@/contexts/EarningsContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { submitEwaRequest } from "@/services/ewaApi";
-import { fetchTransactionHistory } from "@/services/transactionHistoryApi";
 import EarningsHeader from "@/components/earnings/EarningsHeader";
 import EarningsSummaryCard from "@/components/earnings/EarningsSummaryCard";
 import WithdrawalCard from "@/components/earnings/WithdrawalCard";
-import TransactionHistory from "@/components/earnings/TransactionHistory";
 import { fetchOrganizationEwaSettings, OrganizationEwaSettings } from "@/services/organizationEwaApi";
 
 const Earnings: React.FC = () => {
@@ -17,8 +16,6 @@ const Earnings: React.FC = () => {
   const { earningsData, loading, refreshEarnings } = useEarnings();
   const [withdrawAmount, setWithdrawAmount] = useState<number>(1000);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [transactions, setTransactions] = useState<any[]>([]);
-  const [transactionsLoading, setTransactionsLoading] = useState(false);
   const [organizationEwaSettings, setOrganizationEwaSettings] = useState<OrganizationEwaSettings | null>(null);
   
   const totalEarned = earningsData?.total_earnings_completed || 0;
@@ -41,11 +38,6 @@ const Earnings: React.FC = () => {
     return applicableSlab ? applicableSlab.fees : 0;
   };
   
-  // Check if there are any pending requests
-  const hasPendingRequest = transactions.some(transaction => 
-    transaction.status.toLowerCase() === 'pending'
-  );
-  
   useEffect(() => {
     if (availableToWithdraw > 0 && minWages > 0) {
       // Set initial amount to be visually inward from minimum (25% between min and max)
@@ -56,28 +48,6 @@ const Earnings: React.FC = () => {
       setWithdrawAmount(minWages);
     }
   }, [availableToWithdraw, minWages]);
-
-  const loadTransactionHistory = async () => {
-    if (!user?.contact_number || !session?.access_token || !user?.id) {
-      return;
-    }
-
-    setTransactionsLoading(true);
-    try {
-      const historyData = await fetchTransactionHistory(
-        user.contact_number,
-        session.access_token,
-        user.id
-      );
-      setTransactions(historyData);
-      console.log('Transaction history loaded:', historyData);
-    } catch (error) {
-      console.error('Failed to fetch transaction history:', error);
-      // Don't show error toast for transaction history as it's not critical
-    } finally {
-      setTransactionsLoading(false);
-    }
-  };
 
   const loadOrganizationEwaSettings = async () => {
     if (!user?.contact_number || !session?.access_token) {
@@ -97,11 +67,10 @@ const Earnings: React.FC = () => {
   };
 
   useEffect(() => {
-    if (user?.contact_number && session?.access_token && user?.id) {
-      loadTransactionHistory();
+    if (user?.contact_number && session?.access_token) {
       loadOrganizationEwaSettings();
     }
-  }, [user?.contact_number, session?.access_token, user?.id]);
+  }, [user?.contact_number, session?.access_token]);
   
   const handleWithdraw = async () => {
     if (!user?.contact_number || !session?.access_token || !user?.id) {
@@ -126,11 +95,6 @@ const Earnings: React.FC = () => {
 
       await refreshEarnings();
       
-      // Wait a bit before refreshing transaction history to allow backend processing
-      setTimeout(async () => {
-        await loadTransactionHistory();
-      }, 2000);
-      
     } catch (error: any) {
       console.error('Withdrawal request failed:', error);
       
@@ -145,7 +109,6 @@ const Earnings: React.FC = () => {
 
   const handleRefresh = async () => {
     await refreshEarnings();
-    await loadTransactionHistory();
   };
 
   const formatCurrency = (amount: number | undefined) => {
@@ -167,7 +130,7 @@ const Earnings: React.FC = () => {
 
   return (
     <div className="container max-w-md mx-auto px-4 py-6 font-siliguri">
-      <EarningsHeader onRefresh={handleRefresh} loading={loading || transactionsLoading} />
+      <EarningsHeader onRefresh={handleRefresh} loading={loading} />
       
       <EarningsSummaryCard
         periodProgress={periodProgress}
@@ -184,14 +147,9 @@ const Earnings: React.FC = () => {
         calculateServiceFee={calculateServiceFee}
         isSubmitting={isSubmitting}
         isEnabled={earningsData?.is_enabled || false}
-        hasPendingRequest={hasPendingRequest}
+        hasPendingRequest={false}
         onWithdrawAmountChange={setWithdrawAmount}
         onWithdraw={handleWithdraw}
-        formatCurrency={formatCurrency}
-      />
-      
-      <TransactionHistory
-        transactions={transactions}
         formatCurrency={formatCurrency}
       />
     </div>

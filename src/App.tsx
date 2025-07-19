@@ -1,4 +1,3 @@
-
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
@@ -16,6 +15,7 @@ import Earnings from "./pages/Earnings";
 import Settings from "./pages/Settings";
 import Help from "./pages/Help";
 import NotFound from "./pages/NotFound";
+import History from "./pages/History";
 
 // Import i18n
 import "./i18n";
@@ -60,7 +60,7 @@ const App = () => {
                   {/* Default redirect to EWA page */}
                   <Route index element={<Navigate to="/ewa" replace />} />
                   <Route path="/ewa" element={<EWA />} />
-                  <Route path="/history" element={<Earnings />} />
+                  <Route path="/history" element={<History />} />
                   <Route path="/help" element={<Help />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/settings" element={<Settings />} />
