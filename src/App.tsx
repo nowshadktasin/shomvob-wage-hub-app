@@ -2,6 +2,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { EarningsProvider } from "@/contexts/EarningsContext";
+import { NavigationProvider } from "@/contexts/NavigationContext";
+import { TransactionProvider } from "@/contexts/TransactionContext";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -42,8 +44,10 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <EarningsProvider>
-          <TooltipProvider>
+        <NavigationProvider>
+          <EarningsProvider>
+            <TransactionProvider>
+              <TooltipProvider>
             <Toaster />
             <Sonner />
             <BrowserRouter>
@@ -74,7 +78,9 @@ const App = () => {
               </Routes>
             </BrowserRouter>
           </TooltipProvider>
-        </EarningsProvider>
+            </TransactionProvider>
+          </EarningsProvider>
+        </NavigationProvider>
       </AuthProvider>
     </QueryClientProvider>
   );

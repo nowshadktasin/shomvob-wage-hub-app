@@ -2,16 +2,7 @@
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-
-interface Transaction {
-  total_amount: number;
-  requested_amount: number;
-  service_charge: number;
-  status: string;
-  requested_month: number;
-  requested_year: number;
-  updated_at: string;
-}
+import { Transaction } from "@/contexts/TransactionContext";
 
 interface TransactionCardProps {
   transaction: Transaction;

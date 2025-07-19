@@ -1,6 +1,7 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useNavigation } from "@/contexts/NavigationContext";
 import { cn } from "@/lib/utils";
 import { Wallet, History, HelpCircle } from "lucide-react";
 
@@ -17,9 +18,18 @@ const BottomNavItem: React.FC<BottomNavItemProps> = ({
   href,
   active
 }) => {
+  const navigate = useNavigate();
+  const { setCurrentRoute } = useNavigation();
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setCurrentRoute(href);
+    navigate(href);
+  };
   return (
     <Link
       to={href}
+      onClick={handleClick}
       className={cn(
         "flex flex-col items-center justify-center py-2 px-3 rounded-lg transition-colors min-w-0 flex-1",
         active 
@@ -44,6 +54,7 @@ const BottomNavItem: React.FC<BottomNavItemProps> = ({
 const BottomNavigation: React.FC = () => {
   const { t } = useTranslation();
   const location = useLocation();
+  const { currentRoute } = useNavigation();
   const pathname = location.pathname;
 
   const navItems = [

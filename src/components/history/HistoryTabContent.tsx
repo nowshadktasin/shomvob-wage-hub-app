@@ -1,17 +1,8 @@
 
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
+import { Transaction } from "@/contexts/TransactionContext";
 import TransactionCard from "./TransactionCard";
-
-interface Transaction {
-  total_amount: number;
-  requested_amount: number;
-  service_charge: number;
-  status: string;
-  requested_month: number;
-  requested_year: number;
-  updated_at: string;
-}
 
 interface HistoryTabContentProps {
   transactions: Transaction[];
