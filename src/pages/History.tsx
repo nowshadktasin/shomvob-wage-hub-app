@@ -115,6 +115,7 @@ const History: React.FC = () => {
           />
         </TabsContent>
       </Tabs>
+      </div>
     </div>
   );
 };

@@ -129,8 +129,9 @@ const Earnings: React.FC = () => {
   }
 
   return (
-    <div className="container max-w-md mx-auto px-4 py-6 font-siliguri">
-      <EarningsHeader onRefresh={handleRefresh} loading={loading} />
+    <div className="min-h-screen bg-background pb-6 font-siliguri">
+      <div className="container max-w-md mx-auto px-4 py-6">
+        <EarningsHeader onRefresh={handleRefresh} loading={loading} />
       
       <EarningsSummaryCard
         periodProgress={periodProgress}
@@ -140,18 +141,19 @@ const Earnings: React.FC = () => {
         formatCurrency={formatCurrency}
       />
       
-      <WithdrawalCard
-        withdrawAmount={withdrawAmount}
-        minWages={minWages}
-        availableToWithdraw={availableToWithdraw}
-        calculateServiceFee={calculateServiceFee}
-        isSubmitting={isSubmitting}
-        isEnabled={earningsData?.is_enabled || false}
-        hasPendingRequest={false}
-        onWithdrawAmountChange={setWithdrawAmount}
-        onWithdraw={handleWithdraw}
-        formatCurrency={formatCurrency}
-      />
+        <WithdrawalCard
+          withdrawAmount={withdrawAmount}
+          minWages={minWages}
+          availableToWithdraw={availableToWithdraw}
+          calculateServiceFee={calculateServiceFee}
+          isSubmitting={isSubmitting}
+          isEnabled={earningsData?.is_enabled || false}
+          hasPendingRequest={false}
+          onWithdrawAmountChange={setWithdrawAmount}
+          onWithdraw={handleWithdraw}
+          formatCurrency={formatCurrency}
+        />
+      </div>
     </div>
   );
 };

@@ -57,38 +57,38 @@ const EWARequestSection: React.FC<EWARequestSectionProps> = ({
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-4">
-          <div className="px-4">
+          <div className="px-2">
             <Slider
               value={[withdrawAmount]}
               min={minWages}
               max={availableToWithdraw}
               step={100}
               onValueChange={(value) => onWithdrawAmountChange(value[0])}
-              className="mb-6"
+              className="mb-6 h-6"
               disabled={availableToWithdraw < minWages || isSubmitting}
             />
           </div>
-          <div className="flex justify-between items-center text-sm px-2">
-            <span>৳{minWages.toLocaleString()}</span>
-            <div className="text-2xl font-bold text-primary">
+          <div className="flex justify-between items-center text-sm px-1">
+            <span className="text-xs text-muted-foreground">৳{minWages.toLocaleString()}</span>
+            <div className="text-2xl font-bold text-primary bg-primary/10 px-4 py-2 rounded-lg">
               ৳{withdrawAmount.toLocaleString()}
             </div>
-            <span>৳{availableToWithdraw.toLocaleString()}</span>
+            <span className="text-xs text-muted-foreground">৳{availableToWithdraw.toLocaleString()}</span>
           </div>
         </div>
         
-        <div className="p-4 bg-muted rounded-lg">
-          <div className="flex justify-between mb-2">
+        <div className="p-4 bg-muted/50 rounded-lg space-y-3">
+          <div className="flex justify-between items-center">
             <span className="text-sm">{t("ewa.requestAmount")}</span>
-            <span className="text-sm font-medium">{formatCurrency(withdrawAmount)}</span>
+            <span className="font-medium">{formatCurrency(withdrawAmount)}</span>
           </div>
-          <div className="flex justify-between mb-2 text-sm text-muted-foreground">
-            <span>{t("ewa.serviceFee")}</span>
-            <span>+ {formatCurrency(serviceFee)}</span>
+          <div className="flex justify-between items-center text-sm">
+            <span className="text-muted-foreground">{t("ewa.serviceFee")}</span>
+            <span className="text-muted-foreground">+ {formatCurrency(serviceFee)}</span>
           </div>
-          <div className="border-t my-2 pt-2 flex justify-between font-medium">
-            <span>{t("ewa.totalAmount")}</span>
-            <span>{formatCurrency(totalAmount)}</span>
+          <div className="border-t pt-3 flex justify-between items-center">
+            <span className="font-semibold">{t("ewa.totalAmount")}</span>
+            <span className="font-bold text-lg text-primary">{formatCurrency(totalAmount)}</span>
           </div>
         </div>
 
@@ -102,7 +102,7 @@ const EWARequestSection: React.FC<EWARequestSectionProps> = ({
       </CardContent>
       <CardFooter>
         <Button 
-          className="w-full" 
+          className="w-full h-12 text-base font-semibold" 
           onClick={onWithdraw}
           disabled={isButtonDisabled}
         >

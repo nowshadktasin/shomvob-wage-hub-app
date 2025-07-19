@@ -58,85 +58,87 @@ const Settings: React.FC = () => {
   };
 
   return (
-    <div className="container max-w-md mx-auto px-4 py-6">
-      <h1 className="text-2xl font-bold mb-6">{t("settings.title")}</h1>
-      
-      <div className="space-y-4">
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg">{t("settings.preferences")}</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="language" className="flex items-center gap-2">
-                🌐 {t("settings.language")}
-              </Label>
-              <Select
-                value={i18n.language}
-                onValueChange={handleLanguageChange}
+    <div className="min-h-screen bg-background pb-6">
+      <div className="container max-w-md mx-auto px-4 py-6">
+        <h1 className="text-2xl font-bold mb-6">{t("settings.title")}</h1>
+        
+        <div className="space-y-4">
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-lg">{t("settings.preferences")}</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="language" className="flex items-center gap-2">
+                  🌐 {t("settings.language")}
+                </Label>
+                <Select
+                  value={i18n.language}
+                  onValueChange={handleLanguageChange}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder={t("settings.selectLanguage")}>
+                      {i18n.language === 'bn' ? '🇧🇩 বাংলা (Bangla)' : '🇺🇸 English (English)'}
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="bn" className="flex items-center gap-2">
+                      <span className="flex items-center gap-2">
+                        🇧🇩 বাংলা (Bangla)
+                      </span>
+                    </SelectItem>
+                    <SelectItem value="en" className="flex items-center gap-2">
+                      <span className="flex items-center gap-2">
+                        🇺🇸 English (English)
+                      </span>
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div className="flex items-center justify-between">
+                <Label htmlFor="notifications">{t("settings.notifications")}</Label>
+                <Switch
+                  id="notifications"
+                  checked={notificationsEnabled}
+                  onCheckedChange={toggleNotifications}
+                />
+              </div>
+              
+              <div className="flex items-center justify-between">
+                <Label htmlFor="darkMode">{t("settings.darkMode")}</Label>
+                <Switch
+                  id="darkMode"
+                  checked={darkMode}
+                  onCheckedChange={toggleDarkMode}
+                />
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-lg">{t("settings.about")}</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={() => navigate("/help")}
               >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder={t("settings.selectLanguage")}>
-                    {i18n.language === 'bn' ? '🇧🇩 বাংলা (Bangla)' : '🇺🇸 English (English)'}
-                  </SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="bn" className="flex items-center gap-2">
-                    <span className="flex items-center gap-2">
-                      🇧🇩 বাংলা (Bangla)
-                    </span>
-                  </SelectItem>
-                  <SelectItem value="en" className="flex items-center gap-2">
-                    <span className="flex items-center gap-2">
-                      🇺🇸 English (English)
-                    </span>
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            
-            <div className="flex items-center justify-between">
-              <Label htmlFor="notifications">{t("settings.notifications")}</Label>
-              <Switch
-                id="notifications"
-                checked={notificationsEnabled}
-                onCheckedChange={toggleNotifications}
-              />
-            </div>
-            
-            <div className="flex items-center justify-between">
-              <Label htmlFor="darkMode">{t("settings.darkMode")}</Label>
-              <Switch
-                id="darkMode"
-                checked={darkMode}
-                onCheckedChange={toggleDarkMode}
-              />
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg">{t("settings.about")}</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <Button
-              variant="outline"
-              className="w-full"
-              onClick={() => navigate("/help")}
-            >
-              {t("settings.helpSupport")}
-            </Button>
-          </CardContent>
-        </Card>
-        
-        <Button
-          variant="destructive"
-          className="w-full"
-          onClick={handleLogout}
-        >
-          {t("auth.logout")}
-        </Button>
+                {t("settings.helpSupport")}
+              </Button>
+            </CardContent>
+          </Card>
+          
+          <Button
+            variant="destructive"
+            className="w-full"
+            onClick={handleLogout}
+          >
+            {t("auth.logout")}
+          </Button>
+        </div>
       </div>
     </div>
   );

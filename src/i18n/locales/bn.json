@@ -64,6 +64,7 @@
     },
     "withdrawSuccessTitle": "উত্তোলন সফল",
     "withdrawSuccessDescription": "আপনার {{amount}} টাকার উত্তোলন অনুরোধ প্রক্রিয়া করা হয়েছে।",
+    "viewDetails": "বিস্তারিত দেখুন",
     "status": {
       "completed": "সম্পন্ন",
       "pending": "অপেক্ষমান",

@@ -49,7 +49,8 @@ const Help: React.FC = () => {
   }, [user?.contact_number, session?.access_token]);
 
   return (
-    <div className="container max-w-2xl mx-auto px-4 py-6">
+    <div className="min-h-screen bg-background pb-6">
+      <div className="container max-w-md mx-auto px-4 py-6">
       <div className="flex items-center gap-4 mb-6">
         <Button
           variant="ghost"
@@ -104,6 +105,7 @@ const Help: React.FC = () => {
             </div>
           </CardContent>
         </Card>
+        </div>
       </div>
     </div>
   );
