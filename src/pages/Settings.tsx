@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -15,47 +15,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import OrganizationEWAInfo from "@/components/settings/OrganizationEWAInfo";
-import { fetchOrganizationEwaSettings, OrganizationEwaSettings } from "@/services/organizationEwaApi";
 
 const Settings: React.FC = () => {
   const { t, i18n } = useTranslation();
-  const { logout, user, session } = useAuth();
+  const { logout } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [darkMode, setDarkMode] = useState(document.documentElement.classList.contains("dark"));
-  const [organizationEWAData, setOrganizationEWAData] = useState<OrganizationEwaSettings | null>(null);
-  const [ewaDataLoading, setEwaDataLoading] = useState(false);
-  const [ewaDataError, setEwaDataError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const loadOrganizationEwaSettings = async () => {
-      if (!user?.contact_number || !session?.access_token) {
-        return;
-      }
-
-      setEwaDataLoading(true);
-      setEwaDataError(null);
-
-      try {
-        const data = await fetchOrganizationEwaSettings(
-          user.contact_number,
-          session.access_token
-        );
-        setOrganizationEWAData(data);
-        console.log('Organization EWA settings loaded:', data);
-      } catch (error: any) {
-        console.error('Failed to fetch organization EWA settings:', error);
-        setEwaDataError(error.message || 'Failed to load organization EWA settings');
-      } finally {
-        setEwaDataLoading(false);
-      }
-    };
-
-    loadOrganizationEwaSettings();
-  }, [user?.contact_number, session?.access_token]);
   
   const handleLanguageChange = (language: string) => {
     i18n.changeLanguage(language);
@@ -146,30 +114,6 @@ const Settings: React.FC = () => {
             </div>
           </CardContent>
         </Card>
-        
-        {ewaDataLoading && (
-          <Card>
-            <CardContent className="py-6">
-              <div className="text-center text-muted-foreground">
-                Loading organization EWA policy...
-              </div>
-            </CardContent>
-          </Card>
-        )}
-        
-        {ewaDataError && (
-          <Card>
-            <CardContent className="py-6">
-              <div className="text-center text-destructive">
-                {ewaDataError}
-              </div>
-            </CardContent>
-          </Card>
-        )}
-        
-        {organizationEWAData && !ewaDataLoading && (
-          <OrganizationEWAInfo data={organizationEWAData} />
-        )}
         
         <Card>
           <CardHeader className="pb-3">

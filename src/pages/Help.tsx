@@ -1,30 +1,52 @@
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { ArrowLeft, Mail, Phone, HelpCircle } from "lucide-react";
+import { ArrowLeft, Mail, Phone, HelpCircle, DollarSign, Building } from "lucide-react";
+import { fetchOrganizationEwaSettings, OrganizationEwaSettings } from "@/services/organizationEwaApi";
+import OrganizationFeeStructure from "@/components/help/OrganizationFeeStructure";
+import ContactSupport from "@/components/help/ContactSupport";
+import FAQSection from "@/components/help/FAQSection";
 
 const Help: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { user, session } = useAuth();
 
-  const faqs = [
-    {
-      question: "How much of my salary can I withdraw using Shomvob EWA?",
-      answer: "You can withdraw a percentage of your earned but unpaid wages, based on your organization's policy. For example, if you've earned 20,000 BDT so far this month and your withdrawal limit is 50%, you can request up to 10,000 BDT through Shomvob EWA."
-    },
-    {
-      question: "Will using Shomvob EWA affect my regular payday salary?",
-      answer: "Yes, but only by the amount you've already withdrawn. On payday, your salary will be adjusted to subtract the amount you accessed early through EWA. The remaining balance will be paid as usual."
-    },
-    {
-      question: "Is there a service charge for using Shomvob EWA?",
-      answer: "Yes, a small service fee is applied to each withdrawal request. You can view the exact fee structure by going to Settings > Organization EWA Policy inside the Shomvob EWA platform."
-    }
-  ];
+  const [organizationEWAData, setOrganizationEWAData] = useState<OrganizationEwaSettings | null>(null);
+  const [ewaDataLoading, setEwaDataLoading] = useState(false);
+  const [ewaDataError, setEwaDataError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const loadOrganizationEwaSettings = async () => {
+      if (!user?.contact_number || !session?.access_token) {
+        return;
+      }
+
+      setEwaDataLoading(true);
+      setEwaDataError(null);
+
+      try {
+        const data = await fetchOrganizationEwaSettings(
+          user.contact_number,
+          session.access_token
+        );
+        setOrganizationEWAData(data);
+        console.log('Organization EWA settings loaded in Help:', data);
+      } catch (error: any) {
+        console.error('Failed to fetch organization EWA settings in Help:', error);
+        setEwaDataError(error.message || 'Failed to load organization EWA settings');
+      } finally {
+        setEwaDataLoading(false);
+      }
+    };
+
+    loadOrganizationEwaSettings();
+  }, [user?.contact_number, session?.access_token]);
 
   return (
     <div className="container max-w-2xl mx-auto px-4 py-6">
@@ -40,67 +62,31 @@ const Help: React.FC = () => {
       </div>
 
       <div className="space-y-6">
-        {/* FAQ Section */}
+        {/* Organization Fee Structure Section */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <HelpCircle className="h-5 w-5" />
-              {t("help.faq.title")}
+              <Building className="h-5 w-5" />
+              {t("help.organizationFee.title")}
             </CardTitle>
             <CardDescription>
-              {t("help.faq.description")}
+              {t("help.organizationFee.description")}
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Accordion type="single" collapsible className="w-full">
-              {faqs.map((faq, index) => (
-                <AccordionItem key={index} value={`item-${index}`}>
-                  <AccordionTrigger className="text-left">
-                    {faq.question}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground">
-                    {faq.answer}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+            <OrganizationFeeStructure 
+              data={organizationEWAData}
+              loading={ewaDataLoading}
+              error={ewaDataError}
+            />
           </CardContent>
         </Card>
 
         {/* Contact Support Section */}
-        <Card>
-          <CardHeader>
-            <CardTitle>{t("help.contact.title")}</CardTitle>
-            <CardDescription>
-              {t("help.contact.description")}
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid gap-4">
-              <Button
-                variant="outline"
-                className="flex items-center gap-3 h-auto p-4 justify-start"
-              >
-                <Mail className="h-5 w-5 text-blue-500" />
-                <div className="text-left">
-                  <div className="font-medium">{t("help.contact.email")}</div>
-                  <div className="text-sm text-muted-foreground">info@shomvob.com</div>
-                </div>
-              </Button>
+        <ContactSupport />
 
-              <Button
-                variant="outline"
-                className="flex items-center gap-3 h-auto p-4 justify-start"
-              >
-                <Phone className="h-5 w-5 text-green-500" />
-                <div className="text-left">
-                  <div className="font-medium">{t("help.contact.phone")}</div>
-                  <div className="text-sm text-muted-foreground">+880 9638-885588</div>
-                </div>
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+        {/* FAQ Section */}
+        <FAQSection />
 
         {/* App Info Section */}
         <Card>

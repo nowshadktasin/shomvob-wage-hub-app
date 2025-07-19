@@ -153,17 +153,13 @@
   },
   "help": {
     "title": "Help & Support",
+    "organizationFee": {
+      "title": "Organization Fee Structure",
+      "description": "View your organization's EWA policy, fee structure, and requirements"
+    },
     "faq": {
       "title": "Frequently Asked Questions",
-      "description": "Find answers to common questions about Shomvob",
-      "withdrawalQuestion": "How do I withdraw my earnings?",
-      "withdrawalAnswer": "Go to the Earnings page, enter the amount you want to withdraw, and click 'Withdraw Now'. The funds will be transferred to your default disbursement account.",
-      "limitsQuestion": "What are the withdrawal limits?",
-      "limitsAnswer": "You can withdraw up to your available balance. Advance salary withdrawals may have different limits based on your employment terms.",
-      "feesQuestion": "Are there any fees for withdrawals?",
-      "feesAnswer": "A small service fee may apply depending on the withdrawal method and amount. The fee will be clearly shown before you confirm the transaction.",
-      "accountQuestion": "How do I add a bank account?",
-      "accountAnswer": "Go to Accounts in the menu, click 'Add New Account', and enter your bank details. Make sure to verify the information before saving."
+      "description": "Find answers to common questions about Shomvob EWA"
     },
     "contact": {
       "title": "Contact Support",
@@ -216,7 +212,8 @@
     "enabled": "Enabled",
     "disabled": "Disabled",
     "days": "days",
-    "times": "times"
+    "times": "times",
+    "noFeeSlabs": "No fee slabs available"
   },
   "locale": "en-US"
 }
