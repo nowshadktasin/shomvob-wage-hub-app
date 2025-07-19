@@ -146,7 +146,7 @@ export const useLoginFlow = () => {
             title: "Login Successful",
             description: "Welcome to Shomvob",
           });
-          navigate("/dashboard");
+          navigate("/app/ewa");
         } else {
           toast({
             title: "Login Error",

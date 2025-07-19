@@ -27,6 +27,22 @@ const History = lazy(() => import("./pages/History"));
 import "./i18n";
 
 // Protected route component
+// Auth redirect component for root route
+const AuthRedirect = () => {
+  const { user, loading } = useAuth();
+  
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  }
+  
+  if (user) {
+    return <Navigate to="/app/ewa" replace />;
+  }
+  
+  return <Navigate to="/login" replace />;
+};
+
+// Protected route component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
   
@@ -35,7 +51,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   }
   
   if (!user) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/login" replace />;
   }
   
   return <>{children}</>;
@@ -57,45 +73,48 @@ const App = () => {
             <BrowserRouter>
               <Routes>
                 {/* Public routes */}
-                <Route path="/" element={<Login />} />
+                <Route path="/login" element={<Login />} />
+                
+                {/* Root route - redirect based on auth state */}
+                <Route path="/" element={<AuthRedirect />} />
                 
                 {/* Protected routes with AppLayout */}
-                <Route path="/" element={
+                <Route path="/app" element={
                   <ProtectedRoute>
                     <AppLayout />
                   </ProtectedRoute>
                 }>
                   {/* Default redirect to EWA page */}
-                  <Route index element={<Navigate to="/ewa" replace />} />
-                  <Route path="/ewa" element={
+                  <Route index element={<Navigate to="/app/ewa" replace />} />
+                  <Route path="ewa" element={
                     <ErrorBoundary>
                       <Suspense fallback={<SkeletonLoader type="earnings" />}>
                         <EWA />
                       </Suspense>
                     </ErrorBoundary>
                   } />
-                  <Route path="/history" element={
+                  <Route path="history" element={
                     <ErrorBoundary>
                       <Suspense fallback={<SkeletonLoader type="transaction" count={3} />}>
                         <History />
                       </Suspense>
                     </ErrorBoundary>
                   } />
-                  <Route path="/help" element={
+                  <Route path="help" element={
                     <ErrorBoundary>
                       <Suspense fallback={<SkeletonLoader type="settings" />}>
                         <Help />
                       </Suspense>
                     </ErrorBoundary>
                   } />
-                  <Route path="/profile" element={
+                  <Route path="profile" element={
                     <ErrorBoundary>
                       <Suspense fallback={<SkeletonLoader type="profile" />}>
                         <Profile />
                       </Suspense>
                     </ErrorBoundary>
                   } />
-                  <Route path="/settings" element={
+                  <Route path="settings" element={
                     <ErrorBoundary>
                       <Suspense fallback={<SkeletonLoader type="settings" />}>
                         <Settings />
@@ -103,8 +122,8 @@ const App = () => {
                     </ErrorBoundary>
                   } />
                   {/* Redirect old routes */}
-                  <Route path="/dashboard" element={<Navigate to="/ewa" replace />} />
-                  <Route path="/earnings" element={<Navigate to="/ewa" replace />} />
+                  <Route path="dashboard" element={<Navigate to="ewa" replace />} />
+                  <Route path="earnings" element={<Navigate to="ewa" replace />} />
                 </Route>
                 
                 {/* Catch-all route */}
