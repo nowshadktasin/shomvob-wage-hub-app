@@ -34,7 +34,7 @@ const EWADetailsSection: React.FC<EWADetailsSectionProps> = ({
         <CollapsibleTrigger asChild>
           <CardHeader className="cursor-pointer hover:bg-muted/50 transition-colors">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-lg font-semibold">{t("earnings.myEarnings")}</CardTitle>
+              <CardTitle className="text-lg font-semibold">{t("ewa.details")}</CardTitle>
               <Button variant="ghost" size="sm">
                 {isOpen ? (
                   <ChevronUp className="h-4 w-4" />
