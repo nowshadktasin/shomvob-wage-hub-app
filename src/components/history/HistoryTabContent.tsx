@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { memo } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Transaction } from "@/contexts/TransactionContext";
 import TransactionCard from "./TransactionCard";
@@ -55,4 +55,5 @@ const HistoryTabContent: React.FC<HistoryTabContentProps> = ({
   );
 };
 
-export default HistoryTabContent;
+// Optimize with React.memo for better performance
+export default memo(HistoryTabContent);

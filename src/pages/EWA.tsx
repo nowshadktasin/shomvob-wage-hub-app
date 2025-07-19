@@ -10,6 +10,9 @@ import { fetchOrganizationEwaSettings, OrganizationEwaSettings } from "@/service
 import EWAAmountDisplay from "@/components/ewa/EWAAmountDisplay";
 import EWARequestSection from "@/components/ewa/EWARequestSection";
 import EWADetailsSection from "@/components/ewa/EWADetailsSection";
+import DisabledState from "@/components/common/DisabledState";
+import SkeletonLoader from "@/components/common/SkeletonLoader";
+import ErrorBoundary from "@/components/common/ErrorBoundary";
 import { cn } from "@/lib/utils";
 
 const EWA: React.FC = () => {
@@ -140,47 +143,78 @@ const EWA: React.FC = () => {
 
   if (loading) {
     return (
-      <div className={cn("container max-w-md mx-auto px-4 py-6", isBangla && "font-siliguri")}>
-        <div className="flex items-center justify-center min-h-64">
-          <div className="text-center">Loading...</div>
+      <div className={cn("min-h-screen bg-background pb-6", isBangla && "font-siliguri")}>
+        <div className="container max-w-md mx-auto px-4 py-6 space-y-6">
+          <div className="text-center mb-8">
+            <h1 className="text-2xl font-bold mb-2">{t("ewa.title")}</h1>
+            <p className="text-muted-foreground">{t("ewa.pageTitle")}</p>
+          </div>
+          <SkeletonLoader type="earnings" />
+        </div>
+      </div>
+    );
+  }
+
+  // Handle disabled EWA access
+  if (earningsData && !earningsData.is_enabled) {
+    return (
+      <div className={cn("min-h-screen bg-background pb-6", isBangla && "font-siliguri")}>
+        <div className="container max-w-md mx-auto px-4 py-6 space-y-6">
+          <div className="text-center mb-8">
+            <h1 className="text-2xl font-bold mb-2">{t("ewa.title")}</h1>
+            <p className="text-muted-foreground">{t("ewa.pageTitle")}</p>
+          </div>
+          
+          <DisabledState
+            title={t("ewa.disabled.title")}
+            message={t("ewa.disabled.message")}
+            reason={earningsData.failed_reason || t("ewa.disabled.defaultReason")}
+            actionLabel={t("ewa.disabled.contactHR")}
+            onAction={() => {
+              // Could navigate to help or contact page
+              window.location.href = '/help';
+            }}
+          />
         </div>
       </div>
     );
   }
 
   return (
-    <div className={cn("min-h-screen bg-background pb-6", isBangla && "font-siliguri")}>
-      <div className="container max-w-md mx-auto px-4 py-6 space-y-6">
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold mb-2">{t("ewa.title")}</h1>
-          <p className="text-muted-foreground">{t("ewa.pageTitle")}</p>
+    <ErrorBoundary onRetry={refreshEarnings}>
+      <div className={cn("min-h-screen bg-background pb-6", isBangla && "font-siliguri")}>
+        <div className="container max-w-md mx-auto px-4 py-6 space-y-6">
+          <div className="text-center mb-8">
+            <h1 className="text-2xl font-bold mb-2">{t("ewa.title")}</h1>
+            <p className="text-muted-foreground">{t("ewa.pageTitle")}</p>
+          </div>
+          
+          <EWAAmountDisplay
+            availableToWithdraw={availableToWithdraw}
+            formatCurrency={formatCurrency}
+            isEnabled={earningsData?.is_enabled || false}
+          />
+          
+          <EWARequestSection
+            withdrawAmount={withdrawAmount}
+            minWages={minWages}
+            availableToWithdraw={availableToWithdraw}
+            calculateServiceFee={calculateServiceFee}
+            isSubmitting={isSubmitting}
+            isEnabled={earningsData?.is_enabled || false}
+            hasPendingRequest={hasPendingRequest}
+            onWithdrawAmountChange={setWithdrawAmount}
+            onWithdraw={handleWithdraw}
+            formatCurrency={formatCurrency}
+          />
+          
+          <EWADetailsSection
+            earningsData={earningsData}
+            formatCurrency={formatCurrency}
+          />
         </div>
-      
-      <EWAAmountDisplay
-        availableToWithdraw={availableToWithdraw}
-        formatCurrency={formatCurrency}
-        isEnabled={earningsData?.is_enabled || false}
-      />
-      
-      <EWARequestSection
-        withdrawAmount={withdrawAmount}
-        minWages={minWages}
-        availableToWithdraw={availableToWithdraw}
-        calculateServiceFee={calculateServiceFee}
-        isSubmitting={isSubmitting}
-        isEnabled={earningsData?.is_enabled || false}
-        hasPendingRequest={hasPendingRequest}
-        onWithdrawAmountChange={setWithdrawAmount}
-        onWithdraw={handleWithdraw}
-        formatCurrency={formatCurrency}
-      />
-      
-        <EWADetailsSection
-          earningsData={earningsData}
-          formatCurrency={formatCurrency}
-        />
       </div>
-    </div>
+    </ErrorBoundary>
   );
 };
 

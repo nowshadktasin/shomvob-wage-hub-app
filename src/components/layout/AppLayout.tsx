@@ -10,7 +10,14 @@ const AppLayout: React.FC = () => {
   const isBangla = i18n.language === 'bn';
 
   return (
-    <div className={cn("min-h-screen flex flex-col bg-background", isBangla && "font-siliguri")}>
+    <div 
+      className={cn(
+        "min-h-screen flex flex-col bg-background", 
+        isBangla && "font-siliguri"
+      )}
+      lang={isBangla ? 'bn' : 'en'}
+      dir="ltr" // Keep LTR for now, can be changed to RTL if needed
+    >
       {/* Header with logo and profile */}
       <header className="sticky top-0 z-30 bg-background border-b h-16 flex items-center justify-between px-4">
         <Link to="/ewa">

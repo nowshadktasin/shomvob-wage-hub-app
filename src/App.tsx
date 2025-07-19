@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { lazy, Suspense } from "react";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { EarningsProvider } from "@/contexts/EarningsContext";
 import { NavigationProvider } from "@/contexts/NavigationContext";
@@ -8,16 +9,19 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import AppLayout from "./components/layout/AppLayout";
+import SkeletonLoader from "@/components/common/SkeletonLoader";
+import ErrorBoundary from "@/components/common/ErrorBoundary";
 
-// Import pages
+// Import critical pages directly
 import Login from "./pages/Login";
-import EWA from "./pages/EWA";
-import Profile from "./pages/Profile";
-import Earnings from "./pages/Earnings";
-import Settings from "./pages/Settings";
-import Help from "./pages/Help";
 import NotFound from "./pages/NotFound";
-import History from "./pages/History";
+
+// Lazy load other pages for better performance
+const EWA = lazy(() => import("./pages/EWA"));
+const Profile = lazy(() => import("./pages/Profile"));
+const Settings = lazy(() => import("./pages/Settings"));
+const Help = lazy(() => import("./pages/Help"));
+const History = lazy(() => import("./pages/History"));
 
 // Import i18n
 import "./i18n";
@@ -63,11 +67,41 @@ const App = () => {
                 }>
                   {/* Default redirect to EWA page */}
                   <Route index element={<Navigate to="/ewa" replace />} />
-                  <Route path="/ewa" element={<EWA />} />
-                  <Route path="/history" element={<History />} />
-                  <Route path="/help" element={<Help />} />
-                  <Route path="/profile" element={<Profile />} />
-                  <Route path="/settings" element={<Settings />} />
+                  <Route path="/ewa" element={
+                    <ErrorBoundary>
+                      <Suspense fallback={<SkeletonLoader type="earnings" />}>
+                        <EWA />
+                      </Suspense>
+                    </ErrorBoundary>
+                  } />
+                  <Route path="/history" element={
+                    <ErrorBoundary>
+                      <Suspense fallback={<SkeletonLoader type="transaction" count={3} />}>
+                        <History />
+                      </Suspense>
+                    </ErrorBoundary>
+                  } />
+                  <Route path="/help" element={
+                    <ErrorBoundary>
+                      <Suspense fallback={<SkeletonLoader type="settings" />}>
+                        <Help />
+                      </Suspense>
+                    </ErrorBoundary>
+                  } />
+                  <Route path="/profile" element={
+                    <ErrorBoundary>
+                      <Suspense fallback={<SkeletonLoader type="profile" />}>
+                        <Profile />
+                      </Suspense>
+                    </ErrorBoundary>
+                  } />
+                  <Route path="/settings" element={
+                    <ErrorBoundary>
+                      <Suspense fallback={<SkeletonLoader type="settings" />}>
+                        <Settings />
+                      </Suspense>
+                    </ErrorBoundary>
+                  } />
                   {/* Redirect old routes */}
                   <Route path="/dashboard" element={<Navigate to="/ewa" replace />} />
                   <Route path="/earnings" element={<Navigate to="/ewa" replace />} />

@@ -105,7 +105,10 @@
     "next": "Next",
     "loading": "Loading...",
     "currency": "BDT",
-    "submit": "Submit"
+    "submit": "Submit",
+    "reason": "Reason",
+    "retry": "Retry",
+    "refresh": "Refresh"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -167,7 +170,8 @@
       "description": "Need more help? Get in touch with our support team",
       "email": "Email Support",
       "phone": "Phone Support",
-      "chatHours": "Available 9 AM - 6 PM"
+      "chatHours": "Available 9 AM - 6 PM",
+      "needHelp": "Need more help? Contact our support team."
     },
     "app": {
       "title": "App Information",
@@ -184,7 +188,12 @@
     "serviceFee": "Service Fee",
     "totalAmount": "Total Amount",
     "withdraw": "Request Withdrawal",
-    "disabled": "EWA access is currently disabled",
+    "disabled": {
+      "title": "EWA Access Disabled",
+      "message": "Your Employee Wage Advance access is currently disabled. Please contact your HR department for assistance.",
+      "defaultReason": "Access has been temporarily disabled by your organization.",
+      "contactHR": "Contact HR Department"
+    },
     "disabledMessage": "Please contact your HR department for assistance."
   },
   "history": {
@@ -193,6 +202,9 @@
     "pending": "Pending",
     "rejected": "Rejected",
     "noTransactions": "No transactions found",
+    "noApprovedTransactions": "No approved transactions found",
+    "noPendingTransactions": "No pending transactions found", 
+    "noRejectedTransactions": "No rejected transactions found",
     "amount": "Amount",
     "date": "Date",
     "status": "Status"
