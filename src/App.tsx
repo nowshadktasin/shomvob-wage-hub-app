@@ -57,11 +57,14 @@ const App = () => {
                     <AppLayout />
                   </ProtectedRoute>
                 }>
-                  <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/profile" element={<Profile />} />
-                  <Route path="/earnings" element={<Earnings />} />
-                  <Route path="/settings" element={<Settings />} />
+                  <Route path="/ewa" element={<Earnings />} />
+                  <Route path="/history" element={<Earnings />} />
                   <Route path="/help" element={<Help />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/settings" element={<Settings />} />
+                  {/* Redirect old routes */}
+                  <Route path="/dashboard" element={<Navigate to="/ewa" replace />} />
+                  <Route path="/earnings" element={<Navigate to="/ewa" replace />} />
                 </Route>
                 
                 {/* Catch-all route */}
