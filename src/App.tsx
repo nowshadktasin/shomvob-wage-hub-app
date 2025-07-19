@@ -57,6 +57,8 @@ const App = () => {
                     <AppLayout />
                   </ProtectedRoute>
                 }>
+                  {/* Default redirect to EWA page */}
+                  <Route index element={<Navigate to="/ewa" replace />} />
                   <Route path="/ewa" element={<Earnings />} />
                   <Route path="/history" element={<Earnings />} />
                   <Route path="/help" element={<Help />} />
