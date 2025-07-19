@@ -10,7 +10,7 @@ import AppLayout from "./components/layout/AppLayout";
 
 // Import pages
 import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
+import EWA from "./pages/EWA";
 import Profile from "./pages/Profile";
 import Earnings from "./pages/Earnings";
 import Settings from "./pages/Settings";
@@ -59,7 +59,7 @@ const App = () => {
                 }>
                   {/* Default redirect to EWA page */}
                   <Route index element={<Navigate to="/ewa" replace />} />
-                  <Route path="/ewa" element={<Earnings />} />
+                  <Route path="/ewa" element={<EWA />} />
                   <Route path="/history" element={<Earnings />} />
                   <Route path="/help" element={<Help />} />
                   <Route path="/profile" element={<Profile />} />
