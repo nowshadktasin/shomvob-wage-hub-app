@@ -70,12 +70,13 @@ const History: React.FC = () => {
   };
 
   return (
-    <div className="container max-w-md mx-auto px-4 py-6 font-siliguri">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-foreground">{t("history.title")}</h1>
-      </div>
+    <div className="min-h-screen bg-background pb-6">
+      <div className="container max-w-md mx-auto px-4 py-6">
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-foreground">{t("history.title")}</h1>
+        </div>
 
-      <Tabs defaultValue="approved" className="w-full">
+        <Tabs defaultValue="approved" className="w-full">
         <TabsList className="grid grid-cols-3 w-full mb-6">
           <TabsTrigger value="approved" className="text-sm">
             {t("history.approved")}
@@ -114,7 +115,7 @@ const History: React.FC = () => {
             formatCurrency={formatCurrency}
           />
         </TabsContent>
-      </Tabs>
+        </Tabs>
       </div>
     </div>
   );
