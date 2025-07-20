@@ -1,9 +1,10 @@
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
+import { Input } from "@/components/ui/input";
 
 interface EWARequestSectionProps {
   withdrawAmount: number;
@@ -31,9 +32,39 @@ const EWARequestSection: React.FC<EWARequestSectionProps> = ({
   formatCurrency,
 }) => {
   const { t } = useTranslation();
+  const [inputValue, setInputValue] = useState(withdrawAmount.toString());
   
   const serviceFee = calculateServiceFee(withdrawAmount);
   const totalAmount = withdrawAmount + serviceFee;
+
+  // Update input value when withdrawAmount changes from slider
+  useEffect(() => {
+    setInputValue(withdrawAmount.toString());
+  }, [withdrawAmount]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setInputValue(value);
+  };
+
+  const handleInputBlur = () => {
+    const numValue = parseInt(inputValue);
+    if (!isNaN(numValue) && numValue >= minWages && numValue <= availableToWithdraw) {
+      // Round to nearest 100
+      const roundedValue = Math.round(numValue / 100) * 100;
+      onWithdrawAmountChange(roundedValue);
+      setInputValue(roundedValue.toString());
+    } else {
+      // Reset to current valid value if invalid input
+      setInputValue(withdrawAmount.toString());
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleInputBlur();
+    }
+  };
 
   const getButtonText = () => {
     if (isSubmitting) return "Submitting...";
@@ -70,8 +101,17 @@ const EWARequestSection: React.FC<EWARequestSectionProps> = ({
           </div>
           <div className="flex justify-between items-center text-sm px-1">
             <span className="text-xs text-muted-foreground">৳{minWages.toLocaleString()}</span>
-            <div className="text-2xl font-bold text-primary bg-primary/10 px-4 py-2 rounded-lg">
-              ৳{withdrawAmount.toLocaleString()}
+            <div className="relative">
+              <Input
+                value={inputValue}
+                onChange={handleInputChange}
+                onBlur={handleInputBlur}
+                onKeyPress={handleKeyPress}
+                className="text-2xl font-bold text-primary bg-primary/10 border-none text-center w-32 h-12 px-2"
+                placeholder="Amount"
+                disabled={availableToWithdraw < minWages || isSubmitting}
+              />
+              <span className="absolute left-2 top-1/2 transform -translate-y-1/2 text-2xl font-bold text-primary pointer-events-none">৳</span>
             </div>
             <span className="text-xs text-muted-foreground">৳{availableToWithdraw.toLocaleString()}</span>
           </div>
