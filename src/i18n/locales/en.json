@@ -63,6 +63,7 @@
       "advanceLimit": "This is the percentage of your earned salary that you're allowed to access before payday, as per your organization's EWA policy."
     },
     "withdrawSuccessTitle": "Withdrawal Successful",
+    "requestSuccessTitle": "Request Successful",
     "withdrawSuccessDescription": "Your withdrawal request for {{amount}} has been processed.",
     "viewDetails": "View Details",
     "status": {

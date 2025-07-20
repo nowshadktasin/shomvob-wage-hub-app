@@ -113,7 +113,7 @@ const EWA: React.FC = () => {
         user.id
       );
 
-      toast.success(t("earnings.withdrawSuccessTitle"), {
+      toast.success(t("earnings.requestSuccessTitle"), {
         description: `Request submitted for ${formatCurrency(response.requested_amount)}. Status: ${response.status}`,
       });
 

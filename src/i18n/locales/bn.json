@@ -63,6 +63,7 @@
       "advanceLimit": "আপনার আয়ের কত পার্সেন্ট আগেই তোলা যাবে, সেটা আপনার অফিসের নিয়ম অনুযায়ী এখানে দেখানো হয়েছে।"
     },
     "withdrawSuccessTitle": "উত্তোলন সফল",
+    "requestSuccessTitle": "অনুরোধ সফল",
     "withdrawSuccessDescription": "আপনার {{amount}} টাকার উত্তোলন অনুরোধ প্রক্রিয়া করা হয়েছে।",
     "viewDetails": "বিস্তারিত দেখুন",
     "status": {
