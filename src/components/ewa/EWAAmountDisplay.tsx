@@ -37,7 +37,6 @@ const EWAAmountDisplay: React.FC<EWAAmountDisplayProps> = ({
         </div>
         <h2 className="text-sm font-medium opacity-90 mb-2">{t("ewa.availableToWithdraw")}</h2>
         <p className="text-4xl font-bold mb-2">{formatCurrency(availableToWithdraw)}</p>
-        <p className="text-xs opacity-75">{t("earnings.available")}</p>
       </div>
     </Card>
   );
