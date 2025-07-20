@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,41 +5,33 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown, ChevronUp, RefreshCw } from "lucide-react";
-
 interface EWADetailsSectionProps {
   earningsData: any;
   formatCurrency: (amount: number) => string;
 }
-
 const EWADetailsSection: React.FC<EWADetailsSectionProps> = ({
   earningsData,
-  formatCurrency,
+  formatCurrency
 }) => {
-  const { t } = useTranslation();
+  const {
+    t
+  } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-
   if (!earningsData) {
     return null;
   }
-
   const totalEarned = earningsData.total_earnings_completed || 0;
   const availableToWithdraw = earningsData.claimable_wages || 0;
   const periodProgress = earningsData.earnings_completed_percentage || 0;
   const advancePercentage = earningsData.claimable_wages_percentage || 60;
-
-  return (
-    <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+  return <Collapsible open={isOpen} onOpenChange={setIsOpen}>
       <Card>
         <CollapsibleTrigger asChild>
           <CardHeader className="cursor-pointer hover:bg-muted/50 transition-colors">
             <div className="flex items-center justify-between">
               <CardTitle className="text-lg font-semibold">{t("ewa.details")}</CardTitle>
               <Button variant="ghost" size="sm">
-                {isOpen ? (
-                  <ChevronUp className="h-4 w-4" />
-                ) : (
-                  <ChevronDown className="h-4 w-4" />
-                )}
+                {isOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
               </Button>
             </div>
           </CardHeader>
@@ -65,11 +56,11 @@ const EWADetailsSection: React.FC<EWADetailsSectionProps> = ({
             
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-sm text-muted-foreground mb-1">{t("ewa.availableToWithdraw")}</p>
+                <p className="text-muted-foreground mb-1 text-xs">{t("ewa.availableToWithdraw")}</p>
                 <p className="text-xl font-bold">{formatCurrency(availableToWithdraw)}</p>
               </div>
               <div>
-                <p className="text-sm text-muted-foreground mb-1">{t("earnings.totalEarned")}</p>
+                <p className="text-muted-foreground mb-1 text-xs">{t("earnings.totalEarned")}</p>
                 <p className="text-xl font-bold">{formatCurrency(totalEarned)}</p>
               </div>
             </div>
@@ -84,8 +75,6 @@ const EWADetailsSection: React.FC<EWADetailsSectionProps> = ({
           </CardContent>
         </CollapsibleContent>
       </Card>
-    </Collapsible>
-  );
+    </Collapsible>;
 };
-
 export default EWADetailsSection;
