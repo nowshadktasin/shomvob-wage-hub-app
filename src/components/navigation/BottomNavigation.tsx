@@ -61,17 +61,17 @@ const BottomNavigation: React.FC = () => {
     {
       icon: Wallet,
       label: t("ewa.title", "EWA"),
-      href: "/ewa"
+      href: "/app/ewa"
     },
     {
       icon: History,
       label: t("history.title", "History"),
-      href: "/history"
+      href: "/app/history"
     },
     {
       icon: HelpCircle,
       label: t("help.title", "Help"),
-      href: "/help"
+      href: "/app/help"
     }
   ];
 

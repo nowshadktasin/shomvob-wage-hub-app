@@ -20,7 +20,7 @@ const AppLayout: React.FC = () => {
     >
       {/* Header with logo and profile */}
       <header className="sticky top-0 z-30 bg-background border-b h-16 flex items-center justify-between px-4">
-        <Link to="/ewa">
+        <Link to="/app/ewa">
           <img 
             src="/lovable-uploads/1bd4350e-e3d3-4713-823b-e16419562f96.png" 
             alt="Shomvob EWA" 

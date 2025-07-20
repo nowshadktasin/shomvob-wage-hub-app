@@ -21,7 +21,7 @@ const ProfileMenu: React.FC = () => {
 
   const handleLogout = () => {
     logout();
-    navigate("/");
+    navigate("/login");
   };
 
   const toggleLanguage = () => {
@@ -60,11 +60,11 @@ const ProfileMenu: React.FC = () => {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => navigate("/profile")}>
+        <DropdownMenuItem onClick={() => navigate("/app/profile")}>
           <User className="mr-2 h-4 w-4" />
           <span>{t("profile.title")}</span>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => navigate("/settings")}>
+        <DropdownMenuItem onClick={() => navigate("/app/settings")}>
           <Settings className="mr-2 h-4 w-4" />
           <span>{t("settings.title")}</span>
         </DropdownMenuItem>
