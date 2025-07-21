@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -12,30 +11,27 @@ import OrganizationFeeStructure from "@/components/help/OrganizationFeeStructure
 import ContactSupport from "@/components/help/ContactSupport";
 import FAQSection from "@/components/help/FAQSection";
 import SkeletonLoader from "@/components/common/SkeletonLoader";
-
 const Help: React.FC = () => {
-  const { t } = useTranslation();
+  const {
+    t
+  } = useTranslation();
   const navigate = useNavigate();
-  const { user, session } = useAuth();
-
+  const {
+    user,
+    session
+  } = useAuth();
   const [organizationEWAData, setOrganizationEWAData] = useState<OrganizationEwaSettings | null>(null);
   const [ewaDataLoading, setEwaDataLoading] = useState(false);
   const [ewaDataError, setEwaDataError] = useState<string | null>(null);
-
   useEffect(() => {
     const loadOrganizationEwaSettings = async () => {
       if (!user?.contact_number || !session?.access_token) {
         return;
       }
-
       setEwaDataLoading(true);
       setEwaDataError(null);
-
       try {
-        const data = await fetchOrganizationEwaSettings(
-          user.contact_number,
-          session.access_token
-        );
+        const data = await fetchOrganizationEwaSettings(user.contact_number, session.access_token);
         setOrganizationEWAData(data);
         console.log('Organization EWA settings loaded in Help:', data);
       } catch (error: any) {
@@ -45,20 +41,13 @@ const Help: React.FC = () => {
         setEwaDataLoading(false);
       }
     };
-
     loadOrganizationEwaSettings();
   }, [user?.contact_number, session?.access_token]);
-
-  return (
-    <div className="min-h-screen bg-background pb-6">
+  return <div className="min-h-screen bg-background pb-6">
       <div className="container max-w-md mx-auto px-4 py-6">
         {/* Header - Always visible */}
         <div className="flex items-center gap-4 mb-6">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => navigate(-1)}
-          >
+          <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <h1 className="text-2xl font-bold">{t("help.title")}</h1>
@@ -77,17 +66,9 @@ const Help: React.FC = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              {ewaDataLoading ? (
-                <div className="flex items-center justify-center py-8">
+              {ewaDataLoading ? <div className="flex items-center justify-center py-8">
                   <SkeletonLoader type="settings" useAnimatedLoader={true} loadingText={t("common.loading")} />
-                </div>
-              ) : (
-                <OrganizationFeeStructure 
-                  data={organizationEWAData}
-                  loading={ewaDataLoading}
-                  error={ewaDataError}
-                />
-              )}
+                </div> : <OrganizationFeeStructure data={organizationEWAData} loading={ewaDataLoading} error={ewaDataError} />}
             </CardContent>
           </Card>
 
@@ -109,14 +90,12 @@ const Help: React.FC = () => {
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">{t("help.app.lastUpdated")}</span>
-                <span>2025-07-15</span>
+                <span>2025-07-22</span>
               </div>
             </CardContent>
           </Card>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Help;
