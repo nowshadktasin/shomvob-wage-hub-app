@@ -27,38 +27,16 @@ const AnimatedLoader: React.FC<AnimatedLoaderProps> = ({
 
   return (
     <div 
-      className={cn("flex flex-col items-center justify-center space-y-3", className)}
+      className={cn("flex items-center justify-center", className)}
       role="status"
       aria-label={text || "Loading..."}
     >
-      <div className="relative">
-        <img
-          src="/lovable-uploads/87944b9b-28a0-465a-80c1-d26eee4cfdb6.png"
-          alt="Loading"
-          className={cn(
-            sizeClasses[size],
-            "animate-loader-spin will-change-transform",
-            "motion-reduce:animate-none"
-          )}
-          style={{
-            filter: 'drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1))'
-          }}
-        />
-        <div 
-          className={cn(
-            "absolute inset-0 rounded-full animate-loader-pulse",
-            "bg-primary/20 opacity-50"
-          )}
-        />
-      </div>
-      {text && (
-        <p className={cn(
-          "text-muted-foreground font-medium animate-fade-in",
-          textSizeClasses[size]
-        )}>
-          {text}
-        </p>
-      )}
+      <p className={cn(
+        "text-muted-foreground font-medium",
+        textSizeClasses[size]
+      )}>
+        {text || "Loading..."}
+      </p>
     </div>
   );
 };
