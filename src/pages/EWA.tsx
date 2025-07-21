@@ -166,11 +166,6 @@ const EWA: React.FC = () => {
   return <ErrorBoundary onRetry={refreshEarnings}>
       <div className={cn("min-h-screen bg-background pb-6", isBangla && "font-siliguri")}>
         <div className="container max-w-md mx-auto px-4 py-6 space-y-6">
-          {/* Header - Always visible */}
-          <div className="text-center mb-8">
-            <h1 className="text-2xl font-bold mb-2">{t("ewa.title")}</h1>
-          </div>
-          
           {/* Amount Display Section - Show immediately with default values */}
           <EWAAmountDisplay 
             availableToWithdraw={availableToWithdraw} 
