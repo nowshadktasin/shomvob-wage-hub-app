@@ -13,6 +13,16 @@ import EWADetailsSection from "@/components/ewa/EWADetailsSection";
 import DisabledState from "@/components/common/DisabledState";
 import SkeletonLoader from "@/components/common/SkeletonLoader";
 import ErrorBoundary from "@/components/common/ErrorBoundary";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { cn } from "@/lib/utils";
 
 const EWA: React.FC = () => {
@@ -21,6 +31,7 @@ const EWA: React.FC = () => {
   const { earningsData, loading, refreshEarnings } = useEarnings();
   const [withdrawAmount, setWithdrawAmount] = useState<number>(1000);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [transactions, setTransactions] = useState<any[]>([]);
   const [organizationEwaSettings, setOrganizationEwaSettings] = useState<OrganizationEwaSettings | null>(null);
   
@@ -96,6 +107,10 @@ const EWA: React.FC = () => {
     }
   }, [user?.contact_number, session?.access_token, user?.id]);
   
+  const handleWithdrawClick = () => {
+    setShowConfirmDialog(true);
+  };
+
   const handleWithdraw = async () => {
     if (!user?.contact_number || !session?.access_token || !user?.id) {
       toast.error("Authentication Error", {
@@ -138,6 +153,7 @@ const EWA: React.FC = () => {
       });
     } finally {
       setIsSubmitting(false);
+      setShowConfirmDialog(false);
     }
   };
 
@@ -207,7 +223,7 @@ const EWA: React.FC = () => {
             isEnabled={earningsData?.is_enabled || false}
             hasPendingRequest={hasPendingRequest}
             onWithdrawAmountChange={setWithdrawAmount}
-            onWithdraw={handleWithdraw}
+            onWithdraw={handleWithdrawClick}
             formatCurrency={formatCurrency}
           />
           
@@ -215,6 +231,31 @@ const EWA: React.FC = () => {
             earningsData={earningsData}
             formatCurrency={formatCurrency}
           />
+          
+          <AlertDialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
+            <AlertDialogContent className="max-w-sm mx-auto">
+              <AlertDialogHeader>
+                <AlertDialogTitle>
+                  {t("ewa.confirmation.title")}
+                </AlertDialogTitle>
+                <AlertDialogDescription>
+                  {t("ewa.confirmation.description", { amount: formatCurrency(withdrawAmount) })}
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter className="flex-col sm:flex-col space-y-2 sm:space-y-2 sm:space-x-0">
+                <AlertDialogAction 
+                  onClick={handleWithdraw}
+                  disabled={isSubmitting}
+                  className="w-full"
+                >
+                  {isSubmitting ? "Processing..." : t("ewa.confirmation.confirm")}
+                </AlertDialogAction>
+                <AlertDialogCancel className="w-full mt-2">
+                  {t("ewa.confirmation.cancel")}
+                </AlertDialogCancel>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </div>
     </ErrorBoundary>

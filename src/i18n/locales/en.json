@@ -189,6 +189,12 @@
     "serviceFee": "Service Fee",
     "totalAmount": "Total Amount",
     "withdraw": "Request Withdrawal",
+    "confirmation": {
+      "title": "Confirm Withdrawal Request",
+      "description": "Are you sure you want to request to withdraw {{amount}}?",
+      "confirm": "Yes, Request",
+      "cancel": "Cancel"
+    },
     "limitExceeded": {
       "title": "Monthly Limit Exceeded",
       "description": "Your request cannot be processed as it exceeds your monthly withdrawal limit. Please reduce the amount and try again."
