@@ -38,6 +38,7 @@ const EWA: React.FC = () => {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [transactions, setTransactions] = useState<any[]>([]);
   const [organizationEwaSettings, setOrganizationEwaSettings] = useState<OrganizationEwaSettings | null>(null);
+  const [organizationLoading, setOrganizationLoading] = useState(true);
   const isBangla = i18n.language === 'bn';
   const availableToWithdraw = earningsData?.claimable_wages || 0;
   const minWages = earningsData?.min_wages || 1000;
@@ -80,8 +81,10 @@ const EWA: React.FC = () => {
     try {
       const settings = await fetchOrganizationEwaSettings(user.contact_number, session.access_token);
       setOrganizationEwaSettings(settings);
+      setOrganizationLoading(false);
     } catch (error) {
       console.error('Failed to fetch organization EWA settings:', error);
+      setOrganizationLoading(false);
     }
   };
   useEffect(() => {
@@ -173,7 +176,7 @@ const EWA: React.FC = () => {
           )}
           
           {/* Request Section */}
-          {loading ? (
+          {loading || organizationLoading ? (
             <SkeletonLoader type="earnings" count={1} />
           ) : (
             <EWARequestSection 
