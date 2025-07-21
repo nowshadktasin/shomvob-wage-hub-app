@@ -169,7 +169,6 @@ const EWA: React.FC = () => {
           {/* Header - Always visible */}
           <div className="text-center mb-8">
             <h1 className="text-2xl font-bold mb-2">{t("ewa.title")}</h1>
-            <p className="text-muted-foreground">{t("ewa.pageTitle")}</p>
           </div>
           
           {/* Amount Display Section - Show immediately with default values */}
