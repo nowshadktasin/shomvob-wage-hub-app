@@ -113,9 +113,16 @@ const EWA: React.FC = () => {
         user.id
       );
 
-      toast.success(t("earnings.requestSuccessTitle"), {
-        description: `Request submitted for ${formatCurrency(response.requested_amount)}. Status: ${response.status}`,
-      });
+      // Check if the request failed due to limit exceeded
+      if (response.status === 'WITHDRAW_LIMIT_EXCEEDED') {
+        toast.error(t("ewa.limitExceeded.title"), {
+          description: t("ewa.limitExceeded.description"),
+        });
+      } else {
+        toast.success(t("earnings.requestSuccessTitle"), {
+          description: `Request submitted for ${formatCurrency(response.requested_amount)}. Status: ${response.status}`,
+        });
+      }
 
       await refreshEarnings();
       

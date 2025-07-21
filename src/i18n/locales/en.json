@@ -189,6 +189,10 @@
     "serviceFee": "Service Fee",
     "totalAmount": "Total Amount",
     "withdraw": "Request Withdrawal",
+    "limitExceeded": {
+      "title": "Monthly Limit Exceeded",
+      "description": "Your request cannot be processed as it exceeds your monthly withdrawal limit. Please reduce the amount and try again."
+    },
     "disabled": {
       "title": "EWA Access Disabled",
       "message": "Your Employee Wage Advance access is currently disabled. Please contact your HR department for assistance.",
