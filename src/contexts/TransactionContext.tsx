@@ -48,7 +48,7 @@ export const TransactionProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [currentFilter, setCurrentFilter] = useState<TransactionFilter>('approved');
+  const [currentFilter, setCurrentFilter] = useState<TransactionFilter>('pending');
 
   const refreshTransactions = async () => {
     if (!user?.contact_number || !session?.access_token || !user?.id) {
