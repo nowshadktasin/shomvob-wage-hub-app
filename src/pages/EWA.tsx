@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "@/components/ui/sonner";
 import { useEarnings } from "@/contexts/EarningsContext";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTransactions } from "@/contexts/TransactionContext";
 import { submitEwaRequest } from "@/services/ewaApi";
 import { fetchTransactionHistory } from "@/services/transactionHistoryApi";
 import { fetchOrganizationEwaSettings, OrganizationEwaSettings } from "@/services/organizationEwaApi";
@@ -29,6 +30,7 @@ const EWA: React.FC = () => {
   const { t, i18n } = useTranslation();
   const { user, session } = useAuth();
   const { earningsData, loading, refreshEarnings } = useEarnings();
+  const { refreshTransactions, pendingTransactions } = useTransactions();
   const [withdrawAmount, setWithdrawAmount] = useState<number>(1000);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
@@ -52,10 +54,8 @@ const EWA: React.FC = () => {
     return applicableSlab ? applicableSlab.fees : 0;
   };
   
-  // Check if there are any pending requests
-  const hasPendingRequest = transactions.some(transaction => 
-    transaction.status.toLowerCase() === 'pending'
-  );
+  // Check if there are any pending requests from the global context
+  const hasPendingRequest = pendingTransactions.length > 0;
   
   useEffect(() => {
     if (availableToWithdraw > 0 && minWages > 0) {
@@ -141,9 +141,11 @@ const EWA: React.FC = () => {
 
       await refreshEarnings();
       
-      setTimeout(async () => {
-        await loadTransactionHistory();
-      }, 2000);
+      // Immediately refresh transaction contexts to show pending status
+      await Promise.all([
+        loadTransactionHistory(),
+        refreshTransactions()
+      ]);
       
     } catch (error: any) {
       console.error('Withdrawal request failed:', error);

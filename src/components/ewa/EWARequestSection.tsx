@@ -135,7 +135,7 @@ const EWARequestSection: React.FC<EWARequestSectionProps> = ({
         {hasPendingRequest && (
           <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-md">
             <p className="text-sm text-yellow-800">
-              You have a pending request. You can still submit a new request, but it may be subject to approval policies.
+              {t("ewa.pendingNotice")}
             </p>
           </div>
         )}

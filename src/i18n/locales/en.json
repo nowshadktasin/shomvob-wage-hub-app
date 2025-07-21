@@ -189,6 +189,7 @@
     "serviceFee": "Service Fee",
     "totalAmount": "Total Amount",
     "withdraw": "Request Withdrawal",
+    "pendingNotice": "You have a pending request. You can still submit a new request, but it may be subject to approval policies.",
     "confirmation": {
       "title": "Confirm Withdrawal Request",
       "description": "Are you sure you want to request to withdraw {{amount}}?",
