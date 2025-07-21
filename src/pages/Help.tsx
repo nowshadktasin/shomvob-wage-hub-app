@@ -51,60 +51,61 @@ const Help: React.FC = () => {
   return (
     <div className="min-h-screen bg-background pb-6">
       <div className="container max-w-md mx-auto px-4 py-6">
-      <div className="flex items-center gap-4 mb-6">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => navigate(-1)}
-        >
-          <ArrowLeft className="h-5 w-5" />
-        </Button>
-        <h1 className="text-2xl font-bold">{t("help.title")}</h1>
-      </div>
+        {/* Header - Always visible */}
+        <div className="flex items-center gap-4 mb-6">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => navigate(-1)}
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
+          <h1 className="text-2xl font-bold">{t("help.title")}</h1>
+        </div>
 
-      <div className="space-y-6">
-        {/* Organization Fee Structure Section */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Building className="h-5 w-5" />
-              {t("help.organizationFee.title")}
-            </CardTitle>
-            <CardDescription>
-              {t("help.organizationFee.description")}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <OrganizationFeeStructure 
-              data={organizationEWAData}
-              loading={ewaDataLoading}
-              error={ewaDataError}
-            />
-          </CardContent>
-        </Card>
+        <div className="space-y-6">
+          {/* Organization Fee Structure Section */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Building className="h-5 w-5" />
+                {t("help.organizationFee.title")}
+              </CardTitle>
+              <CardDescription>
+                {t("help.organizationFee.description")}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <OrganizationFeeStructure 
+                data={organizationEWAData}
+                loading={ewaDataLoading}
+                error={ewaDataError}
+              />
+            </CardContent>
+          </Card>
 
-        {/* Contact Support Section */}
-        <ContactSupport />
+          {/* Contact Support Section - Always visible */}
+          <ContactSupport />
 
-        {/* FAQ Section */}
-        <FAQSection />
+          {/* FAQ Section - Always visible */}
+          <FAQSection />
 
-        {/* App Info Section */}
-        <Card>
-          <CardHeader>
-            <CardTitle>{t("help.app.title")}</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">{t("help.app.version")}</span>
-              <span>1.0.0</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">{t("help.app.lastUpdated")}</span>
-              <span>2025-07-15</span>
-            </div>
-          </CardContent>
-        </Card>
+          {/* App Info Section - Always visible */}
+          <Card>
+            <CardHeader>
+              <CardTitle>{t("help.app.title")}</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">{t("help.app.version")}</span>
+                <span>1.0.0</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">{t("help.app.lastUpdated")}</span>
+                <span>2025-07-15</span>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>

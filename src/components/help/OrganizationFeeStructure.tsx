@@ -11,6 +11,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { OrganizationEwaSettings } from "@/services/organizationEwaApi";
+import SkeletonLoader from "@/components/common/SkeletonLoader";
 
 interface OrganizationFeeStructureProps {
   data: OrganizationEwaSettings | null;
@@ -30,11 +31,7 @@ const OrganizationFeeStructure: React.FC<OrganizationFeeStructureProps> = ({
   };
 
   if (loading) {
-    return (
-      <div className="text-center text-muted-foreground py-6">
-        {t("common.loading")}
-      </div>
-    );
+    return <SkeletonLoader type="earnings" count={2} />;
   }
 
   if (error) {
