@@ -39,6 +39,7 @@ const EWA: React.FC = () => {
   const [transactions, setTransactions] = useState<any[]>([]);
   const [organizationEwaSettings, setOrganizationEwaSettings] = useState<OrganizationEwaSettings | null>(null);
   const [organizationLoading, setOrganizationLoading] = useState(true);
+  const [initialLoad, setInitialLoad] = useState(true);
   const isBangla = i18n.language === 'bn';
   const availableToWithdraw = earningsData?.claimable_wages || 0;
   const minWages = earningsData?.min_wages || 1000;
@@ -93,6 +94,13 @@ const EWA: React.FC = () => {
       loadOrganizationEwaSettings();
     }
   }, [user?.contact_number, session?.access_token, user?.id]);
+
+  // Handle initial load completion
+  useEffect(() => {
+    if (!loading && !organizationLoading && initialLoad) {
+      setInitialLoad(false);
+    }
+  }, [loading, organizationLoading, initialLoad]);
   const handleWithdrawClick = () => {
     setShowConfirmDialog(true);
   };
@@ -164,19 +172,15 @@ const EWA: React.FC = () => {
             <p className="text-muted-foreground">{t("ewa.pageTitle")}</p>
           </div>
           
-          {/* Amount Display Section */}
-          {loading ? (
-            <SkeletonLoader type="earnings" count={1} />
-          ) : (
-            <EWAAmountDisplay 
-              availableToWithdraw={availableToWithdraw} 
-              formatCurrency={formatCurrency} 
-              isEnabled={earningsData?.is_enabled || false} 
-            />
-          )}
+          {/* Amount Display Section - Show immediately with default values */}
+          <EWAAmountDisplay 
+            availableToWithdraw={availableToWithdraw} 
+            formatCurrency={formatCurrency} 
+            isEnabled={earningsData?.is_enabled || false} 
+          />
           
-          {/* Request Section */}
-          {loading || organizationLoading ? (
+          {/* Request Section - Only show skeleton if both are loading */}
+          {(loading && !earningsData) || (organizationLoading && !organizationEwaSettings) ? (
             <SkeletonLoader type="earnings" count={1} />
           ) : (
             <EWARequestSection 
@@ -193,8 +197,8 @@ const EWA: React.FC = () => {
             />
           )}
           
-          {/* Details Section */}
-          {loading ? (
+          {/* Details Section - Show immediately if earnings data exists */}
+          {loading && !earningsData ? (
             <SkeletonLoader type="earnings" count={1} />
           ) : (
             <EWADetailsSection 
