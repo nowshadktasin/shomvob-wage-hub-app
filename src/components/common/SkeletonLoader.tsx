@@ -1,13 +1,33 @@
 import React from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import AnimatedLoader from "@/components/common/AnimatedLoader";
 
 interface SkeletonLoaderProps {
   type: 'earnings' | 'transaction' | 'profile' | 'settings';
   count?: number;
+  useAnimatedLoader?: boolean;
+  loadingText?: string;
 }
 
-const SkeletonLoader: React.FC<SkeletonLoaderProps> = ({ type, count = 1 }) => {
+const SkeletonLoader: React.FC<SkeletonLoaderProps> = ({ 
+  type, 
+  count = 1, 
+  useAnimatedLoader = false,
+  loadingText 
+}) => {
+  // If animated loader is requested, show it instead of skeleton
+  if (useAnimatedLoader) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <AnimatedLoader 
+          size="large" 
+          text={loadingText || "Loading..."} 
+        />
+      </div>
+    );
+  }
+
   const renderEarningsSkeleton = () => (
     <Card className="mb-6">
       <CardHeader className="pb-4">

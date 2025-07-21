@@ -12,9 +12,11 @@ import EWARequestSection from "@/components/ewa/EWARequestSection";
 import EWADetailsSection from "@/components/ewa/EWADetailsSection";
 import DisabledState from "@/components/common/DisabledState";
 import SkeletonLoader from "@/components/common/SkeletonLoader";
+import AnimatedLoader from "@/components/common/AnimatedLoader";
 import ErrorBoundary from "@/components/common/ErrorBoundary";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { cn } from "@/lib/utils";
+
 const EWA: React.FC = () => {
   const {
     t,
@@ -44,7 +46,6 @@ const EWA: React.FC = () => {
   const availableToWithdraw = earningsData?.claimable_wages || 0;
   const minWages = earningsData?.min_wages || 1000;
 
-  // Calculate service fee based on slabs
   const calculateServiceFee = (amount: number): number => {
     if (!organizationEwaSettings?.slabs || organizationEwaSettings.slabs.length === 0) {
       return 0;
@@ -53,8 +54,8 @@ const EWA: React.FC = () => {
     return applicableSlab ? applicableSlab.fees : 0;
   };
 
-  // Check if there are any pending requests from the global context
   const hasPendingRequest = pendingTransactions.length > 0;
+  
   useEffect(() => {
     if (availableToWithdraw > 0 && minWages > 0) {
       const range = availableToWithdraw - minWages;
@@ -64,6 +65,7 @@ const EWA: React.FC = () => {
       setWithdrawAmount(minWages);
     }
   }, [availableToWithdraw, minWages]);
+
   const loadTransactionHistory = async () => {
     if (!user?.contact_number || !session?.access_token || !user?.id) {
       return;
@@ -75,6 +77,7 @@ const EWA: React.FC = () => {
       console.error('Failed to fetch transaction history:', error);
     }
   };
+  
   const loadOrganizationEwaSettings = async () => {
     if (!user?.contact_number || !session?.access_token) {
       return;
@@ -88,6 +91,7 @@ const EWA: React.FC = () => {
       setOrganizationLoading(false);
     }
   };
+
   useEffect(() => {
     if (user?.contact_number && session?.access_token && user?.id) {
       loadTransactionHistory();
@@ -95,15 +99,16 @@ const EWA: React.FC = () => {
     }
   }, [user?.contact_number, session?.access_token, user?.id]);
 
-  // Handle initial load completion
   useEffect(() => {
     if (!loading && !organizationLoading && initialLoad) {
       setInitialLoad(false);
     }
   }, [loading, organizationLoading, initialLoad]);
+
   const handleWithdrawClick = () => {
     setShowConfirmDialog(true);
   };
+
   const handleWithdraw = async () => {
     if (!user?.contact_number || !session?.access_token || !user?.id) {
       toast.error("Authentication Error", {
@@ -115,7 +120,6 @@ const EWA: React.FC = () => {
     try {
       const response = await submitEwaRequest(user.contact_number, session.access_token, withdrawAmount, user.id);
 
-      // Check if the request failed due to limit exceeded
       if (response.status === 'WITHDRAW_LIMIT_EXCEEDED') {
         toast.error(t("ewa.limitExceeded.title"), {
           description: t("ewa.limitExceeded.description")
@@ -126,8 +130,6 @@ const EWA: React.FC = () => {
         });
       }
       await refreshEarnings();
-
-      // Immediately refresh transaction contexts to show pending status
       await Promise.all([loadTransactionHistory(), refreshTransactions()]);
     } catch (error: any) {
       console.error('Withdrawal request failed:', error);
@@ -139,15 +141,28 @@ const EWA: React.FC = () => {
       setShowConfirmDialog(false);
     }
   };
+
   const formatCurrency = (amount: number | undefined) => {
     if (amount === undefined || amount === null) {
       return `${t("common.currency")} 0`;
     }
     return `${t("common.currency")} ${amount.toLocaleString()}`;
   };
-  // Progressive loading approach - show page structure immediately
 
-  // Handle disabled EWA access
+  if (initialLoad && (loading || organizationLoading)) {
+    return (
+      <div className={cn("min-h-screen bg-background pb-6", isBangla && "font-siliguri")}>
+        <div className="container max-w-md mx-auto px-4 py-6">
+          <AnimatedLoader 
+            size="large" 
+            text={t("common.loading") || "Loading your earnings..."} 
+            className="pt-20"
+          />
+        </div>
+      </div>
+    );
+  }
+
   if (earningsData && !earningsData.is_enabled) {
     return <div className={cn("min-h-screen bg-background pb-6", isBangla && "font-siliguri")}>
         <div className="container max-w-md mx-auto px-4 py-6 space-y-6">
@@ -157,48 +172,70 @@ const EWA: React.FC = () => {
           </div>
           
           <DisabledState title={t("ewa.disabled.title")} message={t("ewa.disabled.message")} reason={earningsData.failed_reason || t("ewa.disabled.defaultReason")} actionLabel={t("ewa.disabled.contactHR")} onAction={() => {
-          // Could navigate to help or contact page
           window.location.href = '/help';
         }} />
         </div>
       </div>;
   }
+
   return <ErrorBoundary onRetry={refreshEarnings}>
       <div className={cn("min-h-screen bg-background pb-6", isBangla && "font-siliguri")}>
         <div className="container max-w-md mx-auto px-4 py-6 space-y-6">
-          {/* Amount Display Section - Show immediately with default values */}
-          <EWAAmountDisplay 
-            availableToWithdraw={availableToWithdraw} 
-            formatCurrency={formatCurrency} 
-            isEnabled={earningsData?.is_enabled || false} 
-          />
-          
-          {/* Request Section - Only show skeleton if both are loading */}
-          {(loading && !earningsData) || (organizationLoading && !organizationEwaSettings) ? (
-            <SkeletonLoader type="earnings" count={1} />
-          ) : (
-            <EWARequestSection 
-              withdrawAmount={withdrawAmount} 
-              minWages={minWages} 
+          <div className="animate-fade-in">
+            <EWAAmountDisplay 
               availableToWithdraw={availableToWithdraw} 
-              calculateServiceFee={calculateServiceFee} 
-              isSubmitting={isSubmitting} 
-              isEnabled={earningsData?.is_enabled || false} 
-              hasPendingRequest={hasPendingRequest} 
-              onWithdrawAmountChange={setWithdrawAmount} 
-              onWithdraw={handleWithdrawClick} 
               formatCurrency={formatCurrency} 
+              isEnabled={earningsData?.is_enabled || false} 
             />
+          </div>
+          
+          {(loading && !earningsData) || (organizationLoading && !organizationEwaSettings) ? (
+            <SkeletonLoader 
+              type="earnings" 
+              count={1} 
+              useAnimatedLoader={true}
+              loadingText="Loading request form..."
+            />
+          ) : (
+            <div className="animate-fade-in">
+              <EWARequestSection 
+                withdrawAmount={withdrawAmount} 
+                minWages={minWages} 
+                availableToWithdraw={availableToWithdraw} 
+                calculateServiceFee={calculateServiceFee} 
+                isSubmitting={isSubmitting} 
+                isEnabled={earningsData?.is_enabled || false} 
+                hasPendingRequest={hasPendingRequest} 
+                onWithdrawAmountChange={setWithdrawAmount} 
+                onWithdraw={handleWithdrawClick} 
+                formatCurrency={formatCurrency} 
+              />
+            </div>
           )}
           
-          {/* Details Section - Show immediately if earnings data exists */}
           {loading && !earningsData ? (
-            <SkeletonLoader type="earnings" count={1} />
-          ) : (
-            <EWADetailsSection 
-              earningsData={earningsData} 
-              formatCurrency={formatCurrency} 
+            <SkeletonLoader 
+              type="earnings" 
+              count={1} 
+              useAnimatedLoader={true}
+              loadingText="Loading earnings details..."
             />
+          ) : (
+            <div className="animate-fade-in">
+              <EWADetailsSection 
+                earningsData={earningsData} 
+                formatCurrency={formatCurrency} 
+              />
+            </div>
+          )}
+          
+          {isSubmitting && (
+            <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50">
+              <AnimatedLoader 
+                size="large" 
+                text="Processing your request..." 
+              />
+            </div>
           )}
           
           <AlertDialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
@@ -226,4 +263,5 @@ const EWA: React.FC = () => {
       </div>
     </ErrorBoundary>;
 };
+
 export default EWA;
