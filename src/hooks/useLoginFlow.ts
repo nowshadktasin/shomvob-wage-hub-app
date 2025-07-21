@@ -190,6 +190,8 @@ export const useLoginFlow = () => {
     }
 
     setIsLoading(true);
+    // Clear the current OTP input when resending
+    setOtp("");
 
     try {
       // Format phone number - ensure it starts with 88 and has proper length
@@ -225,7 +227,7 @@ export const useLoginFlow = () => {
       if (response.ok && responseData.code === 200) {
         toast({
           title: "OTP Resent",
-          description: "Please check your phone for the new verification code",
+          description: "A new verification code has been sent to your phone. Please enter the new code.",
         });
       } else {
         toast({
