@@ -31,7 +31,7 @@ const OrganizationFeeStructure: React.FC<OrganizationFeeStructureProps> = ({
   };
 
   if (loading) {
-    return <SkeletonLoader type="earnings" count={2} />;
+    return <SkeletonLoader type="earnings" count={2} useAnimatedLoader={true} loadingText={t("common.loading")} />;
   }
 
   if (error) {

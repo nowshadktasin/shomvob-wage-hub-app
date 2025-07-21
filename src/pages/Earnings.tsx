@@ -9,6 +9,7 @@ import EarningsHeader from "@/components/earnings/EarningsHeader";
 import EarningsSummaryCard from "@/components/earnings/EarningsSummaryCard";
 import WithdrawalCard from "@/components/earnings/WithdrawalCard";
 import { fetchOrganizationEwaSettings, OrganizationEwaSettings } from "@/services/organizationEwaApi";
+import AnimatedLoader from "@/components/common/AnimatedLoader";
 
 const Earnings: React.FC = () => {
   const { t } = useTranslation();
@@ -122,7 +123,7 @@ const Earnings: React.FC = () => {
     return (
       <div className="container max-w-md mx-auto px-4 py-6 font-siliguri">
         <div className="flex items-center justify-center min-h-64">
-          <div className="text-center">Loading earnings data...</div>
+          <AnimatedLoader size="large" text="Loading earnings data..." />
         </div>
       </div>
     );

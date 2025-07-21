@@ -3,6 +3,7 @@ import React, { memo } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Transaction } from "@/contexts/TransactionContext";
 import TransactionCard from "./TransactionCard";
+import AnimatedLoader from "@/components/common/AnimatedLoader";
 
 interface HistoryTabContentProps {
   transactions: Transaction[];
@@ -20,9 +21,7 @@ const HistoryTabContent: React.FC<HistoryTabContentProps> = ({
   if (loading) {
     return (
       <div className="flex items-center justify-center py-8">
-        <div className="text-center text-muted-foreground">
-          Loading transactions...
-        </div>
+        <AnimatedLoader size="large" text="Loading transactions..." />
       </div>
     );
   }

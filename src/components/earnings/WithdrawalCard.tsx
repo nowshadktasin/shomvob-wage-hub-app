@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
+import AnimatedLoader from "@/components/common/AnimatedLoader";
 
 interface WithdrawalCardProps {
   withdrawAmount: number;
@@ -35,8 +36,15 @@ const WithdrawalCard: React.FC<WithdrawalCardProps> = ({
   const serviceFee = calculateServiceFee(withdrawAmount);
   const totalAmount = withdrawAmount + serviceFee;
 
-  const getButtonText = () => {
-    if (isSubmitting) return "Submitting...";
+  const getButtonContent = () => {
+    if (isSubmitting) {
+      return (
+        <div className="flex items-center gap-2">
+          <AnimatedLoader size="small" />
+          <span>Submitting...</span>
+        </div>
+      );
+    }
     return t("earnings.withdraw");
   };
 
@@ -102,7 +110,7 @@ const WithdrawalCard: React.FC<WithdrawalCardProps> = ({
           onClick={onWithdraw}
           disabled={isButtonDisabled}
         >
-          {getButtonText()}
+          {getButtonContent()}
         </Button>
       </CardFooter>
     </Card>

@@ -33,7 +33,7 @@ const AnimatedLoader: React.FC<AnimatedLoaderProps> = ({
     >
       <div className="relative">
         <img
-          src="/lovable-uploads/3e9c38e3-6cac-464b-801e-0c3545f31ba5.png"
+          src="/lovable-uploads/87944b9b-28a0-465a-80c1-d26eee4cfdb6.png"
           alt="Loading"
           className={cn(
             sizeClasses[size],
