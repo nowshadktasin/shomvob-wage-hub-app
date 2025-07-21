@@ -134,17 +134,7 @@ const EWA: React.FC = () => {
     }
     return `${t("common.currency")} ${amount.toLocaleString()}`;
   };
-  if (loading) {
-    return <div className={cn("min-h-screen bg-background pb-6", isBangla && "font-siliguri")}>
-        <div className="container max-w-md mx-auto px-4 py-6 space-y-6">
-          <div className="text-center mb-8">
-            <h1 className="text-2xl font-bold mb-2">{t("ewa.title")}</h1>
-            <p className="text-muted-foreground">{t("ewa.pageTitle")}</p>
-          </div>
-          <SkeletonLoader type="earnings" />
-        </div>
-      </div>;
-  }
+  // Progressive loading approach - show page structure immediately
 
   // Handle disabled EWA access
   if (earningsData && !earningsData.is_enabled) {
@@ -165,12 +155,50 @@ const EWA: React.FC = () => {
   return <ErrorBoundary onRetry={refreshEarnings}>
       <div className={cn("min-h-screen bg-background pb-6", isBangla && "font-siliguri")}>
         <div className="container max-w-md mx-auto px-4 py-6 space-y-6">
+          {/* Header - Always visible */}
+          <div className="text-center mb-8">
+            <h1 className="text-2xl font-bold mb-2">{t("ewa.title")}</h1>
+            <p className="text-muted-foreground">{t("ewa.pageTitle")}</p>
+          </div>
           
-          <EWAAmountDisplay availableToWithdraw={availableToWithdraw} formatCurrency={formatCurrency} isEnabled={earningsData?.is_enabled || false} />
+          {/* Amount Display Section */}
+          {loading ? (
+            <SkeletonLoader type="earnings" count={1} />
+          ) : (
+            <EWAAmountDisplay 
+              availableToWithdraw={availableToWithdraw} 
+              formatCurrency={formatCurrency} 
+              isEnabled={earningsData?.is_enabled || false} 
+            />
+          )}
           
-          <EWARequestSection withdrawAmount={withdrawAmount} minWages={minWages} availableToWithdraw={availableToWithdraw} calculateServiceFee={calculateServiceFee} isSubmitting={isSubmitting} isEnabled={earningsData?.is_enabled || false} hasPendingRequest={hasPendingRequest} onWithdrawAmountChange={setWithdrawAmount} onWithdraw={handleWithdrawClick} formatCurrency={formatCurrency} />
+          {/* Request Section */}
+          {loading ? (
+            <SkeletonLoader type="earnings" count={1} />
+          ) : (
+            <EWARequestSection 
+              withdrawAmount={withdrawAmount} 
+              minWages={minWages} 
+              availableToWithdraw={availableToWithdraw} 
+              calculateServiceFee={calculateServiceFee} 
+              isSubmitting={isSubmitting} 
+              isEnabled={earningsData?.is_enabled || false} 
+              hasPendingRequest={hasPendingRequest} 
+              onWithdrawAmountChange={setWithdrawAmount} 
+              onWithdraw={handleWithdrawClick} 
+              formatCurrency={formatCurrency} 
+            />
+          )}
           
-          <EWADetailsSection earningsData={earningsData} formatCurrency={formatCurrency} />
+          {/* Details Section */}
+          {loading ? (
+            <SkeletonLoader type="earnings" count={1} />
+          ) : (
+            <EWADetailsSection 
+              earningsData={earningsData} 
+              formatCurrency={formatCurrency} 
+            />
+          )}
           
           <AlertDialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
             <AlertDialogContent className="max-w-sm mx-auto">
