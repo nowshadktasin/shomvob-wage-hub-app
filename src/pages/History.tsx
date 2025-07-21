@@ -36,17 +36,17 @@ const History: React.FC = () => {
             <SkeletonLoader type="transaction" count={3} />
           ) : (
             <Tabs 
-              defaultValue="approved" 
+              defaultValue="pending" 
               className="w-full"
               value={currentFilter}
               onValueChange={(value) => setCurrentFilter(value as any)}
             >
               <TabsList className="grid grid-cols-3 w-full mb-6">
-                <TabsTrigger value="approved" className="text-sm">
-                  {t("history.approved")}
-                </TabsTrigger>
                 <TabsTrigger value="pending" className="text-sm">
                   {t("history.pending")}
+                </TabsTrigger>
+                <TabsTrigger value="approved" className="text-sm">
+                  {t("history.approved")}
                 </TabsTrigger>
                 <TabsTrigger value="rejected" className="text-sm">
                   {t("history.rejected")}
