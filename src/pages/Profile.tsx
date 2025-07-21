@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { RefreshCw } from "lucide-react";
 import PersonalInformation from "@/components/profile/PersonalInformation";
 import ProfessionalInformation from "@/components/profile/ProfessionalInformation";
+import SkeletonLoader from "@/components/common/SkeletonLoader";
 
 const Profile: React.FC = () => {
   const { t } = useTranslation();
@@ -59,10 +60,16 @@ const Profile: React.FC = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              {activeTab === 'personal' ? (
-                <PersonalInformation user={user} />
+              {isRefreshing ? (
+                <SkeletonLoader type="profile" useAnimatedLoader={true} loadingText={t("common.loading")} />
               ) : (
-                <ProfessionalInformation user={user} />
+                <>
+                  {activeTab === 'personal' ? (
+                    <PersonalInformation user={user} />
+                  ) : (
+                    <ProfessionalInformation user={user} />
+                  )}
+                </>
               )}
             </CardContent>
           </Card>

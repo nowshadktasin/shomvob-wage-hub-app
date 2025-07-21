@@ -33,7 +33,7 @@ const History: React.FC = () => {
           </div>
 
           {loading ? (
-            <SkeletonLoader type="transaction" count={3} />
+            <SkeletonLoader type="transaction" count={3} useAnimatedLoader={true} loadingText={t("common.loading")} />
           ) : (
             <Tabs 
               defaultValue="pending" 

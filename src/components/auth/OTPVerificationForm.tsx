@@ -3,6 +3,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
+import AnimatedLoader from "@/components/common/AnimatedLoader";
 
 interface OTPVerificationFormProps {
   phoneNumber: string;
@@ -50,7 +51,14 @@ const OTPVerificationForm: React.FC<OTPVerificationFormProps> = ({
 
       <div className="space-y-3">
         <Button type="submit" className="w-full" disabled={isLoading}>
-          {isLoading ? "Verifying..." : "Verify OTP"}
+          {isLoading ? (
+            <div className="flex items-center gap-2">
+              <AnimatedLoader size="small" />
+              <span>Verifying...</span>
+            </div>
+          ) : (
+            "Verify OTP"
+          )}
         </Button>
         
         <Button

@@ -11,6 +11,7 @@ import { fetchOrganizationEwaSettings, OrganizationEwaSettings } from "@/service
 import OrganizationFeeStructure from "@/components/help/OrganizationFeeStructure";
 import ContactSupport from "@/components/help/ContactSupport";
 import FAQSection from "@/components/help/FAQSection";
+import SkeletonLoader from "@/components/common/SkeletonLoader";
 
 const Help: React.FC = () => {
   const { t } = useTranslation();
@@ -76,11 +77,17 @@ const Help: React.FC = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <OrganizationFeeStructure 
-                data={organizationEWAData}
-                loading={ewaDataLoading}
-                error={ewaDataError}
-              />
+              {ewaDataLoading ? (
+                <div className="flex items-center justify-center py-8">
+                  <SkeletonLoader type="settings" useAnimatedLoader={true} loadingText={t("common.loading")} />
+                </div>
+              ) : (
+                <OrganizationFeeStructure 
+                  data={organizationEWAData}
+                  loading={ewaDataLoading}
+                  error={ewaDataError}
+                />
+              )}
             </CardContent>
           </Card>
 
