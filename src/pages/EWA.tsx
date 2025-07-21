@@ -241,7 +241,8 @@ const EWA: React.FC = () => {
                   {t("ewa.confirmation.title")}
                 </AlertDialogTitle>
                 <AlertDialogDescription>
-                  {t("ewa.confirmation.description", { amount: formatCurrency(withdrawAmount) })}
+                  {t("ewa.confirmation.description").replace('{{amount}}', '')}{' '}
+                  <span className="font-bold">{formatCurrency(withdrawAmount)}</span>?
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter className="flex-col sm:flex-col space-y-2 sm:space-y-2 sm:space-x-0">

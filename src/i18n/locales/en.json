@@ -192,7 +192,7 @@
     "pendingNotice": "You have a pending request. Please wait for approval or contact support if you need assistance.",
     "confirmation": {
       "title": "Confirm Withdrawal Request",
-      "description": "Are you sure you want to request to withdraw {{amount}}?",
+      "description": "Are you sure you want to request to withdraw",
       "confirm": "Yes, Request",
       "cancel": "Cancel"
     },
